@@ -188,11 +188,17 @@ void loop() {
 
       //-- MODE 2 - Obstacle detector mode
        if(obstacleDetected){
-              Otto.jump(1,700);
+              Otto.playGesture(OttoHappy);
               Otto.sing(S_superHappy);
               Otto.walk(1,1300,-1);
-            
-
+                  Otto.playGesture(OttoSad);
+                  Otto.swing(2,800,20); 
+                  Otto.playGesture(OttoAngry);
+                  Otto.playGesture(OttoLove);
+                  Otto.shakeLeg(1,T,1); 
+                  Otto.playGesture(OttoVictory);
+                  Otto.crusaito(1,T,moveSize,1);
+                  Otto.sing(S_mode1);
             delay(100);
             obstacleDetector();
             delay(100);
@@ -693,7 +699,6 @@ void requestDistance(){
     Serial.flush();
 }
 
-
 //-- Function to send noise sensor measure
 void requestNoise(){
 
@@ -706,7 +711,6 @@ void requestNoise(){
     Serial.println(F("%%"));
     Serial.flush();
 }
-
 
 //-- Function to send battery voltage percent
 void requestBattery(){
@@ -723,7 +727,6 @@ void requestBattery(){
     Serial.flush();
 }
 
-
 //-- Function to send program ID
 void requestProgramId(){
 
@@ -735,7 +738,6 @@ void requestProgramId(){
     Serial.println(F("%%"));
     Serial.flush();
 }
-
 
 //-- Function to send Ack comand (A)
 void sendAck(){
