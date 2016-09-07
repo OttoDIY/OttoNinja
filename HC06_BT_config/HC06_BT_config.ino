@@ -16,12 +16,12 @@ After this you can pair your module
 // Options:
 
 	char ssid[10]		= "Zowi";	// Name for Bluetooth.
-	char baudios		 = '8';		   // 1=>1200 baudios, 2=>2400, 3=>4800, 4=>9600 (default), 5=>19200, 6=>38400, 7=>57600, 8=>115200
+	char baudios		 = '5';		   // 1=>1200 baudios, 2=>2400, 3=>4800, 4=>9600 (default), 5=>19200, 6=>38400, 7=>57600, 8=>115200
 	char password[10]	= "1234";		// Password for pairing
 
 void setup()
 {
-	Serial.begin(9600);
+	Serial.begin(19200);
 	
 	// Waiting time (10 seconds):
 		pinMode(9,OUTPUT);
