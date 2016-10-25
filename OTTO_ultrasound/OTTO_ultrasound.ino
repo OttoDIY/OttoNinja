@@ -124,12 +124,7 @@ void setup(){
   //Otto wake up!
   Otto.sing(S_connection);
   Otto.home();
-
   delay(50);
-  requestBattery();
-  
-  //Checking battery
-  OttoLowBatteryAlarm();
 
  // Animation Uuuuuh - A little moment of initial surprise
  //-----
@@ -171,7 +166,6 @@ void setup(){
         Otto.home();
     }  
   }
-
 
   if(!buttonPushed){ 
     Otto.putMouth(happyOpen);
