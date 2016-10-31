@@ -23,7 +23,7 @@
 #define MEDIUM      15
 #define BIG         30
 
-#define PIN_Buzzer  A2
+#define PIN_Buzzer  10
 #define PIN_Trigger 8
 #define PIN_Echo    9
 #define PIN_NoiseSensor A6
