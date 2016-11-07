@@ -14,7 +14,7 @@ Otto's differences are in the assembled size (11cm x 7cm x12cm), cleaner integra
 Using off the shelf and 3D printed parts, simple electronics connections (almost no welding required), and basic coding skills, [you will be able to build your own cute Otto friend in as little as two hours!](http://www.instructables.com/id/Otto-Build-You-Own-Robot-in-Two-Hours/)
 
 ### Otto is design using Autodesk 123D Design software 
-[You can modify it for customization](https://github.com/OttoDIY/Otto/blob/master/OTTO_V02_BOM_STP_STL/OTTO_v2.123dx) or further improvements!
+[You can modify it for customization](http://www.123dapp.com/Project/Otto-build-your-own-robot/5658683) or further improvements!
 Gather all the off the shelf parts in the [BOM file] (https://github.com/OttoDIY/Otto/blob/master/OTTO_V02_BOM_STP_STL/OTTO_BOM.xlsx) that you'll need for this assembly, then follow [the instruction manual] (https://github.com/OttoDIY/Otto/blob/master/OTTO_V02_BOM_STP_STL/OTTO_InstructionManual_V02.pdf)
 
 This robot is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License. Please read the LICENSE files for more details.
