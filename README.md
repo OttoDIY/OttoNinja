@@ -15,6 +15,7 @@ Gather all the off the shelf parts in the [BOM file] (https://github.com/OttoDIY
 4. Upload code to your Otto and will dance!
 5. Make your own dance just modify the program using same functions
 <img src="OTTO_flyer.jpg" width="900" align="center"> 
+
 ### Otto is design using Autodesk 123D Design software 
 [You can modify it for customization](http://www.123dapp.com/Project/Otto-build-your-own-robot/5658683) or further improvements!
 
@@ -23,4 +24,4 @@ Otto's differences are in the assembled size (11cm x 7cm x12cm), cleaner integra
 Using off the shelf and 3D printed parts, simple electronics connections (almost no welding required), and basic coding skills, [you will be able to build your own cute Otto friend in as little as two hours!](http://www.instructables.com/id/Otto-Build-You-Own-Robot-in-Two-Hours/)
 
 ## License CC-BY-SA
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">OttoDIY</span> by <a xmlns:cc="http://creativecommons.org/ns#"  property="cc:attributionName"> ottobot.org </a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Otto DIY</span> by <a xmlns:cc="http://creativecommons.org/ns#"  property="cc:attributionName"> [ottobot.org](http://ottobot.org) </a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
