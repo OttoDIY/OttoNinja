@@ -1,35 +1,21 @@
-
 //----------------------------------------------------------------
-//-- Zowi basic firmware v2 adapted to Otto
-//-- (c) BQ. Released under a GPL licencse
-//-- 04 December 2015
-//-- Authors:  Anita de Prado: ana.deprado@bq.com
-//--           Jose Alberca:   jose.alberca@bq.com
-//--           Javier Isabel:  javier.isabel@bq.com
-//--           Juan Gonzalez (obijuan): juan.gonzalez@bq.com
-//--           Irene Sanz : irene.sanz@bq.com
+//-- Otto basic firmware v3 adapted from Zowi (ottobot.org)
+//-- CC BY SA
+//-- 04 December 2016
 //-----------------------------------------------------------------
-//-- Experiment with all the features that Otto has thanks to Zowi!
+//-- Otto will be controlled with Bluetooth!
 //-----------------------------------------------------------------
-
 #include <Servo.h> 
 #include <Oscillator.h>
 #include <EEPROM.h>
 #include <BatReader.h>
 #include <US.h>
 #include <LedMatrix.h>
-
-//-- Library to manage external interruptions
-#include <EnableInterrupt.h> 
-
-//-- Library to manage serial commands
-#include <OttoSerialCommand.h>
+#include <EnableInterrupt.h> //-- Library to manage external interruptions
+#include <OttoSerialCommand.h> //-- Library to manage serial commands
 OttoSerialCommand SCmd;  //The SerialCommand object
-
-//-- Otto Library
-#include <Otto.h>
+#include <Otto.h> //-- Otto Library
 Otto Otto;  //This is Otto!
- 
 //---------------------------------------------------------
 //-- First step: Configure the pins where the servos are attached
 /*
@@ -39,20 +25,16 @@ Otto Otto;  //This is Otto!
 YR 3==> |               | <== YL 2
          --------------- 
             ||     ||
-            ||     ||
 RR 5==>   -----   ------  <== RL 4
          |-----   ------|
 */
-
-  #define PIN_YL 2 //servo[0]
-  #define PIN_YR 3 //servo[1]
-  #define PIN_RL 4 //servo[2]
-  #define PIN_RR 5 //servo[3]
-
+  #define PIN_YL 2 //servo[2]
+  #define PIN_YR 3 //servo[3]
+  #define PIN_RL 4 //servo[4]
+  #define PIN_RR 5 //servo[5]
 //---Otto Buttons
 #define PIN_SecondButton 6
 #define PIN_ThirdButton 7
-
 ///////////////////////////////////////////////////////////////////
 //-- Global Variables -------------------------------------------//
 ///////////////////////////////////////////////////////////////////
@@ -66,7 +48,6 @@ const char name_fir='#'; //First name
 int T=1000;              //Initial duration of movement
 int moveId=0;            //Number of movement
 int moveSize=15;         //Asociated with the height of some movements
-
 //---------------------------------------------------------
 //-- Otto has 5 modes:
 //--    * MODE = 0: Otto is awaiting  
@@ -87,7 +68,6 @@ int randomDance=0;
 int randomSteps=0;
 
 bool obstacleDetected = false;
-
 
 ///////////////////////////////////////////////////////////////////
 //-- Setup ------------------------------------------------------//
@@ -131,12 +111,9 @@ void setup(){
   SCmd.addCommand("I", requestProgramId);
   SCmd.addDefaultHandler(receiveStop);
 
-
-
   //Otto wake up!
   Otto.sing(S_connection);
   Otto.home();
-
 
   //If Otto's name is '&' (factory name) means that is the first time this program is executed.
   //This first time, Otto mustn't do anything. Just born at the factory!
@@ -152,37 +129,11 @@ void setup(){
     }
   }  
 
-
   //Send Otto name, programID & battery level.
   requestName();
   delay(50);
   requestProgramId();
   delay(50);
-  requestBattery();
-  
-  //Checking battery
-  OttoLowBatteryAlarm();
-
-
- // Animation Uuuuuh - A little moment of initial surprise
- //-----
-  for(int i=0; i<2; i++){
-      for (int i=0;i<8;i++){
-        if(buttonPushed){break;}  
-        Otto.putAnimationMouth(littleUuh,i);
-        delay(150);
-      }
-  }
- //-----
-
-
-  //Smile for a happy Otto :)
-  if(!buttonPushed){ 
-    Otto.putMouth(smile);
-    Otto.sing(S_happy);
-    delay(200);
-  }
-
 
   //If Otto's name is '#' means that Otto hasn't been baptized
   //In this case, Otto does a longer greeting
@@ -205,7 +156,6 @@ void setup(){
     }  
   }
 
-
   if(!buttonPushed){ 
     Otto.putMouth(happyOpen);
   }
@@ -214,13 +164,10 @@ void setup(){
 
 }
 
-
-
 ///////////////////////////////////////////////////////////////////
 //-- Principal Loop ---------------------------------------------//
 ///////////////////////////////////////////////////////////////////
 void loop() {
-
 
   if (Serial.available()>0 && MODE!=4){
 
@@ -233,7 +180,6 @@ void loop() {
 
     buttonPushed=false;
   }
-
 
   //First attemp to initial software
   if (buttonPushed){  
@@ -273,7 +219,7 @@ void loop() {
       
         //Every 80 seconds in this mode, Otto falls asleep 
         if (millis()-previousMillis>=80000){
-            OttoSleeping_withInterrupts(); //ZZzzzzz...
+            Otto.sing(S_sleeping); //ZZzzzzz...
             previousMillis=millis();         
         }
 
@@ -744,7 +690,6 @@ void move(int moveId){
        
 }
 
-
 //-- Function to receive gesture commands
 void receiveGesture(){
 
@@ -1030,74 +975,4 @@ void sendFinalAck(){
   Serial.print(F("F"));
   Serial.println(F("%%"));
   Serial.flush();
-}
-
-
-
-//-- Functions with animatics
-//--------------------------------------------------------
-
-void OttoLowBatteryAlarm(){
-
-    double batteryLevel = Otto.getBatteryLevel();
-
-    if(batteryLevel<45){
-        
-      while(!buttonPushed){
-
-          Otto.putMouth(thunder);
-          Otto.bendTones (880, 2000, 1.04, 8, 3);  //A5 = 880
-          
-          delay(30);
-
-          Otto.bendTones (2000, 880, 1.02, 8, 3);  //A5 = 880
-          Otto.clearMouth();
-          delay(500);
-      } 
-    }
-}
-
-void OttoSleeping_withInterrupts(){
-
-  int bedPos_0[4]={100, 80, 60, 120}; 
-
-  if(!buttonPushed){
-    Otto._moveServos(700, bedPos_0);  
-  }
-
-  for(int i=0; i<4;i++){
-
-    if(buttonPushed){break;}
-      Otto.putAnimationMouth(dreamMouth,0);
-      Otto.bendTones (100, 200, 1.04, 10, 10);
-    
-    if(buttonPushed){break;}
-      Otto.putAnimationMouth(dreamMouth,1);
-      Otto.bendTones (200, 300, 1.04, 10, 10);  
-
-    if(buttonPushed){break;}
-      Otto.putAnimationMouth(dreamMouth,2);
-      Otto.bendTones (300, 500, 1.04, 10, 10);   
-
-    delay(500);
-    
-    if(buttonPushed){break;}
-      Otto.putAnimationMouth(dreamMouth,1);
-      Otto.bendTones (400, 250, 1.04, 10, 1); 
-
-    if(buttonPushed){break;}
-      Otto.putAnimationMouth(dreamMouth,0);
-      Otto.bendTones (250, 100, 1.04, 10, 1); 
-    
-    delay(500);
-  } 
-
-  if(!buttonPushed){
-    Otto.putMouth(lineMouth);
-    Otto.sing(S_cuddly);
-  }
-
-  Otto.home();
-  if(!buttonPushed){Otto.putMouth(happyOpen);}  
-
 }
