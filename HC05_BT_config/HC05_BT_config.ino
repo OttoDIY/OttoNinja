@@ -5,6 +5,11 @@ After upload the sketch connect your module, the LED should blinking every 2 sec
 If LED is blinking too fast, you need to disconnect and connect again but this time pressing the reset little button of the BT module
 Then you can open your serial (Both NL & CR 9600 baud) and should appear and "OK" message means is ready to recieve AT commands. (AT+NAME=)
 After setup you can pair your module
+HC-05 GND --- Arduino GND Pin
+HC-05 VCC (5V) --- Arduino 5V
+HC-05 TX --- Arduino Pin 10 (soft RX)
+HC-05 RX --- Arduino Pin11 (soft TX)
+HC-05 Key (PIN 34) --- Arduino Pin 9
 */
 #include <SoftwareSerial.h>
 
