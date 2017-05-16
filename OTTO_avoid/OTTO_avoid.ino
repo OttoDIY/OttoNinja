@@ -1,5 +1,5 @@
 //----------------------------------------------------------------
-//-- Otto basic firmware v2 adapted from Zowi (ottobot.org)
+//-- Otto basic firmware v2 adapted from Zowi (ottodiy.com)
 //-- CC BY SA
 //-- 04 December 2016
 //-----------------------------------------------------------------
@@ -64,7 +64,6 @@ void loop() {
             obstacleDetector(); 
         }           
   }  
-
 ///////////////////////////////////////////////////////////////////
 //-- Function to read distance sensor & to actualize obstacleDetected variable
 void obstacleDetector(){
