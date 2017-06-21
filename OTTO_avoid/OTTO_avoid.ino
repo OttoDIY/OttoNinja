@@ -54,13 +54,13 @@ void loop() {
                Otto.sing(S_surprise); 
                Otto.playGesture(OttoFretful); 
                Otto.sing(S_fart3); 
-               Otto.walk(2,1300,-1); 
+               Otto.walk(2,1300,1); 
                Otto.turn(2,1000,-1);                
              delay(50); 
              obstacleDetector(); 
              }        
          else{ 
-            Otto.walk(1,1000,1); 
+            Otto.walk(1,1000,-1); 
             obstacleDetector(); 
         }           
   }  
