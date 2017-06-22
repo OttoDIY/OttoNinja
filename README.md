@@ -6,11 +6,11 @@ Is completely open source, Arduino compatible, 3D printable, once you have all c
 
 This is the entry version of otto DIY if you want to try Bluetooth connection, APP control, more sensors please go to [Otto DIY + (PLUS) repository](https://github.com/OttoDIY/PLUS)
 
-Start by downloading all files here: https://github.com/OttoDIY/DIY/raw/master/OTTO_DIY_all.zip
+Start by downloading all files.
 
 ## For the hardware
 Gather all the off the shelf parts in the BOM file that you'll need for this assembly, then 3d print the latest .stl files and then follow the instruction manual to build your own robot
-<img src="OTTO_Product Requirement Specifications.jpg" width="900" align="center">
+<img src="https://github.com/OttoDIY/DIY/blob/master/media/OTTO_flyer-print.jpg" width="900" align="center">
 
 ## For the programming
 1. Download & Install Arduino IDE: https://www.arduino.cc/en/Main/Software also this driver if you have a clone board: http://www.wch.cn/download/CH341SER_EXE.html for PC, or http://www.wch.cn/download/CH341SER_MAC_ZIP.html for MAC
@@ -22,7 +22,7 @@ Gather all the off the shelf parts in the BOM file that you'll need for this ass
 ### Otto was  design using Autodesk 123D Design software now in Thinkercad!
 [You can modify it for customization](https://www.tinkercad.com/things/1kI624iowUR-ottodiy/) or further improvements!
 
-Otto was inspired by another robot BoB the BiPed and programmed using code from [another open source biped robot Zowi](https://github.com/bqlabs/zowi)
+Otto was inspired by another robot BoB the BiPed and programmed using code from [biped robot Zowi](https://github.com/bqlabs/zowi)
 Otto's differences are in the assembled size (11cm x 7cm x12cm), cleaner integration of components and expressions. 
 Using off the shelf and 3D printed parts, simple electronics connections (almost no welding required), and basic coding skills, [you will be able to build your own cute Otto friend in as little as two hours!](http://www.instructables.com/id/Otto-Build-You-Own-Robot-in-Two-Hours/)
 
