@@ -15,10 +15,10 @@
 
 void Otto::init(int YL, int YR, int RL, int RR, bool load_calibration, int NoiseSensor, int Buzzer, int USTrigger, int USEcho) {
   
-  servo_pins[0] = YL;
-  servo_pins[1] = YR;
-  servo_pins[2] = RL;
-  servo_pins[3] = RR;
+  servo_pins[3] = YL;
+  servo_pins[2] = YR;
+  servo_pins[1] = RL;
+  servo_pins[0] = RR;
 
   attachServos();
   isOttoResting=false;

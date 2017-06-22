@@ -40,7 +40,7 @@ bool obstacleDetected = false;
 ///////////////////////////////////////////////////////////////////
 void setup(){
   //Set the servo pins
-  Otto.init(PIN_YL,PIN_YR,PIN_RL,PIN_RR,true, -1, -1, 8, 9);
+  Otto.init(PIN_YL,PIN_YR,PIN_RL,PIN_RR,true, -1, 10, 8, 9);
   Otto.sing(S_connection); //Otto wake up!
   Otto.home();
   delay(50);
@@ -54,13 +54,13 @@ void loop() {
                Otto.sing(S_surprise); 
                Otto.playGesture(OttoFretful); 
                Otto.sing(S_fart3); 
-               Otto.walk(2,1300,-1); 
+               Otto.walk(2,1300,1); 
                Otto.turn(2,1000,-1);                
              delay(50); 
              obstacleDetector(); 
              }        
          else{ 
-            Otto.walk(1,1000,1); 
+            Otto.walk(1,1000,-1); 
             obstacleDetector(); 
         }           
   }  
