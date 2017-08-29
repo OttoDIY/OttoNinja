@@ -26,7 +26,7 @@ with enought people willing to buy, we will offer very affordable kits.
 
 ## Otto as Ed-tech tool
 Interested to donate? 
-Further plans with Otto in STEM education or looking to partner? you can contact us: camilo@ottodiy.com
+Further plans with Otto in STEAM education or robotic workshops or looking to partner? you can contact us: camilo@ottodiy.com
 
 For now we are rewarding the best Otto builders and as always we will do it to keep sharing this knoweledge for FREE to the society.
 Regards from Otto 
