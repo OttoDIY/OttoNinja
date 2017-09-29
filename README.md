@@ -1,15 +1,13 @@
 # Otto DIY
 
-This Repository have all open source files for Otto DIY an interactive robot that anyone can make!,
+This Repository have all open source files for Otto DIY an interactive robot that anyone can make!
 Otto walks, dances, makes sounds and avoids obstacles.
-Is completely open source, Arduino compatible, 3D printable, once you have all components and tools you will be able to build your own Otto in only 2 hours!. 
+Is completely and truly open source, Arduino compatible, progeamable, 3D printable, once you have all components and tools you will be able to build your own Otto in only 1 hour! 
 
 This is the entry version of otto DIY if you want to try Bluetooth connection, APP control, more sensors please go to [Otto DIY + (PLUS) repository](https://github.com/OttoDIY/PLUS)
 
-Start by downloading all files.
-
 ## For the hardware
-Gather all the off the shelf parts in the BOM file that you'll need for this assembly, then 3d print the latest .stl files and then follow the instruction manual to build your own robot
+If you want to make by your own gather all the off the shelf parts that you'll need for this assembly, then 3d print the latest .stl files and then follow the instruction manual to build your own robot
 <img src="https://github.com/OttoDIY/DIY/blob/master/media/OTTO_flyer-print.jpg" width="900" align="center">
 
 ## For the programming
@@ -17,7 +15,7 @@ Gather all the off the shelf parts in the BOM file that you'll need for this ass
 2. Copy all libraries to C:\Users\user\Documents\Arduino\libraries (or wherever your library folder is installed):
 3. Open  for example OTTO_smooth_criminal.ino, make sure in tools you have "Board: Arduino Nano" "Processor ATmega328" and your Otto is connected to the corresponding port
 4. Upload code to your Otto and will dance!
-5. Make your own dance just modify the program using same functions
+5. Make your own dance just modify the arduino code using same functions
 
 ### Otto was  design using Autodesk 123D Design software now in Thinkercad!
 [You can modify it for customization](https://www.tinkercad.com/things/1kI624iowUR-ottodiy/) or further improvements!
