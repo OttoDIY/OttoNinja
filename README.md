@@ -3,7 +3,7 @@
 This Repository have all open source files for Otto DIY an interactive robot that anyone can make!
 Otto walks, dances, makes sounds and avoids obstacles.
 Is completely and truly open source, Arduino compatible, progeamable, 3D printable, once you have all components and tools you will be able to build your own Otto in only 1 hour! NO soldering  required 
-you can just buy all cpmponents from us in our website http://www.ottodiy.com/
+you can just buy all components  in our website http://www.ottodiy.com/
 This is the entry version of otto DIY if you want to try Bluetooth connection, APP control, more sensors please go to [Otto DIY + (PLUS) repository](https://github.com/OttoDIY/PLUS)
 
 ## For the hardware
