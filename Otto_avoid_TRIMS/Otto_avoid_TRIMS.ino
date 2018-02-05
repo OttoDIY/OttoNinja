@@ -1,4 +1,9 @@
 //-----------------------------------------------------------------
+//-- CC BY SA (http://ottodiy.com)
+//-- 20 January 2017 
+//-- TRIMS servo calibration values added
+//-- double check your US (Ultra sound) module some have TRIG and ECHO swapped!
+//-----------------------------------------------------------------
 //-- Otto will avoid obstacles with this code!
 //-----------------------------------------------------------------
 #include <Servo.h> 
