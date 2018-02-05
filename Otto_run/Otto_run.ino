@@ -1,9 +1,7 @@
 //----------------------------------------------------------------
-//-- Otto basic firmware (ottodiy.com)
-//-- CC BY SA
-//-- 04 December 2017
+//-- CC BY SA (http://ottodiy.com)
 //-----------------------------------------------------------------
-//-- Otto will avoid obstacles with this code!
+//-- Otto will run fast straight forward with this code!
 //-----------------------------------------------------------------
 #include <Servo.h> 
 #include <Oscillator.h>
@@ -51,7 +49,7 @@ void setup(){
 ///////////////////////////////////////////////////////////////////
 void loop() {
 
-               Otto.walk(2,500,1); 
+               Otto.walk(2,500,1); //change T for lower value to run faster!
                               
              delay(50); }
          
