@@ -1,9 +1,8 @@
 //----------------------------------------------------------------
-//-- Otto basic firmware v2 adapted from Zowi (ottodiy.com)
-//-- CC BY SA
-//-- 04 December 2016
+//-- CC BY SA (http://ottodiy.com)
 //-----------------------------------------------------------------
-//-- Otto will avoid obstacles with this code!
+//-- Otto will be "push" by hand or other object
+//-- change to Otto.walk(1,1000,1) to make Otto follow you!
 //-----------------------------------------------------------------
 #include <Servo.h> 
 #include <Oscillator.h>
@@ -51,8 +50,7 @@ void setup(){
 ///////////////////////////////////////////////////////////////////
 void loop() {
   if(obstacleDetected){ 
-               Otto.swing(1,1000,1); 
-               Otto.turn(2,1000,-1);
+               Otto.walk(1,1000,-1);  //Otto.walk(1,1000,1) to make Otto follow you!
              obstacleDetector(); 
              }        
          else{ 
