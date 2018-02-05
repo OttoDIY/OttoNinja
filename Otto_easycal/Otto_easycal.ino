@@ -1,8 +1,9 @@
-/**************************************************************************************                                                                                  
-*   Easy calibration for Otto DIY                                                 
-*   Javier Isabel, 02/06/2015                                                         
-*   VERY IMPORTANT only calibrate one time per board!to avoid damage EEPROM memory
-**************************************************************************************/
+//-----------------------------------------------------------------
+//-- Easy calibration for Otto DIY     
+//-- CC BY SA (http://ottodiy.com)                                            
+//--  Javier Isabel, 02/06/2015                                                         
+//-- VERY IMPORTANT only calibrate ONE TIME per board!to avoid damage EEPROM memory
+//-----------------------------------------------------------------
 #include <Otto.h>
 #include <Servo.h>
 #include <Oscillator.h>
