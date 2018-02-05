@@ -8,9 +8,16 @@ This is the entry version of otto DIY if you want to try Bluetooth connection, A
 
 ## For the hardware
 If you want to make by your own gather all electronic parts that you'll need for this assembly, then 3d print the latest .stl files and then follow the instruction manual to build your own robot
-<img src="https://github.com/OttoDIY/DIY/blob/master/media/OTTO_flyer-print.jpg" width="900" align="center">
+<img src="https://github.com/OttoDIY/DIY/blob/master/media/OttoDIY_buildyourownrobot.jpg" width="500" align="center">
 
-## For the programming
+## For the quick start programming and learners
+1. download mBlock.cc V3; is an opensource software released by MakeBlock for easy programming Robot by Drop and Drag blocks. Based on Scratch 2.0 (MIT), beside sharing the great Feature of Scratch, mBlock also intergrate an Arduino Code generator for upload program into Arduino based Hardware.
+2. install Otto Extension in mBlock software use Arduino mode
+3. drag and drop functions, dance, sounds and conditionals from robot Otto blocks
+4. connect and check COM port
+5. upload your own code! 
+
+## For the advanced programming
 1. Download & Install Arduino IDE: https://www.arduino.cc/en/Main/Software also this driver if you have a clone board: http://www.wch.cn/download/CH341SER_EXE.html for PC, or http://www.wch.cn/download/CH341SER_MAC_ZIP.html for MAC
 2. Copy all libraries to C:\Users\user\Documents\Arduino\libraries (or wherever your library folder is installed):
 3. Open  for example OTTO_smooth_criminal.ino, make sure in tools you have "Board: Arduino Nano" "Processor ATmega328" and your Otto is connected to the corresponding port
