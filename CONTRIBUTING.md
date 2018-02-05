@@ -3,7 +3,7 @@ Otto builders are the community of Otto DIY [sign up our mailing list](http://ee
 
 ## 1. step one to contribute is to be an Otto builder
 
-join the Otto builder [group in thingiverse](https://www.thingiverse.com/groups/ottodiy/)
+join the Otto builder 【group in Facebook】 （https://www.facebook.com/groups/ottodiy/) or [group in thingiverse](https://www.thingiverse.com/groups/ottodiy/) 
 
 ## 2. step two is to build your own Otto!
 How? download all the files in [ottodiy.com](http://ottodiy.com), then check our step by step in [Hackster](https://www.hackster.io/otto/otto-build-your-own-robot-in-two-hours-5f2a1c)
@@ -21,13 +21,19 @@ Happy to have you as a part of the Otto Community :) and welcome!
 keep sharing with us in any of our social media, friends, family [#OttoDIY](https://twitter.com/search?q=%23OttoDIY&src=typd&lang=en) and make sure more #Ottobuilder do the same everywhere.
 we love to see Ottos around the world!
 
-Interested to buy?  help us please to spread the word in Maker Faires, maker spaces, hackerspaces, schools and so on;
-with enought people willing to buy, we will offer very affordable kits.
+Interested to buy? [ottodiy.com](http://ottodiy.com)
+help us please to spread the word in Maker Faires, maker spaces, hackerspaces, schools and so on;
+with enought people willing to buy, we will offer more affordable kits.
+
+## 4. created a new code then pull a request in Github please
+or just send us the files we will upload for you and give the apropiate credits to you as we did with all Otto builders
 
 ## Otto as Ed-tech tool
-Interested to donate? 
-Further plans with Otto in STEAM education or robotic workshops or looking to partner? you can contact us: camilo@ottodiy.com
+Otto DIY is approved as Educational project from Thingiverse; the biggest 3D print community!
 
-For now we are rewarding the best Otto builders and as always we will do it to keep sharing this knoweledge for FREE to the society.
-Regards from Otto 
+Further plans with Otto in STEAM education or robotic workshops or looking to partner? 
+Interested to donate? you can contact us: camilo@ottodiy.com
+
+We are rewarding the best Otto builders with kits and as always we will do it to keep sharing this knoweledge for FREE to the society.
+Best Regards
 o++o
