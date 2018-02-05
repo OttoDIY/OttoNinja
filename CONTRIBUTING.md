@@ -3,7 +3,7 @@ Otto builders are the community of Otto DIY [sign up our mailing list](http://ee
 
 ## 1. step one to contribute is to be an Otto builder
 
-join the Otto builder 【group in Facebook】 （https://www.facebook.com/groups/ottodiy/) or [group in thingiverse](https://www.thingiverse.com/groups/ottodiy/) 
+join the Otto builder 【group in Facebook】（https://www.facebook.com/groups/ottodiy/) or [group in thingiverse](https://www.thingiverse.com/groups/ottodiy/) 
 
 ## 2. step two is to build your own Otto!
 How? download all the files in [ottodiy.com](http://ottodiy.com), then check our step by step in [Hackster](https://www.hackster.io/otto/otto-build-your-own-robot-in-two-hours-5f2a1c)
