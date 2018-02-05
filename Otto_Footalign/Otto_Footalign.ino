@@ -1,3 +1,6 @@
+//-- CC BY SA (http://ottodiy.com)
+//-- setup code to detect servo angle movement and find ZERO position for assembly
+//-----------------------------------------------------------------
 #include <Servo.h>
 //-- First step: Configure the pins where the servos are attached
 /*
