@@ -1,8 +1,8 @@
 //----------------------------------------------------------------
 //-- Basic Otto´s setup
 //-- You can add functions, gestures or sounds in loop
-//-- Otto basic firmware v2 adapted from Zowi (ottobot.org)https://github.com/OttoDIY/OttoDIY
-//-- CC BY SA
+//-- https://github.com/OttoDIY/OttoDIY
+//-- CC BY SA (http://ottodiy.com)
 //-- 04 December 2016
 //-- Adapted Pablo García pabloeweb@gmail.com 01 May 2017
 //-----------------------------------------------------------------
