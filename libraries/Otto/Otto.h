@@ -6,7 +6,6 @@
 #include <EEPROM.h>
 
 #include <US.h>
-#include <LedMatrix.h>
 #include <BatReader.h>
 
 #include "Otto_mouths.h"
