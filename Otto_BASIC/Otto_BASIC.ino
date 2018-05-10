@@ -1,7 +1,7 @@
 //----------------------------------------------------------------
 //-- Basic Otto´s setup
 //-- You can add functions, gestures or sounds in loop
-//-- https://github.com/OttoDIY/OttoDIY
+//-- https://github.com/OttoDIY
 //-- CC BY SA (http://ottodiy.com)
 //-- 04 December 2016
 //-- Adapted Pablo García pabloeweb@gmail.com 01 May 2017
