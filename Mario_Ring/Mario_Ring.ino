@@ -1,11 +1,7 @@
 /*Arduino Mario Bros Tunes
   With Piezo Buzzer and PWM
  
-  Connect the positive side of the Buzzer to pin 3,
-  then the negative side to a 1k ohm resistor. Connect
-  the other side of the 1 k ohm resistor to
-  ground(GND) pin on the Arduino.
- 
+ Connect the positive side of the Buzzer to pin 13,
   by: Dipto Pratyaksa
   last updated: 31/3/13
 */
@@ -104,7 +100,7 @@
 #define NOTE_D8  4699
 #define NOTE_DS8 4978
  
-#define melodyPin 10
+#define melodyPin 13
 //Mario main theme melody
 int melody[] = {
   NOTE_E7, NOTE_E7, 0, NOTE_E7,
@@ -206,8 +202,8 @@ int underworld_tempo[] = {
  
 void setup(void)
 {
-  pinMode(10, OUTPUT);//buzzer
-  pinMode(13, OUTPUT);//led indicator when singing a note
+  pinMode(13, OUTPUT);//buzzer
+  pinMode(10, OUTPUT);//led indicator when singing a note
  
 }
 void loop()
@@ -270,7 +266,7 @@ void sing(int s) {
 }
  
 void buzz(int targetPin, long frequency, long length) {
-  digitalWrite(13, HIGH);
+  digitalWrite(10, HIGH);
   long delayValue = 1000000 / frequency / 2; // calculate the delay value between transitions
   //// 1 second's worth of microseconds, divided by the frequency, then split in half since
   //// there are two phases to each cycle
@@ -283,6 +279,6 @@ void buzz(int targetPin, long frequency, long length) {
     digitalWrite(targetPin, LOW); // write the buzzer pin low to pull back the diaphram
     delayMicroseconds(delayValue); // wait again or the calculated delay value
   }
-  digitalWrite(13, LOW);
+  digitalWrite(10, LOW);
  
 }
