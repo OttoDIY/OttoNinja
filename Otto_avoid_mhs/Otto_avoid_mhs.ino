@@ -27,8 +27,8 @@ RR 5==>   -----   ------  <== RL 4 roll left
   #define PIN_RL 4 //servo[4]
   #define PIN_RR 5 //servo[5]
 
-  #define ECHOPIN 8        // Pin to receive echo pulse
-  #define TRIGPIN 9        // Pin to send trigger pulse
+  #define ECHOPIN 9        // Pin to receive echo pulse
+  #define TRIGPIN 8        // Pin to send trigger pulse
 
 ///////////////////////////////////////////////////////////////////
 //-- Global Variables -------------------------------------------//
