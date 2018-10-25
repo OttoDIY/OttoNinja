@@ -45,7 +45,7 @@ bool obstacleDetected = false;
 void setup(){
   Serial.begin(19200);
   //Set the servo pins
-  Otto.init(PIN_YL,PIN_YR,PIN_RL,PIN_RR,true, -1, 10, 8, 9);
+  Otto.init(PIN_YL,PIN_YR,PIN_RL,PIN_RR,true, -1, 13, 8, 9);
   Otto.sing(S_connection); //Otto wake up!
   Otto.home();
   delay(50);
