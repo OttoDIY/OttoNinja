@@ -25,8 +25,8 @@ If you want to make by your own gather all electronic parts that you'll need for
 4. Upload code to your Otto and will dance!
 5. Make your own dance just modify the Arduino .ino sketch code using same functions
 
-### Otto was  design using Autodesk 123D Design software now in Thinkercad!
-[You can modify it for customization](https://www.tinkercad.com/things/1kI624iowUR-ottodiy/) or further improvements!
+### Otto was esign using Autodesk 123D Design software now in Thinkercad!
+[You can modify it for customization](https://www.tinkercad.com/users/h8O1zJQboeH-camilo-parra-palacio) or further improvements!
 
 Otto was inspired by another robot BoB the BiPed and programmed using code from [biped robot Zowi](https://github.com/bqlabs/zowi)
 Otto's differences are in the assembled size (11cm x 7cm x12cm), accessibility, cleaner integration of component and gestures. 
