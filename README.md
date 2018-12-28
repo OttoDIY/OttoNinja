@@ -15,7 +15,7 @@ After you have all components just follow the instruction manual in the files an
 If you want make Otto by yourself ;) that is great too! but do not forget to add your [marker in our google map!](https://drive.google.com/open?id=1qXEfuS5egbF14gi8EUjJ6U-dITHoJJNZ&usp=sharing)
 
 ## 3. Share your innovative creation with #OttoDIY
-A redesign, modified code or if your creation is different but inspired in Otto; is technically a remix, so please share in our [Wikifactory Social & Design Platform](https://wikifactory.com/+OttoDIY) or please post that you have [made/remix an Otto in Thingiverse and add to this group] (https://www.thingiverse.com/groups/ottodiy) or pull a request here in Github!
+A redesign, modified code or if your creation is different but inspired in Otto; is technically a remix, so please share in our [Wikifactory Social & Design Platform](https://wikifactory.com/+OttoDIY) or please post that you have [made/remix an Otto in Thingiverse and add to this group](https://www.thingiverse.com/groups/ottodiy) or pull a request here in Github!
 
 Keep sharing with us in any social media, tag friends, family with #OttoDIY and make sure more robot fans do the same everywhere, we love to see Otto robots around the world!
 
