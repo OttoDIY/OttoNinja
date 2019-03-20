@@ -9,7 +9,7 @@ This is the beginner version of Otto DIY if you want to try Bluetooth connection
 Join the [Otto builders group in facebook](https://www.facebook.com/groups/ottodiy/)
 
 ## 2. Buy to build or make your own Otto!
-Difficult to find all the parts? then buy quality kits [from our website only](ottodiy.com), is a way to contribute and support this project to continue growing, so we can continue offering very affordable kits and constantly creating new robots open for all.
+Difficult to find all the parts? then buy quality kits [from our website only](https://www.ottodiy.com), is a way to contribute and support this project to continue growing, so we can continue offering very affordable kits and constantly creating new robots open for all.
 After you have all components just follow the instruction manual in the files and build your own Otto in one hour!
 
 If you want make Otto by yourself ;) that is great too! but do not forget to add your [marker in our google map!](https://drive.google.com/open?id=1qXEfuS5egbF14gi8EUjJ6U-dITHoJJNZ&usp=sharing)
