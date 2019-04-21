@@ -1,9 +1,9 @@
 # Otto DIY
 
 This Repository have all open source files for Otto DIY an interactive robot that anyone can make!
-Otto walks, dances, makes sounds and avoids obstacles. It is completely and truly open source, Arduino compatible, programmable, 3D printable. when you buy the kit inSOLDERING IS NOT REQUIRED! otherwise you might need to do some work for the switch and power.
+Otto walks, dances, makes sounds and avoids obstacles. It is completely and truly open source, Arduino compatible, programmable, 3D printable. when you buy the kit, SOLDERING IS NOT REQUIRED! otherwise you might need to do some work for the switch and power.
 
-This is the beginner version of Otto DIY, we decided to leave github for the main codes and more advanced builders. For the latest changes and other contributions please go and join our [Wikifactory](https://wikifactory.com/+OttoDIY/otto-diy)
+This is the beginner version of Otto DIY, we decided to leave github for the main codes and more advanced coders. or the latest changes please go and join our [Wikifactory](https://wikifactory.com/+OttoDIY/otto-diy) is a similar platform much more easy to use, visual and simple for all the community to collaborate.
 
 if you want to try Bluetooth connection, APP control or more sensors please go to [Otto DIY+ (PLUS) repository](https://wikifactory.com/+OttoDIY/otto-diy-plus)
 
@@ -58,7 +58,7 @@ Alternatively you can use [Arduino Blocks (based on Google Blocly)](http://www.a
 [You can modify it for customization](https://www.tinkercad.com/users/h8O1zJQboeH-camilo-parra-palacio) or further improvements!
 
 Otto was inspired by another robot BoB the BiPed and programmed using code from [biped robot Zowi](https://github.com/bqlabs/zowi)
-Otto's differences are in the assembled size (12cm x 7cm x 12cm), accessibility, cleaner integration of component and gestures. 
+Otto's differences are in the size being smaller, easy to build, cleaner integration of component and most importantly easy to replicate so that more people is empower to make robots anywhere in the world. 
 
 ## License CC-BY-SA
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Otto DIY</span> by <a xmlns:cc="http://creativecommons.org/ns#"  property="cc:attributionName"> [www.ottodiy.com](http://www.ottodiy.com) </a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
