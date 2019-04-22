@@ -1,6 +1,6 @@
 # About OTTO ESP32:
 The Esp32 version of OTTO library  ( OTTOESP ) required some changes from the original library in the references of Oscillator.h and Servo.h library to make compatible with ESP32Servo library.
-You can use those libraries alongside the standard otto libary.
+You can use those libraries alongside the standard otto library.
 
 ## Installation:
 1) Copy "libraries" folder in your Arduino/libraries folder
