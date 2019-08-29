@@ -654,6 +654,19 @@ unsigned long int Otto::getAnimShape(int anim, int index){
      0b00011000100100000010000001000000    
   };
 
+
+  unsigned long int otto_code[]={
+     0b00001100010010010010010010001100,
+     0b00000000000000000000000000000000,
+     0b00011100001000001000001000001000,
+     0b00000000000000000000000000000000,
+     0b00011100001000001000001000001000,
+     0b00000000000000000000000000000000,
+     0b00001100010010010010010010001100,
+     0b00000000000000000000000000000000  
+  };
+
+
   switch  (anim){
 
     case littleUuh:
@@ -667,7 +680,10 @@ unsigned long int Otto::getAnimShape(int anim, int index){
         break;
     case wave:
         return wave_code[index];
-        break;    
+        break;
+    case otto:
+        return otto_code[index];
+        break;        
   }   
 }
 

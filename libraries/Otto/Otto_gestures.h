@@ -24,6 +24,8 @@
 #define dreamMouth		1 	
 #define adivinawi		2
 #define wave 			3
+#define otto 			4
+
 
 
   // unsigned long int littleUuh_code[]={

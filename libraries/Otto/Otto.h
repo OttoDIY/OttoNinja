@@ -6,7 +6,7 @@
 #include <EEPROM.h>
 
 #include <US.h>
-#include <LedMatrix.h>
+#include "MaxMatrix.h"
 #include <BatReader.h>
 
 #include "Otto_mouths.h"
@@ -95,7 +95,7 @@ class Otto
  
   private:
     
-    LedMatrix ledmatrix;
+    MaxMatrix ledmatrix=MaxMatrix(12,10,11, 1);
     BatReader battery;
     Oscillator servo[4];
     US us;
@@ -120,3 +120,5 @@ class Otto
 };
 
 #endif
+
+
