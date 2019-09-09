@@ -1,9 +1,9 @@
 # Otto DIY
 
-This Repository have all open source Arduino sketch files and basic libraries for Otto DIY an interactive robot that anyone can make!
+This Repository have all open source Arduino sketch code files for Otto DIY an interactive robot that anyone can make!
 Otto walks, dances, makes sounds and avoids obstacles. It is completely and truly open source, Arduino compatible, programmable, 3D printable.
 
-This is the beginner version of Otto DIY, we decided to leave github for the main CODES and more advanced programmers that want to suport the project. For the latest changes please go and join our [Wikifactory](https://wikifactory.com/+OttoDIY/otto-diy) is a similar platform much more easy to use, visual and simple for all the community to collaborate.
+This is the beginner version of Otto DIY, we decided to leave github for the basic CODES and only developers that want to support the project. For the latest changes please go and join our [Wikifactory](https://wikifactory.com/+OttoDIY/otto-diy) where you will find instruction manuals, 3D files and more, it is a similar platform much more easy to use, visual and simple for all the community to collaborate.
 
 ## Interact with other Otto builders
 
@@ -38,7 +38,6 @@ Alternatively you can use [Arduino Blocks (based on Google Blocly)](http://www.a
 2. Copy all libraries to C:\Users\user\Documents\Arduino\libraries (or wherever your library folder is installed)
 3. Open  for example OttoDIY_smooth_criminal.ino, make sure in tools you have "Board: Arduino Nano" "Processor ATmega328" and your Otto is connected to the corresponding USB port if you have a new vesrion of Arduino use the old bootloader.
 4. Upload code to your Otto and will dance!
-5. Make your own dance! just modify the Arduino .ino sketch code using same libraries and functions and do not forget to share.
 
 ## License CC-BY-SA
 You can use all resources of Otto for free but Otto DIY Website must be included in any redistribution and remixes must keep the CC-BY-SA license, As you might seen with the original Otto DIY project the idea is that more people can have access, therefore if you copy or remix Otto you must also release under same open license, that means you must release all files also to the public.
