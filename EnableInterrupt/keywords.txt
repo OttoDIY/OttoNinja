@@ -1,0 +1,20 @@
+#######################################
+# Syntax Coloring Map For EnableInterrupt
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+enableInterrupt 	KEYWORD2
+disableInterrupt	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+PINCHANGEINTERRUPT	LITERAL1
