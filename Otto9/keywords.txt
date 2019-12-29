@@ -1,0 +1,29 @@
+#######################################
+# Syntax Coloring Map For Otto9
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+Otto	KEYWORD1
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+init	KEYWORD2
+initDC	KEYWORD2
+initMATRIX	KEYWORD2
+home	KEYWORD2
+putMouth	KEYWORD2
+writeText	KEYWORD2
+clearMouth	KEYWORD2
+sing	KEYWORD2
+walk	KEYWORD2
+playGesture	KEYWORD2
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
