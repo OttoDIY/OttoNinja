@@ -16,10 +16,14 @@
 #endif
 
 #include <string.h>
-#include "Stream.h"
+
+#define LARGE_MEMORY_CPU !(defined(__AVR_ATmega328P__) || defined(__AVR_ATmega168__))
+#if LARGE_MEMORY_CPU
+# include "Stream.h"
+#endif
 
 #if defined(ESP32)
-#include "BluetoothSerial.h"
+# include "BluetoothSerial.h"
 
 # if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
 # error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
@@ -30,7 +34,11 @@
 #define MAXSERIALCOMMANDS	16
 #define MAXDELIMETER 2
 
+#if LARGE_MEMORY_CPU
 class OttoSerialCommand: public Stream
+#else
+class OttoSerialCommand
+#endif
 {
 	public:
 		OttoSerialCommand();      // Constructor
@@ -38,20 +46,22 @@ class OttoSerialCommand: public Stream
 		// We need these to be a Stream (Serial)
 		bool begin(String bluetoothName=String());
 		void begin(int);
-        int available(void);
-        int peek(void);
-        int read(void);
-        size_t write(uint8_t c);
-        size_t write(const uint8_t *buffer, size_t size);
-        void flush();
-//        void end(void);
+
+#if LARGE_MEMORY_CPU
+		int peek(void);
+                size_t write(uint8_t c);
+                size_t write(const uint8_t *buffer, size_t size);
+                void flush();
+		bool isBluetooth(void);
+#endif
+		int available(void);
+                int read(void);
 
 		void clearBuffer();   // Sets the command buffer to all '\0' (nulls)
 		char *next();         // returns pointer to next token found in command buffer (for getting arguments to commands)
 		void readSerial();    // Main entry point.  
 		void addCommand(const char *, void(*)());   // Add commands to processing dictionary
 		void addDefaultHandler(void (*function)());    // A handler to call when no valid command received.
-		bool isBluetooth(void);
 	
 	private:
 		char inChar;          // A character read from the serial stream 
@@ -69,7 +79,9 @@ class OttoSerialCommand: public Stream
 		OttoSerialCommandCallback CommandList[MAXSERIALCOMMANDS];   // Actual definition for command/handler array
 		void (*defaultHandler)();           // Pointer to the default handler function 
 		int usingOttoSoftwareSerial;        // Used as boolean to see if we're using OttoSoftwareSerial object or not
+#if LARGE_MEMORY_CPU
 		bool usingBluetooth;
+#endif
 };
 
 #endif //OttoSerialCommand_h

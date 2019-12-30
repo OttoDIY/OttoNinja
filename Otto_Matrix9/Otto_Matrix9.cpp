@@ -19,7 +19,7 @@ Otto_Matrix::Otto_Matrix()
 
 void Otto_Matrix::init(byte _data, byte _load, byte _clock, byte _num, int _rotation)
 {
-   data = _data;
+  data = _data;
   load = _load;
   clock = _clock;
   num = _num;
@@ -39,6 +39,7 @@ void Otto_Matrix::init(byte _data, byte _load, byte _clock, byte _num, int _rota
 #else
     pinMode(data,  OUTPUT);
     pinMode(clock, OUTPUT);
+    pinMode(load, OUTPUT);
     digitalWrite(clock, HIGH); 
 #endif
 
@@ -72,18 +73,18 @@ void Otto_Matrix::clearMatrix()
 
 void Otto_Matrix::setCommand(byte command, byte value)
 {
-	digitalWrite(load, LOW);    
 #if defined(ESP32)
     SPI.transfer16(command << 8 | value);
 #else
+	digitalWrite(load, LOW);    
 	for (int i=0; i<num; i++) 
 	{
 		shiftOut(data, clock, MSBFIRST, command);
 		shiftOut(data, clock, MSBFIRST, value);
 	}
-#endif
 	digitalWrite(load, LOW);
 	digitalWrite(load, HIGH);
+#endif
 }
 
 
@@ -91,7 +92,6 @@ void Otto_Matrix::setColumn(byte col, byte value)
 {
 	int n = col / 8;
 	int c = col % 8;
-	digitalWrite(load, LOW);    
 #if defined(ESP32)
     for (int i=0; i<num; i++)
     {
@@ -105,6 +105,7 @@ void Otto_Matrix::setColumn(byte col, byte value)
 	//}
     }
 #else
+	digitalWrite(load, LOW);    
         for (int i=0; i<num; i++) 
 	{
 		if (i == n)
@@ -118,16 +119,15 @@ void Otto_Matrix::setColumn(byte col, byte value)
 			//shiftOut(data, clock, MSBFIRST, 0);
 		//}
 	}
-#endif
 	digitalWrite(load, LOW);
 	digitalWrite(load, HIGH);
+#endif
 	
 	buffer[col] = value;
 }
 
 void Otto_Matrix::setColumnAll(byte col, byte value)
 {
-	digitalWrite(load, LOW);    
 #if defined(ESP32)
     for (int i=0; i<num; i++) 
     {
@@ -135,15 +135,16 @@ void Otto_Matrix::setColumnAll(byte col, byte value)
 	buffer[col * i] = value;
     }
 #else
+	digitalWrite(load, LOW);    
 	for (int i=0; i<num; i++) 
 	{
 		shiftOut(data, clock, MSBFIRST, col + 1);
 		shiftOut(data, clock, MSBFIRST, value);
 		buffer[col * i] = value;
 	}
-#endif
 	digitalWrite(load, LOW);
 	digitalWrite(load, HIGH);
+#endif
 }
 
 void Otto_Matrix::setDot(byte col, byte row, byte value)
@@ -152,7 +153,6 @@ void Otto_Matrix::setDot(byte col, byte row, byte value)
 
 	int n = col / 8;
 	int c = col % 8;
-	digitalWrite(load, LOW);    
 #if defined(ESP32)
     for (int i=0; i<num; i++) 
     {
@@ -166,6 +166,7 @@ void Otto_Matrix::setDot(byte col, byte row, byte value)
 	}
     }
 #else
+	digitalWrite(load, LOW);    
         for (int i=0; i<num; i++) 
 	{
 		if (i == n)
@@ -179,9 +180,9 @@ void Otto_Matrix::setDot(byte col, byte row, byte value)
 			shiftOut(data, clock, MSBFIRST, 0);
 		}
 	}
-#endif
 	digitalWrite(load, LOW);
 	digitalWrite(load, HIGH);
+#endif
 }
 
 // routine for OTTO and ZOWI, for the 6 x 5 matrix

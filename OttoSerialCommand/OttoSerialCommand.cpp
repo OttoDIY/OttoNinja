@@ -2,12 +2,13 @@
     Library modified from: "SerialCommand.h" by Steven Cogswell http://awtfy.com
      -- Removed portion of the original library to not interfere with interruptions 
      -- (disable SoftwareSerial support, and thus don't have to use "#include <SoftwareSerial.h>" in the sketches)
+     -- Modifed by Michael Weiss (github@mishafarms.us) to be a stream on larger memory devices and ESP32
 */
 
 #if defined(ARDUINO) && ARDUINO >= 100
-#include "Arduino.h"
+# include "Arduino.h"
 #else
-#include "WProgram.h"
+# include "WProgram.h"
 #endif
 
 #include "OttoSerialCommand.h"
@@ -48,16 +49,16 @@ char *OttoSerialCommand::next()
 	return nextToken; 
 }
 
-
+#if LARGE_MEMORY_CPU
 // Stream functions 
 
-// begin for bluetooth (ESP32)
+// begin for bluetooth
 
 bool OttoSerialCommand::begin(String bluetoothName)
 {
 	bool results = false;
 	
-#if defined(ESP32)
+# if defined(ESP32)
 	if (bluetoothName.length())
 	{
 		// seems we were passed a name, print it out
@@ -70,7 +71,7 @@ bool OttoSerialCommand::begin(String bluetoothName)
 		usingBluetooth = true;
 	}
 	else
-#endif
+# endif
 	{
 		usingBluetooth = false;
 	}
@@ -89,7 +90,7 @@ bool OttoSerialCommand::isBluetooth(void)
 {
 	if (usingBluetooth)
 	{
-#if defined(ESP32)
+# if defined(ESP32)
 		if (SerialBT.hasClient())
 		{
 			return true;
@@ -98,12 +99,62 @@ bool OttoSerialCommand::isBluetooth(void)
 		{
 			return false;
 		}
-#else
+# else
 		return false;
-#endif
+# endif
 	}
 	return false;
 }
+
+int OttoSerialCommand::peek()
+{
+# if defined(ESP32)
+	if (isBluetooth())
+	{
+		return SerialBT.peek();
+	}
+	else
+# endif
+	return Serial.peek();
+}
+
+size_t OttoSerialCommand::write(uint8_t c)
+{
+# if defined(ESP32)
+	if (isBluetooth())
+	{
+		return SerialBT.write(c);
+	}
+	else
+# endif
+	return Serial.write(c);
+}
+
+size_t OttoSerialCommand::write(const uint8_t *buffer, size_t size)
+{
+# if defined(ESP32)
+	if (isBluetooth())
+	{
+		return SerialBT.write(buffer, size);
+	}
+	else
+# endif
+	return Serial.write(buffer, size);
+}
+
+void OttoSerialCommand::flush()
+{
+# if defined(ESP32)
+	if (isBluetooth())
+	{
+		// currently there is a bug in SerialBT.flush, it works without it
+		//SerialBT.flush();
+	}
+	else
+# endif
+	Serial.flush();
+}
+#endif
 
 int OttoSerialCommand::available()
 {
@@ -127,55 +178,6 @@ int OttoSerialCommand::read()
 	else
 #endif
 	return Serial.read();
-}
-
-int OttoSerialCommand::peek()
-{
-#if defined(ESP32)
-	if (isBluetooth())
-	{
-		return SerialBT.peek();
-	}
-	else
-#endif
-	return Serial.peek();
-}
-
-size_t OttoSerialCommand::write(uint8_t c)
-{
-#if defined(ESP32)
-	if (isBluetooth())
-	{
-		return SerialBT.write(c);
-	}
-	else
-#endif
-	return Serial.write(c);
-}
-
-size_t OttoSerialCommand::write(const uint8_t *buffer, size_t size)
-{
-#if defined(ESP32)
-	if (isBluetooth())
-	{
-		return SerialBT.write(buffer, size);
-	}
-	else
-#endif
-	return Serial.write(buffer, size);
-}
-
-void OttoSerialCommand::flush()
-{
-#if defined(ESP32)
-	if (isBluetooth())
-	{
-		// currently there is a bug in SerialBT.flush, it works without it
-		//SerialBT.flush();
-	}
-	else
-#endif
-	Serial.flush();
 }
 
 // This checks the Serial stream for characters, and assembles them into a buffer.  
