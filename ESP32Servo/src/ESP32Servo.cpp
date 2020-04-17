@@ -112,8 +112,7 @@ int Servo::attach(int pin, int min, int max)
         this->max = max;    //store this value in uS
         // Set up this channel
         // if you want anything other than default timer width, you must call setTimerWidth() before attach
-        pwm.setup( REFRESH_CPS, this->timer_width); // channel #, 50 Hz, timer width
-        pwm.attachPin(this->pinNumber );   // GPIO pin assigned to channel
+        pwm.attachPin(this->pinNumber,REFRESH_CPS, this->timer_width );   // GPIO pin assigned to channel
         //Serial.println("Attaching servo : "+String(pin)+" on PWM "+String(pwm.getChannel()));
         return 1;
 }
@@ -215,8 +214,7 @@ void Servo::setTimerWidth(int value)
     {
         // detach, setup and attach again to reflect new timer width
     	pwm.detachPin(this->pinNumber);
-    	pwm.setup( REFRESH_CPS, this->timer_width);
-    	pwm.attachPin(this->pinNumber );
+    	pwm.attachPin(this->pinNumber, REFRESH_CPS, this->timer_width);
     }        
 }
 
