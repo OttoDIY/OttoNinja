@@ -1,11 +1,6 @@
 # Otto DIY ESP
 
-This Repository have all open source Arduino sketch code files for Otto DIY an interactive robot that anyone can make!
-Otto walks, dances, makes sounds and avoids obstacles. It is completely and truly open source, Arduino compatible, programmable, 3D printable.
-
-Beginners please go and join our [Wikifactory](https://wikifactory.com/+OttoDIY/otto-diy) where you will find instruction manuals, 3D files and more, it is a similar platform much more easy to use, visual and simple for all the community to collaborate.
-
-We are working in a promising new Otto robot with IoT capabilities, thanks to the ESP technology, welcome to be a part of this development!
+In this Repository We are working in a promising new Otto robot with IoT capabilities, thanks to the ESP Wifi and bluetooth boards, welcome to be a part of this development! for Aduino boards go to [Wikifactory](https://wikifactory.com/+OttoDIY/otto-diy) where you will find instruction manuals, 3D files and more, it is a similar platform much more easy to use, visual and simple for all the community to collaborate.
 
 ## For fast programming and beginners
 1. Download our Blockly here https://www.ottodiy.com/#blockly; visual programming, it is the easiest way to start to learn how to code, drag & drop simple blocks to tell your robot what to do, you dont need to install or setup any library, everything comes ready to open and upload your code into Otto robot, another Arduino board, ESP development boards or even Microbit and more.
@@ -26,6 +21,7 @@ Be a part of this friendly community of robot builders, teachers and makers! [by
 
 * [Check our Forum for any questions](https://wikifactory.com/+OttoDIY/forum)
 * [Otto Builder community group in facebook](https://www.facebook.com/groups/ottodiy/)
+* [Join the community on Discord chat server!](https://discord.gg/CZZytnw)
 
 Follow us, give us a like and share your creativity with #OttoDIY, you could be featured here by sharing your robot in any social media:
 * [YouTube](https://www.youtube.com/c/ottodiy?sub_confirmation=1)
