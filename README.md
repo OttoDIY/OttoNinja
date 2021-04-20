@@ -1,53 +1,36 @@
-# Otto DIY ESP
+# Otto DIY ESP Libraries
 
-In this Repository We are working in a promising new Otto robot with IoT capabilities, thanks to the ESP Wifi and bluetooth boards, welcome to be a part of this development! for Aduino boards go to [Wikifactory](https://wikifactory.com/+OttoDIY/otto-diy) where you will find instruction manuals, 3D files and more, it is a similar platform much more easy to use, visual and simple for all the community to collaborate.
+This repository have the additional Libraries for [Otto DIY robot](https://www.ottodiy.com/)) for ESP compatible boards
 
-## For fast programming and beginners
-1. Download our Blockly here https://www.ottodiy.com/#blockly; visual programming, it is the easiest way to start to learn how to code, drag & drop simple blocks to tell your robot what to do, you dont need to install or setup any library, everything comes ready to open and upload your code into Otto robot, another Arduino board, ESP development boards or even Microbit and more.
-2. Open an example, select Arduino Nano, connect your Otto via USB to computer.
-3. Check and upload the code and that is all!
+## Installation:
 
-## For the advanced programmers
-1. [Download & Install Arduino IDE 1.8.5 version](https://www.arduino.cc/en/Main/Software) also [this driver if you have a clone board for PC] (http://www.wch.cn/download/CH341SER_EXE.html), [or for MAC](http://www.wch.cn/download/CH341SER_MAC_ZIP.html)
-2. Copy all libraries to C:\Users\user\Documents\Arduino\libraries (or wherever your library folder is installed)
-3. Open  for example OttoDIY_smooth_criminal.ino, make sure in tools you have "Board: Arduino Nano" "Processor ATmega328" and your Otto is connected to the corresponding USB port if you have a new vesrion of Arduino make sure to use the old bootloader or errors will appear.
-4. Compile (Check) the code to make sure everything is installed properly.
-5. Upload code to your Otto and will dance!
+1. [Download the .zip here](https://github.com/OttoDIY/OttoDIYESP/archive/master.zip)
+2. Open Arduino IDE and navigate to Sketch > Include Library > Add .ZIP Library. At the top of the drop down list, select the option to "Add .ZIP Library''.
+3. You will be prompted to select the library. Navigate to the .zip file's location, that you just downloaded and open it.
+4. In the main window you will see in the bottom back area a message that it has been installed. 
+5. To verify they are properly installed, go to Sketch > Include Library menu. You should now see the library at the bottom of the drop-down menu. That means is ready to use Otto example codes! you can find them in File > Examples > OttoDIYLib
+[for more details or other way to install libraries visit this link](https://www.arduino.cc/en/Guide/Libraries) 
 
-## Join our community of Otto Builders
+Additionally you will need to [add the ESP32 to your Arduino IDE](https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/)
 
-Welcome to our Otto Builder community!
-Be a part of this friendly community of robot builders, teachers and makers! [by joining us here in Wikifactory](https://wikifactory.com/invite/SW52aXRlTGluazoyMA/y3FSSTdwlvXk1KcSuFHExd5FpbREp95dgIGcIudH51M)
+## Compatibility:
 
-* [Check our Forum for any questions](https://wikifactory.com/+OttoDIY/forum)
-* [Otto Builder community group in facebook](https://www.facebook.com/groups/ottodiy/)
-* [Join the community on Discord chat server!](https://discord.gg/CZZytnw)
+You will need to install also the main Otto Arduino Libraries form the other repo [Download the .zip Otto libraries here](https://github.com/OttoDIY/OttoDIYLib/archive/master.zip)
 
-Follow us, give us a like and share your creativity with #OttoDIY, you could be featured here by sharing your robot in any social media:
-* [YouTube](https://www.youtube.com/c/ottodiy?sub_confirmation=1)
-* [Facebook](https://www.facebook.com/ottodiy/)
-* [Instagram](https://www.instagram.com/ottodiy/)
-* [Twitter](https://twitter.com/ottodiy)
-
-Just use the hashtag #ottodiy in your post and tag or mention @OttoDIY
-
-## Share your innovative creation with us
-A redesign, modified code or inspired by Otto; is technically a remix, so please upload into our [Wikifactory Social & Design Platform](https://wikifactory.com/+OttoDIY/projects)
-
- ## How to Contribute?
- Contributing to this software is warmly welcomed. There are 3 ways you can contribute to this project:
+ ## How to Contribute:
+Contributing to this software is warmly welcomed. There are 3 ways you can contribute to this project:
 1. Test and if find a problem then post an issue.
-2. Helps us solve the issues or other bugs by commenting
-3. Bring missing libraries from other Otto remixes here.
-You can do this [basically by forking](https://help.github.com/en/articles/fork-a-repo), committing modifications and then [pulling requests](https://help.github.com/en/articles/about-pull-requests). Please add a change log and your contact into file header.
+2. Helps us solve the issues or other bugs.
+3. Improve and optimize the curren libraries.
+You can do this [basically by forking](https://help.github.com/en/articles/fork-a-repo), committing modifications and then [pulling requests](https://help.github.com/en/articles/about-pull-requests). 
 
-Just make sure to keep consistency in the naming and make a record of the change or improvement made.
-Thanks for your contribution.
-Welcome to the Otto DIY code development team!
+Please add a change log and your contact into file header.
+
+Thanks for your contribution and Welcome to the [Otto DIY community](http://builders.ottodiy.com/)
 
 ## License CC-BY-SA
 You can use all resources of Otto for free but Otto DIY Website must be included in any redistribution and remixes must keep the CC-BY-SA license, As you might seen with the original Otto DIY project the idea is that more people can have access, therefore if you copy or remix Otto you must also release under same open license, that means you must release all files also to the public.
 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Otto DIY</span> by <a xmlns:cc="http://creativecommons.org/ns#"  property="cc:attributionName"> [www.ottodiy.com](http://www.ottodiy.com) </a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
 
-Otto DIY Website must be included in any redistribution and remixes must keep the CC-BY-SA license.
+Otto DIY website must be included in any redistribution and remixes must keep the CC-BY-SA license.
