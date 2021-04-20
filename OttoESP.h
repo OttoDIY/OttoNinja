@@ -6,8 +6,7 @@
 #include <EEPROM.h>
 
 #include <US.h>
-#include <LedMatrix.h>
-#include <BatReader.h>
+#include "Otto_Matrix9.h"
 
 #include "Otto_mouths.h"
 #include "Otto_sounds.h"
@@ -74,10 +73,6 @@ class Otto
     //-- Sensors functions
     float getDistance(); //US sensor
     int getNoise();      //Noise Sensor
-
-    //-- Battery
-    double getBatteryLevel();
-    double getBatteryVoltage();
     
     //-- Mouth & Animations
     void putMouth(unsigned long int mouth, bool predefined = true);
@@ -95,8 +90,7 @@ class Otto
  
   private:
     
-    LedMatrix ledmatrix;
-    BatReader battery;
+    Otto_Matrix ledmatrix;
     Oscillator servo[4];
     US us;
 
