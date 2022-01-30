@@ -5,9 +5,7 @@ Otto Builders are the community of Otto DIY.
 
 Be a part of this friendly community of robot builders, teachers and makers!
 
-* [Join in Wikifactory](https://wikifactory.com/invite/SW52aXRlTGluazo3Ng/ZzHGYHg9oAwik0u-vJrz-x0fsEWrONV54SaYpNx9t1A) 
-* [Group in Facebook](https://www.facebook.com/groups/ottodiy/) or [chat for quick communication](http://m.me/join/AbYUohcCDZ3hHe28)
-* If you don't like FB then [join this telegram chat group](http://t.me/ottobuilders)
+* [Group in Facebook](https://www.facebook.com/groups/ottodiy/) 
 * [Like our Facebook page](https://www.facebook.com/ottodiy/)
 * [Subscribe to our YouTube channel](https://www.youtube.com/c/ottodiy?sub_confirmation=1)
 * [Follow us in Instagram](https://www.instagram.com/ottodiy/)

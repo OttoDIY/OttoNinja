@@ -1,0 +1,20 @@
+{
+  "name": "OttoDIYLib",
+  "version": "13.0.0",
+  "description": "Official Arduino library for controlling original Otto DIY bipedal robots",
+  "keywords": "otto, ottodiy, robot, servo",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OttoDIY/OttoDIYLib"
+  },
+  "authors": [
+    {
+      "name": "Otto DIY community",
+      "url": "https://github.com/OttoDIY",
+      "maintainer": true
+    }
+  ],
+  "license": "GPL-3.0-or-later",
+  "frameworks": "arduino",
+  "platforms": "atmelavr"
+}
