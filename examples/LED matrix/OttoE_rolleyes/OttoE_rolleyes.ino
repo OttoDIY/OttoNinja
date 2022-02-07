@@ -249,4 +249,3 @@ void drawMouth(const uint8_t *img) {
     matrix[MATRIX_MOUTH_LEFT + i].drawBitmap(i * -8, 0, img, 24, 8, LED_ON);
   }
 }
-

@@ -6,8 +6,8 @@
 #include <Adafruit_LEDBackpack.h>
 
 // Button pin
-const int buttonRightPin = 2;
-const int buttonLeftPin  = 3;
+const int buttonRightPin = 14;
+const int buttonLeftPin  = 16;
 
 // Game constants
 // buttons

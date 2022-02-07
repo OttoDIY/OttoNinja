@@ -31,7 +31,7 @@ void loop()
 
    while (millis() - startMillis < sampleWindow)
    {
-      sample = analogRead(6); 
+      sample = analogRead(0); 
       if (sample < 1024)  // toss out spurious readings
       {
          if (sample > signalMax)
