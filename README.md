@@ -3,7 +3,9 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 ![version](https://img.shields.io/badge/version-1.0-blue)
 
-This repository have all the main [Otto Ninja robot](https://www.ottodiy.com/) libraries for ESP compatible boards
+This repository have all the main [Otto Ninja robot](https://www.ottodiy.com/ninja) libraries for ESP compatible boards
+
+Created by [Sebastian Coddington](https://github.com/SebastianCoddington)
 
 :star: Star us on GitHub, it helps!
 
@@ -45,7 +47,6 @@ If not let me know and we will send you a new board
 ## Compatible Hardware
 
 - Designed to work with ESP8266 boards but most of the code could be adapted to other microcontrollers
-
 
  ## How to Contribute:
 Contributing to this software is warmly welcomed. There are 3 ways you can contribute to this project:
