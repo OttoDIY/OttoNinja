@@ -4,9 +4,6 @@ to enable Ninja humanoid to say hello Iam Ninja when you wave
 your hands in front of him.
 */
 
-
-
-
 // PINOUT FOR ESP8266
 
 // A0 = GPIO A0        TX = GPIO 1    
@@ -18,26 +15,16 @@ your hands in front of him.
 //                     S3 = GPIO 9
 //                     S2 = GPIO 10
 
-
-
-
-
 #include <RemoteXY.h>
-
 #include <Servo.h>
 #include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
-#include "Adafruit_LEDBackpack.h"
+#include <Adafruit_LEDBackpack.h>
 
 Adafruit_8x16matrix matrix = Adafruit_8x16matrix();
 
-
-
-
 //CALIBRATION SETTINGS:
-
-
 
 int LA0= 60 +0;     // Left Leg standing Position             - = Tilt Right   + = Tilt Left  
 int RA0= 120 +0;    // Right Leg standing position            - = Tilt Right   + = Tilt Left  
@@ -55,10 +42,6 @@ int RFBWRS= 15; // Right foot Backward walking rotation Speed 0 = SLOW   90 = FA
 
 
 ////////////////////////////////////////
-
-
-
-
 
 const uint8_t ServoLeftFootPin   = 13;     //D7
 const uint8_t ServoLeftLegPin  = 15;     //D8
@@ -126,13 +109,8 @@ void loop()
     RobotLeftArmWave();
     IAmNinja();
   }
-
-
-
  
 }
-
-
 
 
 void NinjaHome()
@@ -155,8 +133,6 @@ void NinjaHome()
   myservoRightArm.detach();
   myservoHead.detach();
 }
-
-
 
 
 void RobotHeadShake()
@@ -206,7 +182,6 @@ void IAmNinja()
     delay(50);
   }
 }  
-
 
 void Distance() 
 {

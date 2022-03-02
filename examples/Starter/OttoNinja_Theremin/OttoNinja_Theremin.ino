@@ -7,8 +7,6 @@ in this example the push buttons +- connections need to be inverted for the
 code to work properly
 */
 
-
-
 // PINOUT FOR ESP8266
 
 // A0 = GPIO A0        TX = GPIO 1    
@@ -21,22 +19,11 @@ code to work properly
 //                     SK = GPIO 10
 
 
-
-
-
-
-
 #include <Servo.h>
 #include <SPI.h>
 #include <Wire.h>
 
-
-
-
 //CALIBRATION SETTINGS:
-
-
-
 int LA0= 60 +0;     // Left Leg standing Position             - = Tilt Right   + = Tilt Left  
 int RA0= 120 +0;    // Right Leg standing position            - = Tilt Right   + = Tilt Left  
 int LA1= 180;       // Left Leg roll Position                 - = Tilt Right   + = Tilt Left   
@@ -54,8 +41,6 @@ int RFBWRS= 15; // Right foot Backward walking rotation Speed 0 = SLOW   90 = FA
 
 ////////////////////////////////////////
 
-
-
 const uint8_t ServoLeftFootPin   = 13;     //D7
 const uint8_t ServoLeftLegPin    = 15;     //D8
 const uint8_t ServoRightFootPin  = 0;      //D3
@@ -72,9 +57,6 @@ Servo myservoRightLeg;
 Servo myservoLeftArm;
 Servo myservoRightArm;
 Servo myservoHead;
-
-
-
 
 #define echoPin 4 // attach pin D2 ESP8266 to pin Echo of HC-SR04
 #define trigPin 5 //attach pin D1 ESP8266 to pin Trig of HC-SR04
@@ -180,10 +162,6 @@ int ButtonState = 0;   // variable for reading the pushbutton status
 #define NOTE_D8  4699
 #define NOTE_DS8 4978
 
-
-
-
-
 void setup() 
 {
   
@@ -199,11 +177,6 @@ void setup()
   Serial.begin(250000);
   
 }
-
-
-
-
-
 
 
 void loop() 
@@ -263,11 +236,6 @@ void loop()
 
 ////////////////////////////////////////////////////
 
-
-
-
-
-
 void NinjaHome()
 { 
   myservoLeftLeg.attach(ServoLeftLegPin, 544, 2400); 
@@ -290,9 +258,6 @@ void NinjaHome()
   myservoRightArm.detach();
   myservoHead.detach();
 }
-
-
-
 
 void Distance() 
 {

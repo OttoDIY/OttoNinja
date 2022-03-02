@@ -1,8 +1,8 @@
 // Arduino Flappy Bird homage by augustzf@gmail.com
 #include <Arduino.h>
 #include <Wire.h>
-#include "Adafruit_LEDBackpack.h"
-#include "Adafruit_GFX.h"
+#include <Adafruit_LEDBackpack.h>
+#include <Adafruit_GFX.h>
 Adafruit_8x16matrix matrix = Adafruit_8x16matrix();
 
 static const uint8_t PROGMEM

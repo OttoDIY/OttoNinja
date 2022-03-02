@@ -4,8 +4,8 @@ Adafruit Microphone Amplifier
 ****************************************/
 
 #include <Wire.h>
-#include "Adafruit_LEDBackpack.h"
-#include "Adafruit_GFX.h"
+#include <Adafruit_GFX.h>
+#include <Adafruit_LEDBackpack.h>
 
 // Include the Matrix code for display
 Adafruit_8x16matrix matrix = Adafruit_8x16matrix();

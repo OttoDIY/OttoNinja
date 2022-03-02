@@ -9,8 +9,6 @@
 //                     S3 = GPIO 9
 //                     SK = GPIO 10
 
-
-
 /*
    -- remote control car wemos --
    
@@ -42,7 +40,7 @@
 #include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
-#include "Adafruit_LEDBackpack.h"
+#include <Adafruit_LEDBackpack.h>
 
 Adafruit_8x16matrix matrix = Adafruit_8x16matrix();
 

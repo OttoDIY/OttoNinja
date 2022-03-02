@@ -1430,29 +1430,23 @@ struct {
 //           END RemoteXY include          //
 /////////////////////////////////////////////
 
-
-
-
-
 //CALIBRATION SETTINGS:
-
-
 
 ////////// 2:
 
 // Left foot forward walking rotation Speed
-int LFFWRS= 20;    // 0 = Slowest   90 = Fastest  Default = 12
+int LFFWRS= 12;    // 0 = Slowest   90 = Fastest  Default = 12
 
 // Right foot forward walking rotation Speed
-int RFFWRS= 20;   // 0 = Slowest   90 = Fastest  Default = 12
+int RFFWRS= 12;   // 0 = Slowest   90 = Fastest  Default = 12
 
 ////////// 3:
 
 // Left foot Backward walking rotation Speed
-int LFBWRS= 20;   // 0 = Slowest   90 = Fastest  Default = 12
+int LFBWRS= 12;   // 0 = Slowest   90 = Fastest  Default = 12
 
 // Right foot Backward walking rotation Speed
-int RFBWRS= 20;   // 0 = Slowest   90 = Fastest  Default = 12
+int RFBWRS= 12;   // 0 = Slowest   90 = Fastest  Default = 12
 
 ////////// 4:
 
@@ -1465,16 +1459,16 @@ int RA0= 120;   // 0 = Full Tilt Right   180 = Full Tilt Left   Default = 120
 ////////// 5:
 
 // Left Leg tilt left walking position
-int LATL= 100;   // 0 = Full Tilt Right   180 = Full Tilt Left   Default BASIC = 85   Default HUMANOID = 80
+int LATL= 80;   // 0 = Full Tilt Right   180 = Full Tilt Left   Default Starter = 85 or 100?  Default HUMANOID = 80 o 90?
 
 // Right Leg tilt left walking position
-int RATL= 175;  // 0 = Full Tilt Right   180 = Full Tilt Left   Default BASIC = 175   Default HUMANOID = 150
+int RATL= 150;  // 0 = Full Tilt Right   180 = Full Tilt Left   Default Starter = 175 or 180?  Default HUMANOID = 150 or 165?
 
 // Left Leg tilt right walking position
-int LATR= 5;   // 0 = Full Tilt Right   180 = Full Tilt Left   Default BASIC = 5   Default HUMANOID = 30
+int LATR= 30;   // 0 = Full Tilt Right   180 = Full Tilt Left   Default Starter = 5 or 0?   Default HUMANOID = 30 or 15?
 
 // Right Leg tilt right walking position
-int RATR= 80;  // 0 = Full Tilt Right   180 = Full Tilt Left   Default BASIC = 95  Default HUMANOID = 100
+int RATR= 100;  // 0 = Full Tilt Right   180 = Full Tilt Left   Default Starter = 95 or 80? Default HUMANOID = 100 or 90?
 
 ////////// 6:
 
@@ -1484,23 +1478,13 @@ int LA1= 180;   // 0 = Full Tilt Right   180 = Full Tilt Left   Default = 170
 // Right Leg roll position
 int RA1= 0;    // 0 = Full Tilt Right   180 = Full Tilt Left   Default = 10
 
-
 ////////////////////////////////////////
-
-
-
-
 int currentmillis1 = 0;
 int currentmillis2 = 0;
 int currentmillis3 = 0;
 
-
 // Mode counter for biped/wheel mode
 int ModeCounter = 0;
-
-
-
-
 
 const uint8_t ServoLeftFootPin   = 13;     //D7
 const uint8_t ServoLeftLegPin  = 15;     //D8

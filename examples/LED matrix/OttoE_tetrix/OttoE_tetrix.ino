@@ -21,8 +21,8 @@ byte buttons[] = {14,15,16,17}; // the analog 0-5 pins are also known as 14-19
 volatile byte pressed[NUMBUTTONS], justpressed[NUMBUTTONS], justreleased[NUMBUTTONS];
 
 #include <Wire.h>
-#include "Adafruit_LEDBackpack.h"
-#include "Adafruit_GFX.h"
+#include <Adafruit_GFX.h>
+#include <Adafruit_LEDBackpack.h>
 
 Adafruit_8x16matrix matrixTop = Adafruit_8x16matrix();
 

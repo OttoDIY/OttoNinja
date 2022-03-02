@@ -1,7 +1,7 @@
 # Otto Ninja Robot Arduino Libraries
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-![version](https://img.shields.io/badge/version-1.0-blue)
+![version](https://img.shields.io/badge/version-1.1-blue)
 
 This repository have all the main [Otto Ninja robot](https://www.ottodiy.com/ninja) libraries for ESP compatible boards
 
@@ -11,7 +11,7 @@ Created by [Sebastian Coddington](https://github.com/SebastianCoddington)
 
 ## Installation:
 
-1. [Download the .zip Otto Ninja libraries here](https://github.com/OttoDIY/OttoDIYESP/archive/master.zip)
+1. [Download the .zip Otto Ninja libraries here](https://github.com/OttoDIY/OttoNinja/archive/master.zip)
 2. Open Arduino IDE and navigate to Sketch > Include Library > Add .ZIP Library. At the top of the drop down list, select the option to ¨Add .ZIP Library¨.
 3. Navigate to the .zip file's location, that you just downloaded and open it.
 4. In the main window you will see in the bottom back area a message that it has been installed. 
@@ -26,11 +26,13 @@ The board only flash the LED a little (this is the way ESP8266 boards work unles
 
 Test the board alone only powering with the USB cable, NO servos or anything else connected and we check if can upload code first.
 
+For the LED matrix example codes you will need the [Adafruit LED Bacck pack library](https://github.com/adafruit/Adafruit_LED_Backpack) do the same installation process
+
 ## Uploading:
 
-Firmware code for remote control of Ninja, select ESP8266 Generic as board.
+Firmware code for remote control of Ninja, select NodeMCU 1.0 as board.
 
-1. Upload this code https://github.com/OttoDIY/OttoDIYESP/blob/master/examples/OttoNinja_APP/OttoNinja_APP.ino 
+1. Upload this code https://github.com/OttoDIY/OttoNinja/blob/master/examples/OttoNinja_APP/OttoNinja_APP.ino 
 2. Download and Open App  https://remotexy.com/en/download/
 2. Press + Add new device
 3. Select Wifi point

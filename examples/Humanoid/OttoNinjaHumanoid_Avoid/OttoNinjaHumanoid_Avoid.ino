@@ -10,18 +10,15 @@
 //                     S2 = GPIO 10
 
 
-
 #include <Servo.h>
 #include <SPI.h>
 #include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_LEDBackpack.h>
 
-
-
-
+Adafruit_8x16matrix matrix = Adafruit_8x16matrix();
 
 //CALIBRATION SETTINGS:
-
-
 
 int LA0= 60 +0;     // Left Leg standing Position             - = Tilt Right   + = Tilt Left  
 int RA0= 120 +0;    // Right Leg standing position            - = Tilt Right   + = Tilt Left  
@@ -76,8 +73,6 @@ Servo myservoRightLeg;
 Servo myservoLeftArm;
 Servo myservoRightArm;
 Servo myservoHead;
-
-
 
 void setup() 
 {
@@ -140,13 +135,6 @@ void loop()
   }
   
 }
-
-
-
-
-
-
-
 
 void NinjaHome()
 { 
@@ -450,7 +438,4 @@ void HeadScan()
        myservoHead.write(90);
                  
    }
-
-   
-
 }   

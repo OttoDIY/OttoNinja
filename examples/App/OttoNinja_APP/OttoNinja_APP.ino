@@ -9,8 +9,6 @@
 //                     S3 = GPIO 9
 //                     SK = GPIO 10
 
-
-
 /*
    -- Remote Control Otto Ninja --
    
@@ -177,8 +175,6 @@ void setup()
   myservoLeftArm.write(180);
   myservoRightArm.write(0); 
 
-  
-  
   delay(500);
   
   myservoLeftFoot.detach();
@@ -195,12 +191,6 @@ void setup()
   
   RemoteXY_Init (); 
 }
-
-
-
-
-
-
 
 void loop() 
 { 
@@ -221,14 +211,11 @@ void loop()
       NinjaLeftArm();
   }
 
-
   if (RemoteXY.button_A == LOW)
   { 
       NinjaLeftArmDown();
   }
    
-  
-  
   if (RemoteXY.button_B == HIGH)
   {            
       NinjaRightArm();
@@ -238,10 +225,6 @@ void loop()
   {            
       NinjaRightArmDown();
   }
-
-  
-
-
 
   if (ModeCounter == 0)
   {   
@@ -299,10 +282,7 @@ void loop()
              {
               myservoLeftFoot.detach();  
              }
-  
-
           }      
-
 
           if (RemoteXY.J_y < 0)
           {
@@ -354,13 +334,8 @@ void loop()
              {
               myservoLeftFoot.detach();  
              }
-        
-
           }      
       }
-
-     
-  
 
   if (ModeCounter == 1)
   {  
@@ -398,9 +373,7 @@ void NinjaStop()
   myservoRightFoot.detach();  
   myservoLeftLeg.detach();
   myservoRightLeg.detach();
- 
 }
-
 
 void NinjaSetWalk()
 {    
@@ -411,7 +384,6 @@ void NinjaSetWalk()
       delay(200);
       myservoLeftArm.detach();
       myservoRightArm.detach();
-      
       myservoLeftLeg.attach(ServoLeftLegPin, 544, 2400);
       myservoRightLeg.attach(ServoRightLegPin, 544, 2400);                                                                          
       myservoLeftLeg.write(LA0); 
@@ -419,15 +391,14 @@ void NinjaSetWalk()
       delay(300);
       myservoLeftLeg.detach();
       myservoRightLeg.detach();
-
       myservoLeftArm.attach(ServoLeftArmPin, 544, 2400);
       myservoRightArm.attach(ServoRightArmPin, 544, 2400);
       myservoLeftArm.write(180);
       myservoRightArm.write(0); 
+      delay(300);
       myservoLeftArm.detach();
       myservoRightArm.detach();
 }   
-
 
 void NinjaSetRoll()
 {  
@@ -449,6 +420,7 @@ void NinjaSetRoll()
       myservoRightArm.attach(ServoRightArmPin, 544, 2400);
       myservoLeftArm.write(180);
       myservoRightArm.write(0); 
+      delay(300);
       myservoLeftArm.detach();
       myservoRightArm.detach();      
 }
@@ -458,8 +430,7 @@ void NinjaWalkStop()
     myservoLeftFoot.write(90);
     myservoRightFoot.write(90);  
     myservoLeftLeg.write(LA0); 
-    myservoRightLeg.write(RA0); 
-  
+    myservoRightLeg.write(RA0);  
 }
 
 void NinjaRollStop()
@@ -486,7 +457,6 @@ void NinjaLeftArmDown()
 {    
       myservoLeftArm.write(180);     
 }
-
 
 void NinjaRightArmDown()
 {      
