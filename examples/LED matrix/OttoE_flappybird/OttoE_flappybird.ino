@@ -1,11 +1,16 @@
 // Constants
-Adafruit_8x16matrix matrix = Adafruit_8x16matrix(); // LED matrix object
 const uint8_t PROGMEM bird0[] = {...}; // Array of bytes representing the first bird frame
 const uint8_t PROGMEM bird1[] = {...}; // Array of bytes representing the second bird frame
 const uint8_t PROGMEM bird2[] = {...}; // Array of bytes representing the third bird frame
 const byte vibration = A0; // Vibration sensor pin
 const int tapLevel = 512; // Tap level threshold
-
+const int topWallPos = 0;
+const int bottomWallPos = 15;
+const int wallGap = 5;
+const int wallDelay = 250;
+const int numLives = 3;
+const int gameOverMessageLength = 14;
+const int gameOverMessageDelay = 75;
 
 // Variables
 double initYVelocity = 6.5; // Initial vertical velocity of the bird
@@ -14,22 +19,17 @@ long birdTime; // Time elapsed since the bird's last movement
 long previousBirdTime; // Time elapsed since the game started
 byte birdPos = 3; // Current vertical position of the bird
 byte tailPos = 3; // Current vertical position of the bird's tail
-byte birdStart; // Initial vertical position of the bird
 byte topWall; // Top wall position
 byte bottomWall; // Bottom wall position
-int wallDelay = 250; // Time delay between wall movements
-byte wallGap = 5; // Gap between walls
-long wallTime; // Time elapsed since the last wall movement
+int wallDelayTime; // Time delay between wall movements
 int wallCount; // Number of walls passed
 long previousWallTime; // Time elapsed since the game started
 byte wallPosition = 0; // Current horizontal position of the walls
 boolean gameMode = false; // Game mode flag
 long frameTime; // Time elapsed since the last frame update
-long previousFrameTime; // Time elapsed since the game started
 byte frame = 0; // Current frame number
 byte frameChange = 1; // Frame change direction
-byte lives = 2; // Number of lives
-
+byte lives = numLives; // Number of lives
 
 void setup() {
   // Initialize the vibration sensor pin as an input
@@ -47,131 +47,149 @@ void setup() {
 
   // Initialize game variables
   previousBirdTime = millis();
-  topWall = random(0,4);
-  bottomWall = topWall + 4;
+  topWall = random(topWallPos, bottomWallPos - wallGap);
+  bottomWall = topWall + wallGap;
   wallPosition = 0;
   gameMode = false;
+  wallDelayTime = wallDelay;
+  wallCount = 0;
 }
-
 
 void loop() {
-  matrix.clear();
-
-  if(gameMode == false)
-  {
-    // Wait for a tap to start the game
-    if(analogRead(vibration)< tapLevel)
-    {
-      gameMode = true;
-    }
-
-    // Update the frame every 250 milliseconds
-    frameTime = millis();
-    if(frameTime - previousFrameTime > 250) {
-      previousFrameTime = frameTime;
-      frame += frameChange;
-      if(frame >= 2 || frame <= 0) frameChange *= -1;
-    }
-
-    // Display the bird's initial frame
-    if(frame == 0) matrix.drawBitmap(0, 0, bird0, 8, 8, LED_ON);
-    else if(frame == 1) matrix.drawBitmap(0, 0, bird1, 8, 8, LED_ON);
-    else if(frame == 2) matrix.drawBitmap(0, 0, bird2, 8, 8, LED_ON);
-  } 
-
-  else 
-  {
-    // Handle tap input and bird movement
-    if(analogRead(vibration)<tapLevel)
-    {
-      previousBirdTime = millis();
-      birdStart = birdPos;
-    }
-
-    // Draw the walls and the bird
-    drawWalls();
-    drawBird();
-
-    // Check for game over
-    if(wallPosition == 14)
-    {
-      byte next = 15 - calculateNextY();
-      if(next >= bottomWall || next <= topWall)
-      {
-        gameMode = false;
-
-        // Display game over message
-        int scoreInt = wallCount-1;
-        const char* temp = "Game Over";
-        for (int8_t x=15; x>=-1*9*5+1; x--)
-        {
-          matrix.clear();
-          matrix.setCursor(x,0);
-          matrix.print(temp);
-          matrix.writeDisplay();
-          delay(75);
-        }
-      }
-      wallCount++;
-    }
-
+  if (gameMode) {
+    gameUpdate();
+  } else {
+    gameStart();
   }
-
-  matrix.writeDisplay(); 
 }
 
+void gameStart() {
+  matrix.clear();
 
-// Draw the walls on the LED matrix
-void drawWalls()
-{
-  wallTime = millis();
+  // Wait for a tap to start the game
+  if (analogRead(vibration) < tapLevel) {
+    gameMode = true;
+  }
 
+  // Update the frame every 250 milliseconds
+  frameTime = millis();
+  if (frameTime - previousFrameTime > 250) {
+    previousFrameTime = frameTime;
+    frame += frameChange;
+    if (frame >= 2 || frame <= 0) frameChange *= -1;
+  }
+
+  // Display the bird's initial frame
+  if (frame == 0) matrix.drawBitmap(0, 0, bird0, 8, 8, LED_ON);
+  else if (frame == 1) matrix.drawBitmap(0, 0, bird1, 8, 8, LED_ON);
+  else if (frame == 2) matrix.drawBitmap(0, 0, bird2, 8, 8, LED_ON);
+
+  matrix.writeDisplay();
+}
+
+void gameUpdate() {
+  matrix.clear();
+
+  // Handle tap input and bird movement
+  if (analogRead(vibration) < tapLevel) {
+    previousBirdTime = millis();
+  }
+
+  // Draw the walls and the bird
+  drawWalls();
+  drawBird();
+
+  // Check for game over
+  if (wallPosition == 14) {
+    if (checkCollision()) {
+      gameOver();
+    } else {
+      wallCount++;
+      wallDelayTime = min(wallDelayTime + 10, wallDelay);
+    }
+  }
+
+  matrix.writeDisplay();
+}
+
+void drawWalls() {
   // Move to the next set of walls when the current set reaches the end
-  if(wallPosition > 15) 
-  {
-    topWall = random(0,4);
-    bottomWall = topWall + 4;
+  if (wallPosition > 15) {
+    topWall = random(topWallPos, bottomWallPos - wallGap);
+    bottomWall = topWall + wallGap;
     wallPosition = 0;
   }
 
   // Draw the top and bottom walls
-  matrix.drawLine(15-wallPosition, 0, 15-wallPosition, topWall, LED_ON); 
-  matrix.drawLine(15-wallPosition, bottomWall, 15-wallPosition, 15, LED_ON); 
+  matrix.drawLine(15 - wallPosition, 0, 15 - wallPosition, topWall, LED_ON);
+  matrix.drawLine(15 - wallPosition, bottomWall, 15 - wallPosition, 15, LED_ON);
 
   // Move the walls to the right every wallDelay milliseconds
-  if(wallTime - previousWallTime > wallDelay) {
-    previousWallTime = wallTime;   
+  if (millis() - previousWallTime > wallDelayTime) {
+    previousWallTime = millis();
     wallPosition++;
   }
 }
 
-// Calculate the bird's vertical position based on the elapsed time
-int calculateY()
-{
-  return (int)(birdStart+((birdTime/1000.0)*(initYVelocity+gravity*(birdTime/1000.0)/2.0)));
+int calculateY(double yVelocity, long elapsedTime) {
+  return (int)(birdPos + (yVelocity + gravity * yVelocity / 2.0) * elapsedTime / 1000.0);
 }
 
-// Calculate the bird's tail position based on the elapsed time
-int calculateTail()
-{
-  return (int)(birdStart+(((birdTime-100)/1000.0)*(initYVelocity+gravity*((birdTime-100)/1000.0)/2.0)));
+void drawBirdTail() {
+  matrix.drawPixel(1, 7 - tailPos, LED_ON);
 }
 
-// Calculate the bird's next vertical position based on the elapsed time
-int calculateNextY()
-{
-  return (int)(birdStart+(((birdTime+100)/1000.0)*(initYVelocity+gravity*((birdTime+100)/1000.0)/2.0)));
+int calculateNextY(double yVelocity, long elapsedTime) {
+  return (int)(birdPos + (yVelocity + gravity * yVelocity / 2.0) * (elapsedTime + 100) / 1000.0);
 }
 
-// Draw the bird on the LED matrix
-void drawBird()
-{
+boolean checkCollision() {
+  if (birdPos < 0 || birdPos > 15) return true;
+  if (tailPos < 0 || tailPos > 15) return true;
+  if (calculateNextY(initYVelocity, 100) >= bottomWall) return true;
+  if (calculateNextY(initYVelocity, 100) <= topWall) return true;
+  return false;
+}
+
+void gameOver() {
+  gameMode = false;
+  lives--;
+
+  // Display game over message
+  const char* gameOverMessage = "Game Over";
+  for (int8_t x = 15; x >= -1 * gameOverMessageLength * 5 + 1; x--) {
+    matrix.clear();
+    matrix.setCursor(x, 0);
+    matrix.print(gameOverMessage);
+    matrix.writeDisplay();
+    delay(gameOverMessageDelay);
+  }
+
+  if (lives == 0) {
+    // Display game over message
+    const char* gameOverMessage = "Game Over";
+    for (int8_t x = 15; x >= -1 * gameOverMessageLength * 5 + 1; x--) {
+      matrix.clear();
+      matrix.setCursor(x, 0);
+      matrix.print(gameOverMessage);
+      matrix.writeDisplay();
+      delay(gameOverMessageDelay);
+    }
+  } else {
+    // Reset game variables
+    previousBirdTime = millis();
+    topWall = random(topWallPos, bottomWallPos - wallGap);
+    bottomWall = topWall + wallGap;
+    wallPosition = 0;
+    frame = 0;
+    frameChange = 1;
+  }
+}
+
+void updateGameVariables() {
   birdTime = millis() - previousBirdTime;
-  birdPos = calculateY();
-  tailPos = calculateTail();
-  if(calculateY() < 0) birdPos = 0;
-  if(calculateTail() < 0) tailPos = 0;
-  matrix.drawPixel(0, 7-tailPos, LED_ON); 
-  matrix.drawPixel(1, 7-birdPos, LED_ON); 
-  matrix.writeDisplay(); 
+  birdPos = calculateY(initYVelocity, birdTime);
+  tailPos = calculateY(initYVelocity, birdTime - 100);
+  if (birdPos < 0) birdPos = 0;
+  if (tailPos < 0) tailPos = 0;
 }
