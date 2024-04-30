@@ -5,11 +5,17 @@
 #include "RemoteXYDebugLog.h"
 #include "RemoteXYConnection.h"
 #include "RemoteXYThread.h"
+#include "RemoteXYWireCloud.h"
 
 // Define the timeout value for retrying cloud connection
 #define REMOTEXY_CLOUDCLIENT_RETRY_TIMEOUT 20000
 
+// Define the maximum number of clients
+#define REMOTEXY_MAX_CLIENTS 10
+
 // Define the class for cloud connection
+class CRemoteXYCloudServer;
+
 class CRemoteXYConnectionCloud : public CRemoteXYConnectionComm, public CRemoteXYCloudClientAvailableListener {
 public:
     // Public variables
@@ -96,18 +102,25 @@ public:
         // If the cloud server is running and the communication is configured
         if (cloudServer->running() && comm->configured()) {
             if (wire != nullptr) {
-                wire->handler();
+                CRemoteXYWireCloud* cloudWire = dynamic_cast<CRemoteXYWireCloud*>(wire);
+                if (cloudWire != nullptr) {
+                    cloudWire->handler();
+                }
             }
         }
         // If the cloud server is not running
         else {
-            stopThreadListener(wire);
+            if (wire != nullptr) {
+                stopThreadListener(wire);
+            }
         }
     }
 
     // Stop the thread listener
     void stopThreadListener(CRemoteXYWire* wire) override {
-        wire->stop();
+        if (wire != nullptr) {
+            wire->stop();
+        }
     }
 };
 
