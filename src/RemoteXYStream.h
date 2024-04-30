@@ -15,6 +15,7 @@ class CRemoteXYStream {
     CRemoteXYReadByteListener * readByteListener;  // Pointer to the read byte listener
 
   public:
+    // Constructor
     CRemoteXYStream () {
       readByteListener = NULL;
 
@@ -38,6 +39,7 @@ class CRemoteXYStream {
 
   public:     
     // Placeholder functions for the abstract class
+    // These functions will be overridden in derived classes
     virtual void handler () {};
     virtual void startWrite (uint16_t size) {UNUSED (size);};
     virtual void write (uint8_t byte) {UNUSED (byte);};
@@ -48,3 +50,4 @@ class CRemoteXYStream {
 
 
 #endif //RemoteXYStream_h
+
