@@ -1,11 +1,14 @@
-// Snake on 8x8Matrix 
+// Snake on 8x8 Matrix
 // 2013-06-15 JorgVisch
-// 
+//
+// This is a simple implementation of the classic Snake game using an 8x8 LED matrix
+// and buttons for controlling the snake's movement.
+
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_LEDBackpack.h>
 
-// Button pin
+// Button pin definitions
 const int buttonRightPin = 14;
 const int buttonLeftPin  = 16;
 
@@ -36,15 +39,18 @@ unsigned long fruitPrevTime = 0;
 unsigned long fruitBlinkTime = 1000/250;
 int fruitLed = LED_ON;
 
-void setup(){
+void setup() {
   Serial.begin(9600);
   Serial.println("Snake is started");
   randomSeed(analogRead(0));
+
   // Init led matrix
   matrix.begin(0x70);
+
   // init buttons
   int buttonpins[] = {buttonRightPin, buttonLeftPin};
   initButtons(buttonpins, 2);
+
   // init snake
   snakeX[0] = 4;
   snakeY[0] = 7;
@@ -54,7 +60,7 @@ void setup(){
   makeFruit();
 }
 
-void loop(){
+void loop() {
   checkButtons();
   unsigned long currentTime = millis();
   if(currentTime - prevTime >= delayTime){
@@ -65,18 +71,19 @@ void loop(){
   draw();
 }
 
-void checkButtons(){
-  if(!buttonRead){
+// Check for button clicks and update the direction variable accordingly
+void checkButtons() {
+  if(!buttonRead) {
     int currentDirection = direction;
-    if(buttonClicked(LEFTBUTTON)){
+    if(buttonClicked(LEFTBUTTON)) {
       direction--;
-      if(direction < 0){
+      if(direction < 0) {
         direction = LEFT;
       }
     }
-    else if(buttonClicked(RIGHTBUTTON)){
+    else if(buttonClicked(RIGHTBUTTON)) {
       direction++;
-      if(direction > 3){
+      if(direction > 3) {
         direction = TOP;
       }
     }
@@ -84,23 +91,26 @@ void checkButtons(){
   }
 }
 
-void draw(){
+// Draw the snake and fruit on the LED matrix
+void draw() {
   matrix.clear();
   drawSnake();
   drawFruit();
   matrix.writeDisplay();
 }
 
-void drawSnake(){
+// Draw the snake on the LED matrix
+void drawSnake() {
   for(int i=0; i<snakeLength; i++){
     matrix.drawPixel(snakeX[i], snakeY[i], LED_ON);
   }
 }
 
-void drawFruit(){
-  if(inPlayField(fruitX, fruitY)){
+// Draw the fruit on the LED matrix
+void drawFruit() {
+  if(inPlayField(fruitX, fruitY)) {
     unsigned long currenttime = millis();
-    if(currenttime - fruitPrevTime >= fruitBlinkTime){
+    if(currenttime - fruitPrevTime >= fruitBlinkTime) {
       fruitLed = (fruitLed == LED_ON) ? LED_OFF : LED_ON;
       fruitPrevTime = currenttime;
     }
@@ -108,16 +118,18 @@ void drawFruit(){
   }
 }
 
-boolean inPlayField(int x, int y){
+// Check if the given coordinates are within the playfield
+boolean inPlayField(int x, int y) {
   return (x>=0) && (x<8) && (y>=0) && (y<8);
 }
 
-void nextstep(){
-  for(int i=snakeLength-1; i>0; i--){
+// Move the snake and check for collisions
+void nextstep() {
+  for(int i=snakeLength-1; i>0; i--) {
     snakeX[i] = snakeX[i-1];
     snakeY[i] = snakeY[i-1];
   }
-  switch(direction){
+  switch(direction) {
     case TOP:
       snakeY[0] = snakeY[0]-1;
       break;
@@ -131,9 +143,9 @@ void nextstep(){
       snakeX[0]=snakeX[0]-1;
       break;
   }
-  if((snakeX[0] == fruitX) && (snakeY[0] == fruitY)){
+  if((snakeX[0] == fruitX) && (snakeY[0] == fruitY)) {
     snakeLength++;
-    if(snakeLength < MAX_SNAKE_LENGTH){      
+    if(snakeLength < MAX_SNAKE_LENGTH) {
       makeFruit();
     } 
     else {
@@ -142,11 +154,12 @@ void nextstep(){
   }
 }
 
-void makeFruit(){
+// Generate a new fruit at a random position that is not part of the snake
+void makeFruit() {
   int x, y;
   x = random(0, 8);
   y = random(0, 8);
-  while(isPartOfSnake(x, y)){
+  while(isPartOfSnake(x, y)) {
     x = random(0, 8);
     y = random(0, 8);
   }
@@ -154,9 +167,10 @@ void makeFruit(){
   fruitY = y;
 }
 
-boolean isPartOfSnake(int x, int y){
-  for(int i=0; i<snakeLength-1; i++){
-    if((x == snakeX[i]) && (y == snakeY[i])){
+// Check if the given coordinates are part of the snake
+boolean isPartOfSnake(int x, int y) {
+  for(int i=0; i<snakeLength-1; i++) {
+    if((x == snakeX[i]) && (y == snakeY[i])) {
       return true;
     }
   }
