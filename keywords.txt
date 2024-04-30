@@ -5,25 +5,27 @@
 #######################################
 # Datatypes (KEYWORD1)
 #######################################
-Otto	KEYWORD1
+KEYWORD1 (Otto)
+
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
-init	KEYWORD2
-initDC	KEYWORD2
-initMATRIX	KEYWORD2
-home	KEYWORD2
-putMouth	KEYWORD2
-writeText	KEYWORD2
-clearMouth	KEYWORD2
-sing	KEYWORD2
-walk	KEYWORD2
-playGesture	KEYWORD2
+KEYWORD2 (init)
+KEYWORD2 (initDC)
+KEYWORD2 (initMATRIX)
+KEYWORD2 (home)
+KEYWORD2 (putMouth)
+KEYWORD2 (writeText)
+KEYWORD2 (clearMouth)
+KEYWORD2 (sing)
+KEYWORD2 (walk)
+KEYWORD2 (playGesture)
+
 #######################################
-# Instances (KEYWORD2)
+# Instances (KEYWORD3)
 #######################################
 
 #######################################
 # Constants (LITERAL1)
 #######################################
-
+LITERAL1 ()
