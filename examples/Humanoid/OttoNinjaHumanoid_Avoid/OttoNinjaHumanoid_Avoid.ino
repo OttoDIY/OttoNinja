@@ -9,123 +9,93 @@
 //                     S3 = GPIO 9
 //                     S2 = GPIO 10
 
-
 #include <Servo.h>
 #include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_LEDBackpack.h>
 
+// Constants for pin numbers
+const int kTrigPin = 12;
+const int kEchoPin = 14;
+const int kServoLeftFootPin = 13;
+const int kServoLeftLegPin = 15;
+const int kServoRightFootPin = 0;
+const int kServoRightLegPin = 2;
+const int kServoLeftArmPin = 16;
+const int kServoRightArmPin = 3;
+const int kServoHeadPin = 1;
+
+// Constants for servo positions
+const int kLeftLegStandingPosition = 60 + 0;
+const int kRightLegStandingPosition = 120 + 0;
+const int kLeftLegRollPosition = 180;
+const int kRightLegRollPosition = 0;
+const int kLeftLegTiltLeftWalkingPosition = kLeftLegStandingPosition + 40;
+const int kRightLegTiltLeftWalkingPosition = kRightLegStandingPosition + 60;
+const int kLeftLegTiltRightWalkingPosition = kLeftLegStandingPosition - 60;
+const int kRightLegTiltRightWalkingPosition = kRightLegStandingPosition - 40;
+
+const int kLeftFootForwardWalkingRotationSpeed = 15;
+const int kRightFootForwardWalkingRotationSpeed = 15;
+const int kLeftFootBackwardWalkingRotationSpeed = 15;
+const int kRightFootBackwardWalkingRotationSpeed = 15;
+
+const int kLeftFootForwardRollingRotationSpeed = 20;
+const int kRightFootForwardRollingRotationSpeed = 20;
+const int kLeftFootBackwardRollingRotationSpeed = 20;
+const int kRightFootBackwardRollingRotationSpeed = 20;
+
+// Constants for distances
+const int kMinimumDistance = 2;
+const int kMaximumDistance = 15;
+
+// Constants for intervals
+const int kInterval1 = 300;
+const int kInterval2 = 600;
+const int kInterval3 = 900;
+const int kInterval4 = 1200;
+
+// Global variables
 Adafruit_8x16matrix matrix = Adafruit_8x16matrix();
-
-//CALIBRATION SETTINGS:
-
-int LA0= 60 +0;     // Left Leg standing Position             - = Tilt Right   + = Tilt Left  
-int RA0= 120 +0;    // Right Leg standing position            - = Tilt Right   + = Tilt Left  
-int LA1= 180;       // Left Leg roll Position                 - = Tilt Right   + = Tilt Left   
-int RA1= 0;         // Right Leg roll position                - = Tilt Right   + = Tilt Left   
-int LATL= LA0 +40;  // Left Leg tilt left walking position    - = Tilt Right   + = Tilt Left 
-int RATL= RA0 +60;  // Right Leg tilt left walking position   - = Tilt Right   + = Tilt Left 
-int LATR= LA0 -60;  // Left Leg tilt right walking position   - = Tilt Right   + = Tilt Left 
-int RATR= RA0 -40;  // Right Leg tilt right walking position  - = Tilt Right   + = Tilt Left 
-
-int LFFWRS=15;  // Left foot forward walking rotation Speed   0 = SLOW   90 = FAST  
-int RFFWRS=15 ; // Right foot forward walking rotation Speed  0 = SLOW   90 = FAST  
-int LFBWRS= 15; // Left foot Backward walking rotation Speed  0 = SLOW   90 = FAST  
-int RFBWRS= 15; // Right foot Backward walking rotation Speed 0 = SLOW   90 = FAST  
-
-int LFFRRS=20;  // Left foot forward rolling rotation Speed   0 = SLOW   90 = FAST  
-int RFFRRS=20 ; // Right foot forward rolling rotation Speed  0 = SLOW   90 = FAST  
-int LFBRRS= 20; // Left foot Backward rolling rotation Speed  0 = SLOW   90 = FAST  
-int RFBRRS= 20; // Right foot Backward rolling rotation Speed 0 = SLOW   90 = FAST  
-
-////////////////////////////////////////
-
-
-
-int currentmillis1 = 0;
-
-int Interval1 = 300;
-int Interval2 = 600;
-int Interval3 = 900;
-int Interval4 = 1200;
-
-
-#define echoPin 14 // attach pin D5 ESP8266 to pin Echo of HC-SR04
-#define trigPin 12 //attach pin D6 ESP8266 to pin Trig of HC-SR04
-long duration; // variable for the duration of sound wave travel
-int distance; // variable for the distance measurement
-
-
-const uint8_t ServoLeftFootPin   = 13;     //D7
-const uint8_t ServoLeftLegPin    = 15;     //D8
-const uint8_t ServoRightFootPin  = 0;      //D3
-const uint8_t ServoRightLegPin   = 2;      //D4
-const uint8_t ServoLeftArmPin    = 16;     //D0
-const uint8_t ServoRightArmPin   = 3;      //RX
-const uint8_t ServoHeadPin       = 1;      //TX
-
 Servo myservoLeftFoot;
 Servo myservoLeftLeg;
 Servo myservoRightFoot;
 Servo myservoRightLeg;
-
 Servo myservoLeftArm;
 Servo myservoRightArm;
 Servo myservoHead;
+int currentmillis1 = 0;
+long duration;
+int distance;
 
-void setup() 
-{
-  
-  NinjaHome();
-
+void setup() {
   Serial.begin(250000);
-  
-  pinMode(trigPin, OUTPUT); // Sets the trigPin as an OUTPUT
-  pinMode(echoPin, INPUT); // Sets the echoPin as an INPUT
-
-
-  matrix.begin(0x70);  // pass in the address
-
+  pinMode(kTrigPin, OUTPUT);
+  pinMode(kEchoPin, INPUT);
+  matrix.begin(0x70);
   matrix.setTextSize(1);
-  matrix.setTextWrap(false);  // we dont want text to wrap so it scrolls nicely
+  matrix.setTextWrap(false);
   matrix.setTextColor(LED_ON);
   matrix.setRotation(3);
-  for (int8_t x=7; x>=-50; x--) 
-  {
+  for (int8_t x = 7; x > -50; x--) {
     matrix.clear();
-    matrix.setCursor(x,0);
+    matrix.setCursor(x, 0);
     matrix.print("NINJA");
     matrix.writeDisplay();
-    delay(50);
+    delayMicroseconds(50);
   }
-
-  NinjaSetRoll();
-
+  NinjaHome();
 }
 
-
-
-
-
-
-
-void loop() 
-{
-
+void loop() {
   Distance();
-  
-                  
-  if (distance >= 15)
-  {  
+  if (distance >= kMaximumDistance) {
     NinjaRollForward();
     HeadScan();
-  }
-           
-  if ((distance >= 2)&&(distance < 15))
-  {  
+  } else if (distance >= kMinimumDistance && distance < kMaximumDistance) {
     NinjaRollStop();
-    myservoHead.attach(ServoHeadPin, 544, 2400);
+    myservoHead.attach(kServoHeadPin, 544, 2400);
     myservoHead.write(90);
     delay(300);
     NinjaArmWave();
@@ -133,25 +103,38 @@ void loop()
     delay(500);
     NinjaRollStop();
   }
-  
 }
 
-void NinjaHome()
-{ 
-  myservoLeftLeg.attach(ServoLeftLegPin, 544, 2400); 
-  myservoRightLeg.attach(ServoRightLegPin, 544, 2400);  
-  myservoLeftArm.attach(ServoLeftArmPin, 544, 2400);
-  myservoRightArm.attach(ServoRightArmPin, 544, 2400);  
-  myservoHead.attach(ServoHeadPin, 544, 2400); 
-  myservoLeftArm.write(180); 
+void NinjaHome() {
+  if (!myservoLeftLeg.attach(kServoLeftLegPin, 544, 2400)) {
+    Serial.println("Failed to attach left leg servo");
+    return;
+  }
+  if (!myservoRightLeg.attach(kServoRightLegPin, 544, 2400)) {
+    Serial.println("Failed to attach right leg servo");
+    return;
+  }
+  if (!myservoLeftArm.attach(kServoLeftArmPin, 544, 2400)) {
+    Serial.println("Failed to attach left arm servo");
+    return;
+  }
+  if (!myservoRightArm.attach(kServoRightArmPin, 544, 2400)) {
+    Serial.println("Failed to attach right arm servo");
+    return;
+  }
+  if (!myservoHead.attach(kServoHeadPin, 544, 2400)) {
+    Serial.println("Failed to attach head servo");
+    return;
+  }
+  myservoLeftArm.write(180);
   myservoRightArm.write(0);
-  myservoHead.write(90); 
-  delay(400); 
-  myservoLeftFoot.write(90); 
-  myservoRightFoot.write(90);   
-  myservoLeftLeg.write(60); 
-  myservoRightLeg.write(120);
-  delay(400);
+  myservoHead.write(90);
+  delayMicroseconds(400);
+  myservoLeftFoot.write(90);
+  myservoRightFoot.write(90);
+  myservoLeftLeg.write(kLeftLegStandingPosition);
+  myservoRightLeg.write(kRightLegStandingPosition);
+  delayMicroseconds(400);
   myservoLeftLeg.detach();
   myservoRightLeg.detach();
   myservoLeftArm.detach();
@@ -159,283 +142,264 @@ void NinjaHome()
   myservoHead.detach();
 }
 
-
-
-void NinjaSetWalk()
-{
-  myservoLeftArm.attach(ServoLeftArmPin, 544, 2400);
-  myservoRightArm.attach(ServoRightArmPin, 544, 2400);
+void NinjaSetWalk() {
+  if (!myservoLeftArm.attach(kServoLeftArmPin, 544, 2400)) {
+    Serial.println("Failed to attach left arm servo");
+    return;
+  }
+  if (!myservoRightArm.attach(kServoRightArmPin, 544, 2400)) {
+    Serial.println("Failed to attach right arm servo");
+    return;
+  }
   myservoLeftArm.write(90);
   myservoRightArm.write(90);
-  delay(200);
+  delayMicroseconds(200);
   myservoLeftArm.detach();
   myservoRightArm.detach();
-  myservoLeftLeg.attach(ServoLeftLegPin, 544, 2400);
-  myservoRightLeg.attach(ServoRightLegPin, 544, 2400);
-  myservoLeftLeg.write(LA0);
-  myservoRightLeg.write(RA0);
-  delay(300);
+  if (!myservoLeftLeg.attach(kServoLeftLegPin, 544, 2400)) {
+    Serial.println("Failed to attach left leg servo");
+    return;
+  }
+  if (!myservoRightLeg.attach(kServoRightLegPin, 544, 2400)) {
+    Serial.println("Failed to attach right leg servo");
+    return;
+  }
+  myservoLeftLeg.write(kLeftLegStandingPosition);
+  myservoRightLeg.write(kRightLegStandingPosition);
+  delayMicroseconds(300);
   myservoLeftLeg.detach();
   myservoRightLeg.detach();
-  myservoLeftArm.attach(ServoLeftArmPin, 544, 2400);
-  myservoRightArm.attach(ServoRightArmPin, 544, 2400);
+  if (!myservoLeftArm.attach(kServoLeftArmPin, 544, 2400)) {
+    Serial.println("Failed to attach left arm servo");
+    return;
+  }
+  if (!myservoRightArm.attach(kServoRightArmPin, 544, 2400)) {
+    Serial.println("Failed to attach right arm servo");
+    return;
+  }
   myservoLeftArm.write(180);
   myservoRightArm.write(0);
-  delay(200);
+  delayMicroseconds(200);
   myservoLeftArm.detach();
   myservoRightArm.detach();
 }
 
-void NinjaWalkForward()
-{
- myservoLeftLeg.attach(ServoLeftLegPin, 544, 2400);
- myservoRightLeg.attach(ServoRightLegPin, 544, 2400);
- 
- myservoLeftLeg.write(LATR); 
- myservoRightLeg.write(RATR);
- delay(300);
- myservoRightFoot.attach(ServoRightFootPin, 544, 2400);  
- myservoRightFoot.write(90-RFFWRS);
- delay(300);
- myservoRightFoot.detach();
- delay(100);
- myservoLeftLeg.write(LATL); 
- myservoRightLeg.write(RATL);
- delay(300);
- myservoLeftFoot.attach(ServoLeftFootPin, 544, 2400); 
- myservoLeftFoot.write(90+LFFWRS);
- delay(300);
- myservoLeftFoot.detach();
- delay(100);
+void NinjaWalkForward() {
+  if (!myservoLeftLeg.attach(kServoLeftLegPin, 544, 2400)) {
+    Serial.println("Failed to attach left leg servo");
+    return;
+  }
+  if (!myservoRightLeg.attach(kServoRightLegPin, 544, 2400)) {
+    Serial.println("Failed to attach right leg servo");
+    return;
+  }
+  if (!myservoRightFoot.attach(kServoRightFootPin, 544, 2400)) {
+    Serial.println("Failed to attach right foot servo");
+    return;
+  }
+  myservoLeftLeg.write(kLeftLegTiltRightWalkingPosition);
+  myservoRightLeg.write(kRightLegTiltRightWalkingPosition);
+  delayMicroseconds(300);
+  myservoRightFoot.write(90 - kRightFootForwardWalkingRotationSpeed);
+  delayMicroseconds(300);
+  myservoRightFoot.detach();
+  delayMicroseconds(100);
+  myservoLeftLeg.write(kLeftLegTiltLeftWalkingPosition);
+  myservoRightLeg.write(kRightLegTiltLeftWalkingPosition);
+  delayMicroseconds(300);
+  if (!myservoLeftFoot.attach(kServoLeftFootPin, 544, 2400)) {
+    Serial.println("Failed to attach left foot servo");
+    return;
+  }
+  myservoLeftFoot.write(90 + kLeftFootForwardWalkingRotationSpeed);
+  delayMicroseconds(300);
+  myservoLeftFoot.detach();
+  delayMicroseconds(100);
 }
 
-void NinjaWalkBackward()
-{
- myservoLeftLeg.attach(ServoLeftLegPin, 544, 2400);
- myservoRightLeg.attach(ServoRightLegPin, 544, 2400);
- 
- myservoLeftLeg.write(LATR); 
- myservoRightLeg.write(RATR);
- delay(300);
- myservoRightFoot.attach(ServoRightFootPin, 544, 2400);  
- myservoRightFoot.write(90+RFBWRS);
- delay(300);
- myservoRightFoot.detach();
- delay(100);
- myservoLeftLeg.write(LATL); 
- myservoRightLeg.write(RATL);
- delay(300);
- myservoLeftFoot.attach(ServoLeftFootPin, 544, 2400); 
- myservoLeftFoot.write(90-LFBWRS);
- delay(300);
- myservoLeftFoot.detach();
- delay(100);
+void NinjaWalkBackward() {
+  if (!myservoLeftLeg.attach(kServoLeftLegPin, 544, 2400)) {
+    Serial.println("Failed to attach left leg servo");
+    return;
+  }
+  if (!myservoRightLeg.attach(kServoRightLegPin, 544, 2400)) {
+    Serial.println("Failed to attach right leg servo");
+    return;
+  }
+  if (!myservoRightFoot.attach(kServoRightFootPin, 544, 2400)) {
+    Serial.println("Failed to attach right foot servo");
+    return;
+  }
+  myservoLeftLeg.write(kLeftLegTiltRightWalkingPosition);
+  myservoRightLeg.write(kRightLegTiltRightWalkingPosition);
+  delayMicroseconds(300);
+  myservoRightFoot.write(90 + kRightFootBackwardWalkingRotationSpeed);
+  delayMicroseconds(300);
+  myservoRightFoot.detach();
+  delayMicroseconds(100);
+  myservoLeftLeg.write(kLeftLegTiltLeftWalkingPosition);
+  myservoRightLeg.write(kRightLegTiltLeftWalkingPosition);
+  delayMicroseconds(300);
+  if (!myservoLeftFoot.attach(kServoLeftFootPin, 544, 2400)) {
+    Serial.println("Failed to attach left foot servo");
+    return;
+  }
+  myservoLeftFoot.write(90 - kLeftFootBackwardWalkingRotationSpeed);
+  delayMicroseconds(300);
+  myservoLeftFoot.detach();
+  delayMicroseconds(100);
 }
 
-void NinjaWalkLeft()
-{
- myservoLeftLeg.attach(ServoLeftLegPin, 544, 2400);
- myservoRightLeg.attach(ServoRightLegPin, 544, 2400);
- 
- myservoLeftLeg.write(LATR); 
- myservoRightLeg.write(RATR);
- delay(300);
- myservoRightFoot.attach(ServoRightFootPin, 544, 2400);  
- myservoRightFoot.write(90-RFFWRS);
- delay(50);
- myservoRightFoot.detach();
- delay(100);
- myservoLeftLeg.write(LATL); 
- myservoRightLeg.write(RATL);
- delay(300);
- myservoLeftFoot.attach(ServoLeftFootPin, 544, 2400); 
- myservoLeftFoot.write(90+LFFWRS);
- delay(300);
- myservoLeftFoot.detach();
- delay(100);
+void NinjaWalkLeft() {
+  if (!myservoLeftLeg.attach(kServoLeftLegPin, 544, 2400)) {
+    Serial.println("Failed to attach left leg servo");
+    return;
+  }
+  if (!myservoRightLeg.attach(kServoRightLegPin, 544, 2400)) {
+    Serial.println("Failed to attach right leg servo");
+    return;
+  }
+  if (!myservoRightFoot.attach(kServoRightFootPin, 544, 2400)) {
+    Serial.println("Failed to attach right foot servo");
+    return;
+  }
+  myservoLeftLeg.write(kLeftLegTiltRightWalkingPosition);
+  myservoRightLeg.write(kRightLegTiltRightWalkingPosition);
+  delayMicroseconds(300);
+  myservoRightFoot.write(90 - kRightFootForwardWalkingRotationSpeed);
+  delayMicroseconds(50);
+  myservoRightFoot.detach();
+  delayMicroseconds(100);
+  myservoLeftLeg.write(kLeftLegTiltLeftWalkingPosition);
+  myservoRightLeg.write(kRightLegTiltLeftWalkingPosition);
+  delayMicroseconds(300);
+  if (!myservoLeftFoot.attach(kServoLeftFootPin, 544, 2400)) {
+    Serial.println("Failed to attach left foot servo");
+    return;
+  }
+  myservoLeftFoot.write(90 + kLeftFootForwardWalkingRotationSpeed);
+  delayMicroseconds(300);
+  myservoLeftFoot.detach();
+  delayMicroseconds(100);
 }
 
-void NinjaWalkRight()
-{
- myservoLeftLeg.attach(ServoLeftLegPin, 544, 2400);
- myservoRightLeg.attach(ServoRightLegPin, 544, 2400);
- 
- myservoLeftLeg.write(LATR); 
- myservoRightLeg.write(RATR);
- delay(300);
- myservoRightFoot.attach(ServoRightFootPin, 544, 2400);  
- myservoRightFoot.write(90-RFFWRS);
- delay(300);
- myservoRightFoot.detach();
- delay(100);
- myservoLeftLeg.write(LATL); 
- myservoRightLeg.write(RATL);
- delay(300);
- myservoLeftFoot.attach(ServoLeftFootPin, 544, 2400); 
- myservoLeftFoot.write(90+LFFWRS);
- delay(50);
- myservoLeftFoot.detach();
- delay(100);
+void NinjaWalkRight() {
+  if (!myservoLeftLeg.attach(kServoLeftLegPin, 544, 2400)) {
+    Serial.println("Failed to attach left leg servo");
+    return;
+  }
+  if (!myservoRightLeg.attach(kServoRightLegPin, 544, 2400)) {
+    Serial.println("Failed to attach right leg servo");
+    return;
+  }
+  if (!myservoRightFoot.attach(kServoRightFootPin, 544, 2400)) {
+    Serial.println("Failed to attach right foot servo");
+    return;
+  }
+  myservoLeftLeg.write(kLeftLegTiltRightWalkingPosition);
+  myservoRightLeg.write(kRightLegTiltRightWalkingPosition);
+  delayMicroseconds(300);
+  myservoRightFoot.write(90 - kRightFootForwardWalkingRotationSpeed);
+  delayMicroseconds(300);
+  myservoRightFoot.detach();
+  delayMicroseconds(100);
+  myservoLeftLeg.write(kLeftLegTiltLeftWalkingPosition);
+  myservoRightLeg.write(kRightLegTiltLeftWalkingPosition);
+  delayMicroseconds(300);
+  if (!myservoLeftFoot.attach(kServoLeftFootPin, 544, 2400)) {
+    Serial.println("Failed to attach left foot servo");
+    return;
+  }
+  myservoLeftFoot.write(90 + kLeftFootForwardWalkingRotationSpeed);
+  delayMicroseconds(50);
+  myservoLeftFoot.detach();
+  delayMicroseconds(100);
 }
 
-void NinjaWalkStop()
-{
+void NinjaWalkStop() {
   myservoLeftFoot.write(90);
   myservoRightFoot.write(90);
-  myservoLeftLeg.write(LA0);
-  myservoRightLeg.write(RA0);
-}
-
-void NinjaSetRoll()
-{
-  myservoLeftArm.attach(ServoLeftArmPin, 544, 2400);
-  myservoRightArm.attach(ServoRightArmPin, 544, 2400);
-  myservoLeftArm.write(90);
-  myservoRightArm.write(90);
-  delay(200);
-  myservoLeftArm.detach();
-  myservoRightArm.detach();
-  myservoLeftLeg.attach(ServoLeftLegPin, 544, 2400);
-  myservoRightLeg.attach(ServoRightLegPin, 544, 2400);
-  myservoLeftLeg.write(LA1);
-  myservoRightLeg.write(RA1);
-  delay(300);
-  myservoLeftLeg.detach();
-  myservoRightLeg.detach();
-  myservoLeftArm.attach(ServoLeftArmPin, 544, 2400);
-  myservoRightArm.attach(ServoRightArmPin, 544, 2400);
-  myservoLeftArm.write(180);
-  myservoRightArm.write(0);
-  delay(300);
-  myservoLeftArm.detach();
-  myservoRightArm.detach();
-}
-
-void NinjaRollForward()
-{
-  myservoLeftFoot.attach(ServoLeftFootPin, 544, 2400);
-  myservoRightFoot.attach(ServoRightFootPin, 544, 2400);
-  myservoLeftFoot.write(90+LFFRRS);
-  myservoRightFoot.write(90-RFFRRS);
-}
-
-void NinjaRollBackward()
-{
-  myservoLeftFoot.attach(ServoLeftFootPin, 544, 2400);
-  myservoRightFoot.attach(ServoRightFootPin, 544, 2400);
-  myservoLeftFoot.write(90-LFBRRS);
-  myservoRightFoot.write(90+RFBRRS);
-}
-
-void NinjaRollLeft()
-{
-  myservoLeftFoot.attach(ServoLeftFootPin, 544, 2400);
-  myservoRightFoot.attach(ServoRightFootPin, 544, 2400);
-  myservoLeftFoot.write(90-LFBRRS);
-  myservoRightFoot.write(90-RFFRRS);
-}
-
-void NinjaRollRight()
-{
-  myservoLeftFoot.attach(ServoLeftFootPin, 544, 2400);
-  myservoRightFoot.attach(ServoRightFootPin, 544, 2400);
-  myservoLeftFoot.write(90+LFFRRS);
-  myservoRightFoot.write(90+RFBRRS);
-}
-
-void NinjaRollStop()
-{
-  myservoLeftFoot.write(90);
-  myservoRightFoot.write(90);
+  myservoLeftLeg.write(kLeftLegStandingPosition);
+  myservoRightLeg.write(kRightLegStandingPosition);
   myservoLeftFoot.detach();
   myservoRightFoot.detach();
+  myservoLeftLeg.detach();
+  myservoRightLeg.detach();
 }
 
-
-
-void NinjaArmWave()
-{  
-  myservoLeftArm.attach(ServoLeftArmPin, 544, 2400);
-  myservoRightArm.attach(ServoRightArmPin, 544, 2400);
-  myservoLeftArm.write(0);
-  myservoRightArm.write(180);
-  delay(400);  
-  myservoLeftArm.write(0);
-  myservoRightArm.write(135);
-  delay(200);  
-  myservoLeftArm.write(45);
-  myservoRightArm.write(180);
-  delay(200); 
-  myservoLeftArm.write(0);
-  myservoRightArm.write(135);
-  delay(200);  
-  myservoLeftArm.write(45);
-  myservoRightArm.write(180);
-  delay(200);
-  myservoLeftArm.write(180);  
-  myservoRightArm.write(0);
-  delay(400);    
+void NinjaSetRoll() {
+  if (!myservoLeftArm.attach(kServoLeftArmPin, 544, 2400)) {
+    Serial.println("Failed to attach left arm servo");
+    return;
+  }
+  if (!myservoRightArm.attach(kServoRightArmPin, 544, 2400)) {
+    Serial.println("Failed to attach right arm servo");
+    return;
+  }
+  myservoLeftArm.write(90);
+  myservoRightArm.write(90);
+  delayMicroseconds(200);
   myservoLeftArm.detach();
-  myservoRightArm.detach(); 
+  myservoRightArm.detach();
+  if (!myservoLeftLeg.attach(kServoLeftLegPin, 544, 2400)) {
+    Serial.println("Failed to attach left leg servo");
+    return;
+  }
+  if (!myservoRightLeg.attach(kServoRightLegPin, 544, 2400)) {
+    Serial.println("Failed to attach right leg servo");
+    return;
+  }
+  myservoLeftLeg.write(kLeftLegRollPosition);
+  myservoRightLeg.write(kRightLegRollPosition);
+  delayMicroseconds(300);
+  myservoLeftLeg.detach();
+  myservoRightLeg.detach();
+  if (!myservoLeftArm.attach(kServoLeftArmPin, 544, 2400)) {
+    Serial.println("Failed to attach left arm servo");
+    return;
+  }
+  if (!myservoRightArm.attach(kServoRightArmPin, 544, 2400)) {
+    Serial.println("Failed to attach right arm servo");
+    return;
+  }
+  myservoLeftArm.write(180);
+  myservoRightArm.write(0);
+  delayMicroseconds(300);
+  myservoLeftArm.detach();
+  myservoRightArm.detach();
 }
 
-
-
-
-
-void Distance() 
-{
-  // Clears the trigPin condition
-  digitalWrite(trigPin, LOW);
-  delayMicroseconds(2);
-  // Sets the trigPin HIGH (ACTIVE) for 10 microseconds
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
-  // Reads the echoPin, returns the sound wave travel time in microseconds
-  duration = pulseIn(echoPin, HIGH);
-  // Calculating the distance
-  distance = duration * 0.034 / 2; // Speed of sound wave divided by 2 (go and back)
-  // Displays the distance on the Serial Monitor
-  Serial.print("Distance: ");
-  Serial.print(distance);
-  Serial.println(" cm");
+void NinjaRollForward() {
+  if (!myservoLeftFoot.attach(kServoLeftFootPin, 544, 2400)) {
+    Serial.println("Failed to attach left foot servo");
+    return;
+  }
+  if (!myservoRightFoot.attach(kServoRightFootPin, 544, 2400)) {
+    Serial.println("Failed to attach right foot servo");
+    return;
+  }
+  myservoLeftFoot.write(90 + kLeftFootForwardRollingRotationSpeed);
+  myservoRightFoot.write(90 - kRightFootForwardRollingRotationSpeed);
 }
 
+void NinjaRollBackward() {
+  if (!myservoLeftFoot.attach(kServoLeftFootPin, 544, 2400)) {
+    Serial.println("Failed to attach left foot servo");
+    return;
+  }
+  if (!myservoRightFoot.attach(kServoRightFootPin, 544, 2400)) {
+    Serial.println("Failed to attach right foot servo");
+    return;
+  }
+  myservoLeftFoot.write(90 - kLeftFootBackwardRollingRotationSpeed);
+  myservoRightFoot.write(90 + kRightFootBackwardRollingRotationSpeed);
+}
 
-void HeadScan() 
-{
-
-   if(millis() > currentmillis1 + Interval4)
-   {
-     currentmillis1 = millis();
-   }
-             
-             
-   if(millis() - currentmillis1 <= Interval1)
-   {   
-       myservoHead.attach(ServoHeadPin, 544, 2400);
-       myservoHead.write(30);
-   }
-                 
-   if((millis() - currentmillis1 > Interval1)&&(millis() - currentmillis1 <= Interval2))
-   {      
-       myservoHead.attach(ServoHeadPin, 544, 2400);
-       myservoHead.write(90);
-                 
-   }
+void NinjaRollLeft() {
+  if (!myservoLeftFoot.attach(kServoLeftFootPin, 544, 2400)) {
+    Serial.println("Failed to attach left foot servo");
+    return;
+  }
+  if (!myservoRightFoot.attach(kServoRightFootPin, 544, 2400)) {
+    Serial.println("Failed to attach right foot servo");
    
-   if((millis() - currentmillis1 > Interval2)&&(millis() - currentmillis1 <= Interval3))
-   {      
-       myservoHead.attach(ServoHeadPin, 544, 2400);
-       myservoHead.write(150);
-                 
-   }
-
-   if((millis() - currentmillis1 > Interval3)&&(millis() - currentmillis1 <= Interval4))
-   {      
-       myservoHead.attach(ServoHeadPin, 544, 2400);
-       myservoHead.write(90);
-                 
-   }
-}   
