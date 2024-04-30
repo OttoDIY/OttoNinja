@@ -1,52 +1,43 @@
-// Define an integer pointer for storing button pin numbers
-int* buttonPin;
+// Define a struct for storing button information
+struct Button {
+  int pinNumber;
+  int state;
+};
 
-// Define an integer pointer for storing button states
-int* buttonState;
-
-/**
- * Initialize button pins and states
- * @param pinNumbers An array of button pin numbers
- * @param length The number of buttons
- */
-void initButtons(int pinNumbers[], int length){
+// Initialize button pins and states
+void initButtons(Button buttons[], int length) {
   Serial.println("initButtons");
-  // Copy PIN numbers
-  buttonPin = new int[length]; // Allocate memory for buttonPin array
+  // Initialize button states
   for(int i=0; i<length; i++){
-    buttonPin[i] = pinNumbers[i]; // Copy pinNumbers array elements to buttonPin array
-  }
-  // Initialize button state
-  buttonState = new int[length]; // Allocate memory for buttonState array
-  for(int i=0; i<length; i++){
-    buttonState[i] = LOW; // Initialize all button states to LOW
+    buttons[i].state = LOW; // Initialize all button states to LOW
   }
   
   // Print button pin numbers and states for debugging
   for(int i=0; i<length; i++)
   {
-    Serial.print(buttonPin[i]);
-    Serial.print(buttonState[i]);
+    Serial.print(buttons[i].pinNumber);
+    Serial.print(buttons[i].state);
   }
   
 }
 
 /**
  * Check if a button is clicked
+ * @param buttons An array of button structs
  * @param index The index of the button to check
  * @return true if the button is clicked, false otherwise
  */
-boolean buttonClicked(int index){
+boolean buttonClicked(Button buttons[], int index) {
   // current state
-  int state = digitalRead(buttonPin[index]); // Read the current state of the button
+  int state = digitalRead(buttons[index].pinNumber); // Read the current state of the button
   boolean buttonClick = false; // Initialize buttonClick to false
   // button has pressed
-  if(buttonState[index] == HIGH){ // If the button was previously pressed
+  if(buttons[index].state == HIGH){ // If the button was previously pressed
     if(state == LOW){ // And it is now released
       buttonClick = true; // The button is clicked
     }
   }
-  buttonState[index] = state; // Update the button state
+  buttons[index].state = state; // Update the button state
   return buttonClick; // Return the buttonClick value
 }
 
