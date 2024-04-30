@@ -3,35 +3,35 @@
 
 #if defined(USBCON)
 
+#include <Stream.h>
 #include "RemoteXYStream.h"
-
 
 class CRemoteXYStream_CDCSerial : public CRemoteXYStream {
   
   private:
-  Serial_ * serial;
-  
+  Stream * serial;
+
   public:
-  CRemoteXYStream_CDCSerial (Serial_ * _serial, long _serialSpeed) : CRemoteXYStream () {
+  CRemoteXYStream_CDCSerial (Stream * _serial, long _serialSpeed) : CRemoteXYStream () {
     serial = _serial;
-    serial->begin (_serialSpeed);
+    serial->begin(_serialSpeed);
+
 #if defined(REMOTEXY__DEBUGLOG)
-    RemoteXYDebugLog.write("Init CDC serial ");
-    RemoteXYDebugLog.writeAdd(_serialSpeed);
-    RemoteXYDebugLog.writeAdd(" baud");
+    RemoteXYDebugLog.print("Init CDC serial ");
+    RemoteXYDebugLog.print(_serialSpeed);
+    RemoteXYDebugLog.println(" baud");
 #endif
-  }              
-  
-  void handler () override {   
-    while (serial->available ()) notifyReadByteListener (serial->read ());
   }
 
-  void write (uint8_t byte) override {
-    serial->write (byte);
+  void handler() override {
+    while (serial->available()) notifyReadByteListener(serial->read());
   }
-  
+
+  void write(uint8_t byte) override {
+    serial->write(byte);
+  }
+
 };
-
 
 #endif  //USBCON
 
