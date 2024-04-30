@@ -1,9 +1,3 @@
-// Arduino Flappy Bird homage by augustzf@gmail.com
-#include <Arduino.h>
-#include <Wire.h>
-#include <Adafruit_LEDBackpack.h>
-#include <Adafruit_GFX.h>
-
 // Constants
 Adafruit_8x16matrix matrix = Adafruit_8x16matrix(); // LED matrix object
 const uint8_t PROGMEM bird0[] = {...}; // Array of bytes representing the first bird frame
@@ -11,6 +5,7 @@ const uint8_t PROGMEM bird1[] = {...}; // Array of bytes representing the second
 const uint8_t PROGMEM bird2[] = {...}; // Array of bytes representing the third bird frame
 const byte vibration = A0; // Vibration sensor pin
 const int tapLevel = 512; // Tap level threshold
+
 
 // Variables
 double initYVelocity = 6.5; // Initial vertical velocity of the bird
@@ -35,6 +30,7 @@ byte frame = 0; // Current frame number
 byte frameChange = 1; // Frame change direction
 byte lives = 2; // Number of lives
 
+
 void setup() {
   // Initialize the vibration sensor pin as an input
   pinMode(vibration, INPUT_PULLUP);
@@ -56,6 +52,7 @@ void setup() {
   wallPosition = 0;
   gameMode = false;
 }
+
 
 void loop() {
   matrix.clear();
@@ -122,6 +119,7 @@ void loop() {
 
   matrix.writeDisplay(); 
 }
+
 
 // Draw the walls on the LED matrix
 void drawWalls()
