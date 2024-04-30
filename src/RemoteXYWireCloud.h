@@ -3,75 +3,99 @@
 
 #include "RemoteXYWire.h"
 
-
+/**
+ * Free ID value for the cloud wire.
+ */
 #define REMOTEXYWIRECLOUD_FREE_ID 0xff
 
-
+/**
+ * Interface for sending packages to the cloud wire.
+ */
 class CRemoteXYSendPackageListener {
   public:
-  virtual void sendPackage (uint8_t command, uint8_t *buf, uint16_t length, uint8_t fromPgm) = 0;
+    /**
+     * Sends a package to the cloud wire.
+     * @param command The command byte of the package.
+     * @param buf The data buffer of the package.
+     * @param length The length of the data buffer.
+     * @param fromPgm Whether the data buffer is in program memory.
+     */
+    virtual void sendPackage(uint8_t command, uint8_t *buf, uint16_t length, uint8_t fromPgm) = 0;
 };
 
-class CRemoteXYWireCloud: public CRemoteXYWire {
-
+/**
+ * A cloud-based implementation of the RemoteXY wire.
+ */
+class CRemoteXYWireCloud : public CRemoteXYWire {
   public:
-  CRemoteXYWireCloud * next;
-  uint8_t id;  // 0..7
-  uint8_t newConnection;
-  
+    /**
+     * Constructs a new cloud wire object with the given package listener.
+     * @param _sendPackageListener The package listener to use for sending packages.
+     */
+    CRemoteXYWireCloud(CRemoteXYSendPackageListener *_sendPackageListener) : CRemoteXYWire(), sendPackageListener(_sendPackageListener), id(REMOTEXYWIRECLOUD_FREE_ID), newConnection(0) {}
+
+    /**
+     * Initializes the cloud wire with the given ID.
+     * @param _id The ID to use for the cloud wire.
+     */
+    void init(uint8_t _id) {
+      id = _id;
+      newConnection = 1;
+    }
+
+    /**
+     * Stops the cloud wire and releases its resources.
+     */
+    virtual ~CRemoteXYWireCloud() {}
+
+    /**
+     * Stops the cloud wire and releases its resources.
+     */
+    void stop() {
+      setReceivePackageListener(NULL);
+      id = REMOTEXYWIRECLOUD_FREE_ID;
+      newConnection = 0;
+    }
+
+    /**
+     * Checks whether the cloud wire is running.
+     * @return True if the cloud wire is running, false otherwise.
+     */
+    uint8_t running() {
+      return id != REMOTEXYWIRECLOUD_FREE_ID;
+    }
+
+    /**
+     * Checks whether there is a new connection for the cloud wire.
+     * @return True if there is a new connection, false otherwise.
+     */
+    uint8_t isNewConnection() {
+      return newConnection;
+    }
+
+    /**
+     * Sends a package to the cloud wire.
+     * @param command The command byte of the package.
+     * @param buf The data buffer of the package.
+     * @param length The length of the data buffer.
+     * @param fromPgm Whether the data buffer is in program memory.
+     */
+    void sendPackage(uint8_t command, uint8_t *buf, uint16_t length, uint8_t fromPgm) override {
+      sendPackageListener->sendPackage(command | (id << 1), buf, length, fromPgm);
+    }
+
+    /**
+     * Receives a package from the cloud wire.
+     * @param package The package to receive.
+     */
+    void receivePackage(CRemoteXYPackage *package) {
+      sendPackageListener->receivePackage(package);
+    }
+
   private:
-  CRemoteXYSendPackageListener * sendPackageListener;
-  
-  public:
-  CRemoteXYWireCloud (CRemoteXYSendPackageListener * _sendPackageListener) : CRemoteXYWire () {
-    sendPackageListener = _sendPackageListener;
-    id = REMOTEXYWIRECLOUD_FREE_ID;
-    newConnection = 0; 
-  }
-          
-  public:
-  void init (uint8_t _id) {
-    id = _id;
-    newConnection = 1;
-  }  
-  
-  /*
-  public:
-  void begin () {
-    newConnection = 0; 
-  }  
-  */ 
-  
-  public:    
-  void stop () override {
-    setReceivePackageListener (NULL);
-    id = REMOTEXYWIRECLOUD_FREE_ID;
-    newConnection = 0;
-  }
-  
-  public:
-  uint8_t running () override {
-    if (id == REMOTEXYWIRECLOUD_FREE_ID) return 0;
-    return 1;
-  }
-
-  public:
-  uint8_t isNewConnection () {
-    return newConnection;
-  }
-  
-        
-  public:
-  void sendPackage (uint8_t command, uint8_t *buf, uint16_t length, uint8_t fromPgm) override {
-    sendPackageListener->sendPackage (command | (id<<1), buf, length, fromPgm);
-  }
-  
-
-  public:
-  void receivePackage (CRemoteXYPackage * package) {
-    notifyReceivePackageListener (package);
-  }
-
+    CRemoteXYSendPackageListener *sendPackageListener;
+    uint8_t id;
+    uint8_t newConnection;
 };
 
 #endif //RemoteXYWireCloud_h
