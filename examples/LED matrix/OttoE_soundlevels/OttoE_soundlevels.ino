@@ -32,7 +32,7 @@ void loop()
    while (millis() - startMillis < sampleWindow)
    {
       sample = analogRead(0); 
-      if (sample < 1024)  // toss out spurious readings
+      if (sample < 1024 && sample > 0)  // toss out spurious readings
       {
          if (sample > signalMax)
          {
@@ -51,16 +51,13 @@ void loop()
    // map 1v p-p level to the max scale of the display
    int displayPeak = map(peakToPeak, 0, 1023, 0, maxScale);
 
-   // Update the display:
-   for (int i = 0; i < 7; i++)  // shift the display left
-   {
-      matrix.displaybuffer[i] = matrix.displaybuffer[i+1];
-   }
+   // Shift the display left
+   memmove(matrix.displaybuffer, matrix.displaybuffer + 1, 7 * sizeof(uint16_t));
 
    // draw the new sample
    for (int i = 0; i <= maxScale; i++)
    {
-      if (i >= displayPeak)  // blank these pixels
+      if (i == maxScale)  // blank this pixel
       {
          matrix.drawPixel(7, i, 0);
       }
@@ -74,4 +71,8 @@ void loop()
       }
    }
    matrix.writeDisplay();  // write the changes we just made to the display
+
+   // Add a delay to reduce CPU usage and make the output more stable
+   delay(10);
 }
+
