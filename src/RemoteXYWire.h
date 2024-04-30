@@ -1,3 +1,7 @@
+// RemoteXYWire.h
+// ----------------
+// This is a header file for the CRemoteXYWire class which provides an interface for handling communication with RemoteXY devices.
+
 #ifndef RemoteXYWire_h
 #define RemoteXYWire_h
 
@@ -35,7 +39,7 @@ class CRemoteXYWire {
 
   private:
   // A pointer to the object that will receive RemoteXY packages
-  CRemoteXYReceivePackageListener * receivePackageListener;
+  CRemoteXYReceivePackageListener * receivePackageListener; // Pointer to the object that will receive RemoteXY packages
 
   public:
   // Default constructor
@@ -62,7 +66,7 @@ class CRemoteXYWire {
   public:
   // A pure virtual function that must be implemented by classes that inherit from this class
   // This function is responsible for handling incoming data
-  virtual void handler () {};
+  virtual void handler () {}; // Handler function for incoming data
 
   // A function to check if the RemoteXYWire class is currently running
   virtual uint8_t running () {
