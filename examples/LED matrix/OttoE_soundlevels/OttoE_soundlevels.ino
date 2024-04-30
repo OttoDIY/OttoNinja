@@ -13,7 +13,6 @@ Adafruit_8x16matrix matrix = Adafruit_8x16matrix();
 const int maxScale = 16;
 const int redZone = 5;
 const int sampleWindow = 50; // Sample window width in mS (50 mS = 20Hz)
-unsigned int sample;
 
 void setup() 
 {
@@ -31,7 +30,7 @@ void loop()
 
    while (millis() - startMillis < sampleWindow)
    {
-      sample = analogRead(0); 
+      int sample = analogRead(0); 
       if (sample < 1024 && sample > 0)  // toss out spurious readings
       {
          if (sample > signalMax)
@@ -46,10 +45,11 @@ void loop()
    }
    peakToPeak = signalMax - signalMin;
    double volts = (peakToPeak * 5) / 1024;  // convert to volts
- 
+
    Serial.println(volts);
    // map 1v p-p level to the max scale of the display
    int displayPeak = map(peakToPeak, 0, 1023, 0, maxScale);
+   if (displayPeak < 0) displayPeak = 0; // make sure the value is not negative
 
    // Shift the display left
    memmove(matrix.displaybuffer, matrix.displaybuffer + 1, 7 * sizeof(uint16_t));
@@ -75,4 +75,3 @@ void loop()
    // Add a delay to reduce CPU usage and make the output more stable
    delay(10);
 }
-
