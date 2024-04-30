@@ -10,15 +10,17 @@ class CRemoteXYStream_CDCSerial : public CRemoteXYStream {
   
   private:
   Stream * serial;
+  long serialSpeed;
 
   public:
   CRemoteXYStream_CDCSerial (Stream * _serial, long _serialSpeed) : CRemoteXYStream () {
     serial = _serial;
-    serial->begin(_serialSpeed);
+    serialSpeed = _serialSpeed;
+    serial->begin(serialSpeed);
 
 #if defined(REMOTEXY__DEBUGLOG)
     RemoteXYDebugLog.print("Init CDC serial ");
-    RemoteXYDebugLog.print(_serialSpeed);
+    RemoteXYDebugLog.print(serialSpeed);
     RemoteXYDebugLog.println(" baud");
 #endif
   }
