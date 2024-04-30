@@ -1,24 +1,28 @@
 #ifndef RemoteXYComm_Ethernet_h
 #define RemoteXYComm_Ethernet_h
 
- 
+// Include necessary header files
 #if defined (ethernet_h_) 
 
 #include "RemoteXYDebugLog.h"
 #include "RemoteXYComm.h"
 #include "RemoteXYFunc.h"
 
-
+// Define the maximum size of the send buffer
 #define REMOREXYCOMM_ETHERNET__SEND_BUFFER_SIZE 32
 
+// Define the Ethernet client class that inherits from the CRemoteXYClient class
 class CRemoteXYClient_Ethernet : public CRemoteXYClient {
   public:
   EthernetClient client;
   
+  // Send buffer and buffer count variables
   uint8_t sendBuffer[REMOREXYCOMM_ETHERNET__SEND_BUFFER_SIZE];
   uint16_t sendBufferCount; 
   uint16_t sendBytesAvailable;  
 
+  // Implement the connect, connected, stop, handler, startWrite, and write methods
+  // from the CRemoteXYClient class
   public:
   uint8_t connect (const char *host, uint16_t port) override {
     return client.connect(host, port);
@@ -57,9 +61,9 @@ class CRemoteXYClient_Ethernet : public CRemoteXYClient {
     } 
   } 
   
-  
 };
 
+// Define a custom EthernetServer class for ESP32
 #if defined (ESP32)
 class EthernetServerESP32: public EthernetServer {
   public:
@@ -68,6 +72,7 @@ class EthernetServerESP32: public EthernetServer {
 };
 #endif
 
+// Define the Ethernet server class that inherits from the CRemoteXYServer class
 class CRemoteXYServer_Ethernet : public CRemoteXYServer {
   private:
   EthernetServer * server;
@@ -114,7 +119,7 @@ class CRemoteXYServer_Ethernet : public CRemoteXYServer {
   
 };
 
-
+// Define the Ethernet communication class that inherits from the CRemoteXYComm class
 class CRemoteXYComm_Ethernet : public CRemoteXYComm {
 
   private:
