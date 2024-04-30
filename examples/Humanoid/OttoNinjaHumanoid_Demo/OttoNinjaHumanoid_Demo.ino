@@ -5,7 +5,6 @@ your hands in front of him.
 */
 
 // PINOUT FOR ESP8266
-
 // A0 = GPIO A0        TX = GPIO 1    
 // D0 = GPIO 16        RX = GPIO 3 
 // D5 = GPIO 14        D1 = GPIO 5
@@ -17,187 +16,156 @@ your hands in front of him.
 
 #include <RemoteXY.h>
 #include <Servo.h>
-#include <SPI.h>
-#include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_LEDBackpack.h>
+#include <SPI.h>
+#include <Wire.h>
+
+constexpr std::uint8_t kMatrixAddress = 0x70;
+constexpr std::uint8_t kServoLeftFootPin = 13;
+constexpr std::uint8_t kServoLeftLegPin = 15;
+constexpr std::uint8_t kServoRightFootPin = 0;
+constexpr std::uint8_t kServoRightLegPin = 2;
+constexpr std::uint8_t kServoLeftArmPin = 16;
+constexpr std::uint8_t kServoRightArmPin = 3;
+constexpr std::uint8_t kServoHeadPin = 1;
+constexpr std::uint8_t kEchoPin = 14;
+constexpr std::uint8_t kTrigPin = 12;
 
 Adafruit_8x16matrix matrix = Adafruit_8x16matrix();
 
 //CALIBRATION SETTINGS:
 
-int LA0= 60 +0;     // Left Leg standing Position             - = Tilt Right   + = Tilt Left  
-int RA0= 120 +0;    // Right Leg standing position            - = Tilt Right   + = Tilt Left  
-int LA1= 180;       // Left Leg roll Position                 - = Tilt Right   + = Tilt Left   
-int RA1= 0;         // Right Leg roll position                - = Tilt Right   + = Tilt Left   
-int LATL= LA0 +40;  // Left Leg tilt left walking position    - = Tilt Right   + = Tilt Left 
-int RATL= RA0 +60;  // Right Leg tilt left walking position   - = Tilt Right   + = Tilt Left 
-int LATR= LA0 -60;  // Left Leg tilt right walking position   - = Tilt Right   + = Tilt Left 
-int RATR= RA0 -40;  // Right Leg tilt right walking position  - = Tilt Right   + = Tilt Left 
+constexpr int kLeftLegStandingPosition = 60 + 0; // Left Leg standing Position - = Tilt Right + = Tilt Left
+constexpr int kRightLegStandingPosition = 120 + 0; // Right Leg standing position - = Tilt Right + = Tilt Left
+constexpr int kLeftLegRollPosition = 180; // Left Leg roll Position - = Tilt Right + = Tilt Left
+constexpr int kRightLegRollPosition = 0; // Right Leg roll position - = Tilt Right + = Tilt Left
+constexpr int kLeftLegTiltLeftWalkingPosition = kLeftLegStandingPosition + 40; // Left Leg tilt left walking position - = Tilt Right + = Tilt Left
+constexpr int kRightLegTiltLeftWalkingPosition = kRightLegStandingPosition + 60; // Right Leg tilt left walking position - = Tilt Right + = Tilt Left
+constexpr int kLeftLegTiltRightWalkingPosition = kLeftLegStandingPosition - 60; // Left Leg tilt right walking position - = Tilt Right + = Tilt Left
+constexpr int kRightLegTiltRightWalkingPosition = kRightLegStandingPosition - 40; // Right Leg tilt right walking position - = Tilt Right + = Tilt Left
 
-int LFFWRS=15;  // Left foot forward walking rotation Speed   0 = SLOW   90 = FAST  
-int RFFWRS=15 ; // Right foot forward walking rotation Speed  0 = SLOW   90 = FAST  
-int LFBWRS= 15; // Left foot Backward walking rotation Speed  0 = SLOW   90 = FAST  
-int RFBWRS= 15; // Right foot Backward walking rotation Speed 0 = SLOW   90 = FAST  
+constexpr int kLeftFootForwardWalkingRotationSpeed = 15; // Left foot forward walking rotation Speed 0 = SLOW 90 = FAST
+constexpr int kRightFootForwardWalkingRotationSpeed = 15; // Right foot forward walking rotation Speed 0 = SLOW 90 = FAST
+constexpr int kLeftFootBackwardWalkingRotationSpeed = 15; // Left foot Backward walking rotation Speed 0 = SLOW 90 = FAST
+constexpr int kRightFootBackwardWalkingRotationSpeed = 15; // Right foot Backward walking rotation Speed 0 = SLOW 90 = FAST
 
-
-////////////////////////////////////////
-
-const uint8_t ServoLeftFootPin   = 13;     //D7
-const uint8_t ServoLeftLegPin  = 15;     //D8
-const uint8_t ServoRightFootPin  = 0;      //D3
-const uint8_t ServoRightLegPin = 2;      //D4
-const uint8_t ServoLeftArmPin    = 16;     //D0
-const uint8_t ServoRightArmPin   = 3;      //RX
-const uint8_t ServoHeadPin       = 1;      //TX
-
-Servo myservoLeftFoot;
-Servo myservoLeftLeg;
-Servo myservoRightFoot;
-Servo myservoRightLeg;
-
-Servo myservoLeftArm;
-Servo myservoRightArm;
-Servo myservoHead;
-
-#define echoPin 14 // attach pin D5 ESP8266 to pin Echo of HC-SR04
-#define trigPin 12 //attach pin D6 ESP8266 to pin Trig of HC-SR04
-long duration; // variable for the duration of sound wave travel
-int distance; // variable for the distance measurement
-
-void setup() 
-{
-  
-  NinjaHome();
-
+void setup() {
   Serial.begin(250000);
 
-  pinMode(trigPin, OUTPUT); // Sets the trigPin as an OUTPUT
-  pinMode(echoPin, INPUT); // Sets the echoPin as an INPUT
+  pinMode(kTrigPin, OUTPUT);
+  pinMode(kEchoPin, INPUT);
 
-  matrix.begin(0x70);  // pass in the address
-
+  matrix.begin(kMatrixAddress);
   matrix.setTextSize(1);
-  matrix.setTextWrap(false);  // we dont want text to wrap so it scrolls nicely
+  matrix.setTextWrap(false);
   matrix.setTextColor(LED_ON);
   matrix.setRotation(3);
-  for (int8_t x=7; x>=-50; x--) 
-  {
+
+  for (int8_t x = 7; x > -50; x--) {
     matrix.clear();
-    matrix.setCursor(x,0);
+    matrix.setCursor(x, 0);
     matrix.print("NINJA");
     matrix.writeDisplay();
-    delay(50);
+    std::chrono::milliseconds(50);
   }
-  
+
+  initializeServos();
 }
 
+void loop() {
+  int distance = measureDistance();
 
-
-
-
-
-
-void loop() 
-{
-  
-  Distance();
-
-  if ((distance >= 2)&&(distance < 10))
-  {  
-    RobotHeadShake();
-    RobotLeftArmWave();
-    IAmNinja();
+  if (distance >= 2 && distance < 10) {
+    robotHeadShake();
+    robotLeftArmWave();
+    iAmNinja();
   }
- 
 }
 
+void initializeServos() {
+  myservoLeftFoot.attach(kServoLeftFootPin, 544, 2400);
+  myservoLeftLeg.attach(kServoLeftLegPin, 544, 2400);
+  myservoRightFoot.attach(kServoRightFootPin, 544, 2400);
+  myservoRightLeg.attach(kServoRightLegPin, 544, 2400);
+  myservoLeftArm.attach(kServoLeftArmPin, 544, 2400);
+  myservoRightArm.attach(kServoRightArmPin, 544, 2400);
+  myservoHead.attach(kServoHeadPin, 544, 2400);
 
-void NinjaHome()
-{ 
-  myservoLeftLeg.attach(ServoLeftLegPin, 544, 2400); 
-  myservoRightLeg.attach(ServoRightLegPin, 544, 2400);  
-  myservoLeftArm.attach(ServoLeftArmPin, 544, 2400);
-  myservoRightArm.attach(ServoRightArmPin, 544, 2400);  
-  myservoHead.attach(ServoHeadPin, 544, 2400); 
-  myservoLeftArm.write(180); 
-  myservoRightArm.write(0);
-  myservoHead.write(90); 
-  delay(400);    
-  myservoLeftLeg.write(60); 
-  myservoRightLeg.write(120);
-  delay(400);
+  setServoPositions(
+      kLeftLegStandingPosition, kRightLegStandingPosition,
+      kLeftLegRollPosition, kRightLegRollPosition,
+      kLeftArmStandingPosition, kRightArmStandingPosition,
+      kHeadStandingPosition);
+
+  myservoLeftFoot.detach();
   myservoLeftLeg.detach();
+  myservoRightFoot.detach();
   myservoRightLeg.detach();
   myservoLeftArm.detach();
   myservoRightArm.detach();
   myservoHead.detach();
 }
 
-
-void RobotHeadShake()
-{  
-  myservoHead.attach(ServoHeadPin, 544, 2400);
-  myservoHead.write(135);  
-  delay(200);
-  myservoHead.write(45);  
-  delay(400);
-  myservoHead.write(90);  
-  delay(200);
-   
+void setServoPositions(int leftLeg, int rightLeg, int leftArm, int rightArm, int head) {
+  myservoLeftLeg.write(leftLeg);
+  myservoRightLeg.write(rightLeg);
+  myservoLeftArm.write(leftArm);
+  myservoRightArm.write(rightArm);
+  myservoHead.write(head);
 }
 
-
-void RobotLeftArmWave()
-{  
-  myservoRightArm.attach(ServoRightArmPin, 544, 2400);
-  myservoRightArm.write(180);
-  delay(400);  
-  myservoRightArm.write(135);
-  delay(200);  
-  myservoRightArm.write(180);
-  delay(200);  
-  myservoRightArm.write(135);
-  delay(200);
-  myservoRightArm.write(180);
-  delay(200);  
-  myservoRightArm.write(0);
-  delay(400);     
+void robotHeadShake() {
+  myservoHead.attach(kServoHeadPin, 544, 2400);
+  setServoPositions(kHeadStandingPosition, kHeadStandingPosition, kRightArmStandingPosition, kRightArmStandingPosition, kHeadShakingPosition);
+  std::chrono::milliseconds(200);
+  setServoPositions(kHeadStandingPosition, kHeadStandingPosition, kRightArmStandingPosition, kRightArmStandingPosition, kHeadRestingPosition);
+  std::chrono::milliseconds(400);
+  setServoPositions(kHeadStandingPosition, kHeadStandingPosition, kRightArmStandingPosition, kRightArmStandingPosition, kHeadRestingPosition);
+  std::chrono::milliseconds(200);
 }
 
+void robotLeftArmWave() {
+  myservoRightArm.attach(kServoRightArmPin, 544, 2400);
+  setServoPositions(kLeftArmStandingPosition, kRightArmWavingPosition, kRightArmStandingPosition, kRightArmWavingPosition, kHeadStandingPosition);
+  std::chrono::milliseconds(400);
+  setServoPositions(kLeftArmStandingPosition, kRightArmRestingPosition, kRightArmStandingPosition, kRightArmRestingPosition, kHeadStandingPosition);
+  std::chrono::milliseconds(200);
+  setServoPositions(kLeftArmStandingPosition, kRightArmWavingPosition, kRightArmStandingPosition, kRightArmWavingPosition, kHeadStandingPosition);
+  std::chrono::milliseconds(200);
+  setServoPositions(kLeftArmStandingPosition, kRightArmRestingPosition, kRightArmStandingPosition, kRightArmRestingPosition, kHeadStandingPosition);
+  std::chrono::milliseconds(200);
+}
 
-
-void IAmNinja()
-{ 
-  matrix.setTextSize(1);
-  matrix.setTextWrap(false);  // we dont want text to wrap so it scrolls nicely
-  matrix.setTextColor(LED_ON);
-  matrix.setRotation(3);
-  for (int8_t x=7; x>=-80; x--) 
-  {
+void iAmNinja() {
+  matrix.clear();
+  matrix.setCursor(0, 0);
+  matrix.print("I AM NINJA");
+  matrix.writeDisplay();
+  for (int8_t x = 7; x > -80; x--) {
     matrix.clear();
-    matrix.setCursor(x,0);
+    matrix.setCursor(x, 0);
     matrix.print("I AM NINJA");
     matrix.writeDisplay();
-    delay(50);
+    std::chrono::milliseconds(50);
   }
-}  
+}
 
-void Distance() 
-{
+int measureDistance() {
   // Clears the trigPin condition
-  digitalWrite(trigPin, LOW);
-  delayMicroseconds(2);
+  digitalWrite(kTrigPin, LOW);
+  std::chrono::microseconds(2);
   // Sets the trigPin HIGH (ACTIVE) for 10 microseconds
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
+  digitalWrite(kTrigPin, HIGH);
+  std::chrono::microseconds(10);
+  digitalWrite(kTrigPin, LOW);
   // Reads the echoPin, returns the sound wave travel time in microseconds
-  duration = pulseIn(echoPin, HIGH);
+  auto duration = pulseIn(kEchoPin, HIGH);
   // Calculating the distance
-  distance = duration * 0.034 / 2; // Speed of sound wave divided by 2 (go and back)
+  auto distance = duration * 0.034 / 2; // Speed of sound wave divided by 2 (go and back)
   // Displays the distance on the Serial Monitor
   Serial.print("Distance: ");
   Serial.print(distance);
   Serial.println(" cm");
+  return distance;
 }
