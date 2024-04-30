@@ -10,19 +10,17 @@
 
 // Button pin definitions
 const int buttonRightPin = 14;
-const int buttonLeftPin  = 16;
+const int buttonLeftPin = 16;
 
 // Game constants
-// buttons
-const int RIGHTBUTTON = 0;
-const int LEFTBUTTON  = 1;
-// direction
-const int TOP    = 0;
-const int RIGHT  = 1;
+const int RIGHT_BUTTON = 0;
+const int LEFT_BUTTON = 1;
+const int TOP = 0;
+const int RIGHT = 1;
 const int BOTTOM = 2;
-const int LEFT   = 3;
-// Snake
+const int LEFT = 3;
 const int MAX_SNAKE_LENGTH = 10;
+const int MATRIX_ADDRESS = 0x70;
 
 // Variables
 Adafruit_8x8matrix matrix = Adafruit_8x8matrix();  // Display
@@ -36,25 +34,30 @@ unsigned long delayTime = 500;                     // Game step in ms
 
 int fruitX, fruitY;
 unsigned long fruitPrevTime = 0;
-unsigned long fruitBlinkTime = 1000/250;
+unsigned long fruitBlinkTime = 1000 / 250;
 int fruitLed = LED_ON;
 
 void setup() {
   Serial.begin(9600);
   Serial.println("Snake is started");
-  randomSeed(analogRead(0));
 
-  // Init led matrix
-  matrix.begin(0x70);
-
-  // init buttons
+  // Init buttons
   int buttonpins[] = {buttonRightPin, buttonLeftPin};
-  initButtons(buttonpins, 2);
+  if (initButtons(buttonpins, 2) != 0) {
+    Serial.println("Error initializing buttons");
+    return;
+  }
 
-  // init snake
+  // Init matrix
+  if (initMatrix(MATRIX_ADDRESS) != 0) {
+    Serial.println("Error initializing matrix");
+    return;
+  }
+
+  // Init snake
   snakeX[0] = 4;
   snakeY[0] = 7;
-  for(int i=1; i<MAX_SNAKE_LENGTH; i++){
+  for (int i = 1; i < MAX_SNAKE_LENGTH; i++) {
     snakeX[i] = snakeY[i] = -1;
   }
   makeFruit();
@@ -63,27 +66,29 @@ void setup() {
 void loop() {
   checkButtons();
   unsigned long currentTime = millis();
-  if(currentTime - prevTime >= delayTime){
-    nextstep(); 
+  if (currentTime - prevTime >= delayTime) {
+    nextStep();
     buttonRead = false;
     prevTime = currentTime;
   }
-  draw();
+  clearMatrix();
+  drawSnake();
+  drawFruit();
+  matrix.writeDisplay();
 }
 
 // Check for button clicks and update the direction variable accordingly
 void checkButtons() {
-  if(!buttonRead) {
+  if (!buttonRead) {
     int currentDirection = direction;
-    if(buttonClicked(LEFTBUTTON)) {
+    if (buttonClicked(LEFT_BUTTON)) {
       direction--;
-      if(direction < 0) {
+      if (direction < 0) {
         direction = LEFT;
       }
-    }
-    else if(buttonClicked(RIGHTBUTTON)) {
+    } else if (buttonClicked(RIGHT_BUTTON)) {
       direction++;
-      if(direction > 3) {
+      if (direction > 3) {
         direction = TOP;
       }
     }
@@ -91,66 +96,55 @@ void checkButtons() {
   }
 }
 
-// Draw the snake and fruit on the LED matrix
-void draw() {
-  matrix.clear();
-  drawSnake();
-  drawFruit();
-  matrix.writeDisplay();
-}
-
 // Draw the snake on the LED matrix
 void drawSnake() {
-  for(int i=0; i<snakeLength; i++){
-    matrix.drawPixel(snakeX[i], snakeY[i], LED_ON);
+  for (int i = 0; i < snakeLength; i++) {
+    drawPixel(snakeX[i], snakeY[i], LED_ON);
   }
 }
 
 // Draw the fruit on the LED matrix
 void drawFruit() {
-  if(inPlayField(fruitX, fruitY)) {
+  if (inPlayField(fruitX, fruitY)) {
     unsigned long currenttime = millis();
-    if(currenttime - fruitPrevTime >= fruitBlinkTime) {
+    if (currenttime - fruitPrevTime >= fruitBlinkTime) {
       fruitLed = (fruitLed == LED_ON) ? LED_OFF : LED_ON;
       fruitPrevTime = currenttime;
     }
-    matrix.drawPixel(fruitX, fruitY, fruitLed);
+    drawPixel(fruitX, fruitY, fruitLed);
   }
 }
 
 // Check if the given coordinates are within the playfield
 boolean inPlayField(int x, int y) {
-  return (x>=0) && (x<8) && (y>=0) && (y<8);
+  return (x >= 0) && (x < 8) && (y >= 0) && (y < 8);
 }
 
 // Move the snake and check for collisions
-void nextstep() {
-  for(int i=snakeLength-1; i>0; i--) {
-    snakeX[i] = snakeX[i-1];
-    snakeY[i] = snakeY[i-1];
+void nextStep() {
+  for (int i = snakeLength - 1; i > 0; i--) {
+    snakeX[i] = snakeX[i - 1];
+    snakeY[i] = snakeY[i - 1];
   }
-  switch(direction) {
+  switch (direction) {
     case TOP:
-      snakeY[0] = snakeY[0]-1;
+      snakeY[0] = snakeY[0] - 1;
       break;
     case RIGHT:
-      snakeX[0] = snakeX[0]+1;
+      snakeX[0] = snakeX[0] + 1;
       break;
     case BOTTOM:
-      snakeY[0] = snakeY[0]+1;
+      snakeY[0] = snakeY[0] + 1;
       break;
     case LEFT:
-      snakeX[0]=snakeX[0]-1;
+      snakeX[0] = snakeX[0] - 1;
       break;
   }
-  if((snakeX[0] == fruitX) && (snakeY[0] == fruitY)) {
+  if (checkCollision() || checkGameOver()) {
+    gameOver();
+  } else if (checkEatFruit()) {
+    updateFruit();
     snakeLength++;
-    if(snakeLength < MAX_SNAKE_LENGTH) {
-      makeFruit();
-    } 
-    else {
-      fruitX = fruitY = -1;
-    }
   }
 }
 
@@ -159,7 +153,7 @@ void makeFruit() {
   int x, y;
   x = random(0, 8);
   y = random(0, 8);
-  while(isPartOfSnake(x, y)) {
+  while (isPartOfSnake(x, y)) {
     x = random(0, 8);
     y = random(0, 8);
   }
@@ -169,10 +163,80 @@ void makeFruit() {
 
 // Check if the given coordinates are part of the snake
 boolean isPartOfSnake(int x, int y) {
-  for(int i=0; i<snakeLength-1; i++) {
-    if((x == snakeX[i]) && (y == snakeY[i])) {
+  for (int i = 0; i < snakeLength - 1; i++) {
+    if ((x == snakeX[i]) && (y == snakeY[i])) {
       return true;
     }
   }
   return false;
 }
+
+// Check if the snake has collided with itself
+boolean checkCollision() {
+  for (int i = 1; i < snakeLength; i++) {
+    if ((snakeX[0] == snakeX[i]) && (snakeY[0] == snakeY[i])) {
+      return true;
+    }
+  }
+  return false;
+}
+
+// Check if the snake has eaten the fruit
+boolean checkEatFruit() {
+  if ((snakeX[0] == fruitX) && (snakeY[0] == fruitY)) {
+    return true;
+  }
+  return false;
+}
+
+// Check if the game is over
+boolean checkGameOver() {
+  if ((snakeX[0] < 0) || (snakeX[0] >= 8) || (snakeY[0] < 0) || (snakeY[0] >= 8)) {
+    return true;
+  }
+  return false;
+}
+
+// Game over sequence
+void gameOver() {
+  // Add game over sequence here
+}
+
+// Initialize the matrix
+int initMatrix(int address) {
+  Wire.begin();
+  matrix.begin(address);
+  matrix.clear();
+  matrix.writeDisplay();
+  return 0;
+}
+
+// Clear the matrix
+void clearMatrix() {
+  matrix.clear();
+}
+
+// Draw a pixel on the matrix
+void drawPixel(int x, int y, int led) {
+  matrix.drawPixel(x, y, led);
+}
+
+// Initialize the buttons
+int initButtons(int *buttonpins, int numButtons) {
+  for (int i = 0; i < numButtons; i++) {
+    pinMode(buttonpins[i], INPUT_PULLUP);
+  }
+  return 0;
+}
+
+// Check if a button has been clicked
+boolean buttonClicked(int button) {
+  if (digitalRead(button) == LOW) {
+    delay(50);
+    if (digitalRead(button) == LOW) {
+      return true;
+    }
+  }
+  return false;
+}
+
