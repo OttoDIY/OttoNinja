@@ -6,16 +6,36 @@
 #include "RemoteXYThread.h"
 #include "RemoteXYStream.h"
 
-// Define the CRemoteXYConnectionStream class which inherits from CRemoteXYConnection
+/**
+ * @class CRemoteXYConnectionStream
+ * @brief A class that represents a connection stream for RemoteXY.
+ *
+ * This class inherits from CRemoteXYConnection and provides a way to handle
+ * a connection stream using a CRemoteXYStream object.
+ */
 class CRemoteXYConnectionStream : public CRemoteXYConnection {
   // Pointer to the stream object
   CRemoteXYStream *stream;
 
   public: 
-  // Constructor with a CRemoteXYStream object as parameter
-  CRemoteXYConnectionStream(CRemoteXYStream *stream) : stream(stream) {}
+  /**
+   * @brief Constructor with a CRemoteXYStream object as parameter.
+   *
+   * @param stream A pointer to the stream object.
+   */
+  CRemoteXYConnectionStream(CRemoteXYStream *stream) : stream(stream) {
+    // Check if the stream pointer is not null
+    if (!stream) {
+      REMOTEXY_DEBUG_LOG_ERROR("Stream pointer is null.");
+      return;
+    }
+  }
 
-  // Override the init method from CRemoteXYConnection
+  /**
+   * @brief Override the init method from CRemoteXYConnection.
+   *
+   * @param data A pointer to the data object.
+   */
   void init(CRemoteXYData *data) override {
     // Create a new CRemoteXYWireStream object with data as parameter
     CRemoteXYWireStream *wireStream = new CRemoteXYWireStream(data);
@@ -25,7 +45,11 @@ class CRemoteXYConnectionStream : public CRemoteXYConnection {
     CRemoteXYThread::startThread(data, this, wireStream, 0);
   };
 
-  // Override the handleWire method from CRemoteXYConnection
+  /**
+   * @brief Override the handleWire method from CRemoteXYConnection.
+   *
+   * @param wire A pointer to the wire object.
+   */
   void handleWire(CRemoteXYWire *wire) override {
     // Call the handler method of the wire object
     wire->handler();
