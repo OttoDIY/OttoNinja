@@ -98,4 +98,68 @@ class CRemoteXYWireCloud : public CRemoteXYWire {
     uint8_t newConnection;
 };
 
+/**
+ * Represents a package of data to be sent or received over the cloud wire.
+ */
+class CRemoteXYPackage {
+  public:
+    /**
+     * Constructs a new package object with the given parameters.
+     * @param command The command byte of the package.
+     * @param buf The data buffer of the package.
+     * @param length The length of the data buffer.
+     * @param fromPgm Whether the data buffer is in program memory.
+     */
+    CRemoteXYPackage(uint8_t command, uint8_t *buf, uint16_t length, uint8_t fromPgm) : command(command), buf(buf), length(length), fromPgm(fromPgm) {}
+
+    /**
+     * Destructor for the package object.
+     */
+    virtual ~CRemoteXYPackage() {}
+
+    /**
+     * Creates a copy of the package.
+     * @return A copy of the package.
+     */
+    virtual CRemoteXYPackage *clone() const = 0;
+
+    /**
+     * Gets the command byte of the package.
+     * @return The command byte of the package.
+     */
+    uint8_t getCommand() const {
+      return command;
+    }
+
+    /**
+     * Gets the data buffer of the package.
+     * @return The data buffer of the package.
+     */
+    const uint8_t *getData() const {
+      return buf;
+    }
+
+    /**
+     * Gets the length of the data buffer.
+     * @return The length of the data buffer.
+     */
+    uint16_t getLength() const {
+      return length;
+    }
+
+    /**
+     * Checks whether the data buffer is in program memory.
+     * @return True if the data buffer is in program memory, false otherwise.
+     */
+    uint8_t isFromPgm() const {
+      return fromPgm;
+    }
+
+  private:
+    uint8_t command;
+    const uint8_t *buf;
+    uint16_t length;
+    uint8_t fromPgm;
+};
+
 #endif //RemoteXYWireCloud_h
