@@ -7,7 +7,7 @@ const uint8_t ServoLeftArmPin    = 16;     //D0
 const uint8_t ServoRightArmPin   = 3;      //RX
 const uint8_t ServoHeadPin       = 1;      //TX
 
-// RemoteXY include library
+// Define the library and include necessary header files
 #define REMOTEXY_MODE__ESP8266WIFI_LIB_POINT
 #include <ESP8266WiFi.h>
 #include <RemoteXY.h>
@@ -20,7 +20,7 @@ const uint8_t ServoHeadPin       = 1;      //TX
 #define REMOTEXY_WIFI_PASSWORD "12345678"
 #define REMOTEXY_SERVER_PORT 6377
 
-// RemoteXY configurate
+// RemoteXY configuration
 #pragma pack(push, 1)
 uint8_t RemoteXY_CONF[] =
   { 255,6,0,0,0,66,0,13,8,0,
@@ -31,11 +31,11 @@ uint8_t RemoteXY_CONF[] =
   17,12,1,31,240,159,166,191,0,1,
   3,56,16,17,12,1,31,76,240,159,
   166,190,0 };
-  
-// this structure defines all the variables and events of your control interface 
+
+// Define a structure for variables and events of the control interface
 struct {
 
-    // input variables
+    // Input variables
   int8_t J_x; // =-100..100 x-coordinate joystick position 
   int8_t J_y; // =-100..100 y-coordinate joystick position 
   uint8_t button_B; // =1 if button pressed, else =0 
@@ -43,7 +43,7 @@ struct {
   uint8_t button_Y; // =1 if button pressed, else =0 
   uint8_t button_A; // =1 if button pressed, else =0 
 
-    // other variable
+    // Other variable
   uint8_t connect_flag;  // =1 if wire connected, else =0 
 
 } RemoteXY;
@@ -75,6 +75,7 @@ Servo myservoLeftArm;
 Servo myservoRightArm;
 Servo myservoHead;
 
+// Setup function
 void setup() {
   Serial.begin(250000);
 
@@ -109,6 +110,7 @@ void setup() {
   RemoteXY_Init();
 }
 
+// Loop function
 void loop() {
   RemoteXY_Handler();
 
@@ -158,6 +160,7 @@ void loop() {
   Serial.println(ModeCounter);
 }
 
+// Function to update servos based on the mode and joystick position
 void updateServos() {
   if (ModeCounter == 0) {
     // Walking mode
@@ -213,6 +216,7 @@ void updateServos() {
   }
 }
 
+// Function to detach all servos
 void detachServos() {
   myservoLeftFoot.detach();
   myservoRightFoot.detach();
@@ -222,10 +226,12 @@ void detachServos() {
   myservoRightArm.detach();
 }
 
+// Function to handle stopping the robot
 void NinjaStop() {
   detachServos();
 }
 
+// Function to set walking mode
 void NinjaSetWalk() {
   myservoLeftArm.attach(ServoLeftArmPin, 544, 2400);
   myservoRightArm.attach(ServoRightArmPin, 544, 2400);
@@ -250,6 +256,7 @@ void NinjaSetWalk() {
   myservoRightArm.detach();
 }
 
+// Function to set rolling mode
 void NinjaSetRoll() {
   myservoLeftArm.attach(ServoLeftArmPin, 544, 2400);
   myservoRightArm.attach(ServoRightArmPin, 544, 2400);
@@ -265,42 +272,4 @@ void NinjaSetRoll() {
   delay(300);
   myservoLeftLeg.detach();
   myservoRightLeg.detach();
-  myservoLeftArm.attach(ServoLeftArmPin, 544, 2400);
-  myservoRightArm.attach(ServoRightArmPin, 544, 2400);
-  myservoLeftArm.write(180);
-  myservoRightArm.write(0);
-  delay(300);
-  myservoLeftArm.detach();
-  myservoRightArm.detach();
-}
-
-void NinjaWalkStop() {
-  myservoLeftFoot.write(90);
-  myservoRightFoot.write(90);
-  myservoLeftLeg.write(LA0);
-  myservoRightLeg.write(RA0);
-}
-
-void NinjaRollStop() {
-  myservoLeftFoot.write(90);
-  myservoRightFoot.write(90);
-  detachServos();
-}
-
-void NinjaLeftArm() {
-  myservoLeftArm.attach(ServoLeftArmPin, 544, 2400);
-  myservoLeftArm.write(90);
-}
-
-void NinjaRightArm() {
-  myservoRightArm.attach(ServoRightArmPin, 544, 2400);
-  myservoRightArm.write(90);
-}
-
-void NinjaLeftArmDown() {
-  myservoLeftArm.write(180);
-}
-
-void NinjaRightArmDown() {
-  myservoRightArm.write(0);
-}
+  myservoLeftArm.attach(Serv
