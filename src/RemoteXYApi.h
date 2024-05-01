@@ -2,10 +2,11 @@
 #ifndef REMOTEXY_H
 #define REMOTEXY_H
 
-#include <inttypes.h>
-#include <stdlib.h>
-#include <Arduino.h>
+// Include inttypes.h for fixed width integer types
+// Include stdlib.h for various general purpose functions
+// Include Arduino.h for Arduino specific functionality
 
+// Include RemoteXY header files
 #include "RemoteXYDebugLog.h"
 #include "RemoteXYApiData.h"
 #include "RemoteXYConnection.h"
