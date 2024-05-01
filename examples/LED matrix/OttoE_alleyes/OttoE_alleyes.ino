@@ -5,7 +5,7 @@
  *
  ***************************************************/
 
-#include <Wire.h>
+#include <Wire.h> // Include the Wire library for I2C communication
 
 // Define the I2C address of the left and right eyes
 #define LEFT_EYE_ADDRESS 0x3E
@@ -17,20 +17,20 @@
 
 // Function to print a string on the left eye
 void printLeft(String text) {
-  Wire.beginTransmission(LEFT_EYE_ADDRESS);
+  Wire.beginTransmission(LEFT_EYE_ADDRESS); // Begin transmission to the left eye
   for (int i = 0; i < text.length(); i++) {
-    Wire.write(text[i]);
+    Wire.write(text[i]); // Write each character of the string to the left eye
   }
-  Wire.endTransmission();
+  Wire.endTransmission(); // End transmission to the left eye
 }
 
 // Function to print a string on the right eye
 void printRight(String text) {
-  Wire.beginTransmission(RIGHT_EYE_ADDRESS);
+  Wire.beginTransmission(RIGHT_EYE_ADDRESS); // Begin transmission to the right eye
   for (int i = 0; i < text.length(); i++) {
-    Wire.write(text[i]);
+    Wire.write(text[i]); // Write each character of the string to the right eye
   }
-  Wire.endTransmission();
+  Wire.endTransmission(); // End transmission to the right eye
 }
 
 void setup() {
@@ -38,8 +38,8 @@ void setup() {
   Wire.begin();
 
   // Clear both eyes
-  printLeft("          ");
-  printRight("          ");
+  printLeft("          "); // Print spaces to clear the left eye
+  printRight("          "); // Print spaces to clear the right eye
 }
 
 void loop() {
