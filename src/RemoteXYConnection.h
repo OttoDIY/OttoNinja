@@ -12,36 +12,14 @@ class CRemoteXYConnection {
 
   public:   
   // Initialize the connection with data
+  //  _data: Pointer to the CRemoteXYData object containing connection data
   virtual void init (CRemoteXYData * _data);  
 
   public:
   // Empty handler function
+  // This function is meant to be overridden by derived classes to handle specific events
   virtual void handler () {};  
   
   // Handle Wire communication
-  virtual void handleWire (CRemoteXYWire * wire) {UNUSED (wire);};  
-
-  // Stop thread listener
-  virtual void stopThreadListener (CRemoteXYWire * wire) {UNUSED (wire);};  
-  
-};
-
-// Connection object for communication
-class CRemoteXYConnectionComm : public CRemoteXYConnection { 
-  public:   
-  // Pointer to the next connection object
-  CRemoteXYConnectionComm * next;  
-  // Pointer to the communication object
-  CRemoteXYComm * comm;  
-
-  public:
-  // Initialize the communication object
-  CRemoteXYConnectionComm (CRemoteXYComm * _comm) {
-    comm = _comm;  
-  }  
-  
-};
-
-#endif //RemoteXYConnection_h  
-// End of RemoteXYConnection header file
-
+  //  wire: Pointer to the CRemoteXYWire object for communication
+  //
