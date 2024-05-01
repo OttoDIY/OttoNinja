@@ -7,26 +7,26 @@ const int tapLevel = 512; // Tap level threshold
 const int topWallPos = 0;
 const int bottomWallPos = 15;
 const int wallGap = 5;
-const int wallDelay = 250;
+const int wallDelay = 250; // Time delay between wall movements in milliseconds
 const int numLives = 3;
-const int gameOverMessageLength = 14;
-const int gameOverMessageDelay = 75;
+const int gameOverMessageLength = 14; // Length of the "Game Over" message in characters
+const int gameOverMessageDelay = 75; // Delay between each character of the "Game Over" message in milliseconds
 
 // Variables
-double initYVelocity = 6.5; // Initial vertical velocity of the bird
-double gravity = -9.8; // Gravity constant
-long birdTime; // Time elapsed since the bird's last movement
-long previousBirdTime; // Time elapsed since the game started
-byte birdPos = 3; // Current vertical position of the bird
-byte tailPos = 3; // Current vertical position of the bird's tail
-byte topWall; // Top wall position
-byte bottomWall; // Bottom wall position
-int wallDelayTime; // Time delay between wall movements
+double initYVelocity = 6.5; // Initial vertical velocity of the bird in pixels per frame
+double gravity = -9.8; // Gravity constant in pixels per frame^2
+long birdTime; // Time elapsed since the bird's last movement in milliseconds
+long previousBirdTime; // Time elapsed since the game started in milliseconds
+byte birdPos = 3; // Current vertical position of the bird in pixels
+byte tailPos = 3; // Current vertical position of the bird's tail in pixels
+byte topWall; // Top wall position in pixels
+byte bottomWall; // Bottom wall position in pixels
+int wallDelayTime; // Time delay between wall movements in milliseconds
 int wallCount; // Number of walls passed
-long previousWallTime; // Time elapsed since the game started
-byte wallPosition = 0; // Current horizontal position of the walls
+long previousWallTime; // Time elapsed since the game started in milliseconds
+byte wallPosition = 0; // Current horizontal position of the walls in pixels
 boolean gameMode = false; // Game mode flag
-long frameTime; // Time elapsed since the last frame update
+long frameTime; // Time elapsed since the last frame update in milliseconds
 byte frame = 0; // Current frame number
 byte frameChange = 1; // Frame change direction
 byte lives = numLives; // Number of lives
@@ -144,10 +144,10 @@ int calculateNextY(double yVelocity, long elapsedTime) {
 }
 
 boolean checkCollision() {
-  if (birdPos < 0 || birdPos > 15) return true;
-  if (tailPos < 0 || tailPos > 15) return true;
-  if (calculateNextY(initYVelocity, 100) >= bottomWall) return true;
-  if (calculateNextY(initYVelocity, 100) <= topWall) return true;
+  if (birdPos < 0 || birdPos > 15) return true; // Check if the bird is out of bounds vertically
+  if (tailPos < 0 || tailPos > 15) return true; // Check if the bird's tail is out of bounds vertically
+  if (calculateNextY(initYVelocity, 100) >= bottomWall) return true; // Check if the bird will collide with the bottom wall
+  if (calculateNextY(initYVelocity, 100) <= topWall) return true; // Check if the bird will collide with the top wall
   return false;
 }
 
@@ -193,3 +193,4 @@ void updateGameVariables() {
   if (birdPos < 0) birdPos = 0;
   if (tailPos < 0) tailPos = 0;
 }
+
