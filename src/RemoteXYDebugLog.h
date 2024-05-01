@@ -1,36 +1,61 @@
+// If the macro REMOTEXY__DEBUGLOG is defined, this header file defines the
+// CRemoteXYDebugLog class, which provides a simple and configurable debug
+// logging functionality for an embedded system using the Arduino platform.
 #ifndef _REMOTEXY_DEBUGLOG_H_
 #define _REMOTEXY_DEBUGLOG_H_
 
+// If REMOTEXY__DEBUGLOG is defined, include the necessary headers for the
+// HardwareSerial class and other standard libraries.
 #if defined(REMOTEXY__DEBUGLOG) 
 
-#include <inttypes.h> 
-#include <stdlib.h>
-#include <Arduino.h>
+#include <inttypes.h>  // For fixed-width integer types
+#include <stdlib.h>    // For dynamic memory management
+#include <Arduino.h>  // For the HardwareSerial class
 
-#ifndef REMOTEXY__DEBUGLOG_SERIAL 
+// Define default values for the serial port and baud rate if they are not
+// explicitly set by the user.
+#ifndef REMOTEXY__DEBUGLOG_SERIAL
 #define REMOTEXY__DEBUGLOG_SERIAL Serial
 #endif
-#ifndef REMOTEXY__DEBUGLOG_SPEED 
+
+#ifndef REMOTEXY__DEBUGLOG_SPEED
 #define REMOTEXY__DEBUGLOG_SPEED 115200
 #endif
 
+// Define the CRemoteXYDebugLog class.
 class CRemoteXYDebugLog {
   public:
+    // The serial port to log messages to. It can be explicitly set during
+    // object construction or use the default value of REMOTEXY__DEBUGLOG_SERIAL.
     HardwareSerial * serial;
+
+    // The baud rate of the serial port. It can be explicitly set during
+    // object construction or use the default value of REMOTEXY__DEBUGLOG_SPEED.
     long speed;
+
+    // A flag indicating whether logging is enabled or disabled.
     uint8_t enabled;
 
   public:
+    // The constructor initializes the object with the given serial port and
+    // baud rate. If the serial port is not explicitly set, it defaults to
+    // REMOTEXY__DEBUGLOG_SERIAL. If the baud rate is not explicitly set, it
+    // defaults to REMOTEXY__DEBUGLOG_SPEED. The enabled flag is set to 1,
+    // indicating that logging is enabled.
     CRemoteXYDebugLog (HardwareSerial *_serial = nullptr, long _speed = REMOTEXY__DEBUGLOG_SPEED) :
       serial(_serial ? _serial : &REMOTEXY__DEBUGLOG_SERIAL),
       speed(_speed),
       enabled(1)
     {
+      // If the serial port is not explicitly set, begin serial communication
+      // at the specified baud rate.
       if (_serial == nullptr) {
         serial->begin(speed);
       }
     }
 
+    // The destructor ends serial communication and frees any resources used by
+    // the object.
     ~CRemoteXYDebugLog() {
       if (serial && enabled) {
         serial->flush();
@@ -38,6 +63,8 @@ class CRemoteXYDebugLog {
       }
     }
 
+    // The init() method initializes the serial port with the specified baud
+    // rate and enables logging.
     void init() {
       if (serial && !enabled) {
         serial->begin(speed);
@@ -45,6 +72,8 @@ class CRemoteXYDebugLog {
       }
     }
 
+    // The setEnabled() method sets the enabled flag to the given value,
+    // enabling or disabling logging as appropriate.
     void setEnabled(uint8_t value) {
       enabled = value;
       if (!enabled && serial) {
@@ -53,6 +82,8 @@ class CRemoteXYDebugLog {
       }
     }
 
+    // The setSpeed() method sets the baud rate of the serial port to the
+    // given value.
     void setSpeed(long baud) {
       if (serial && enabled) {
         serial->end();
@@ -61,6 +92,8 @@ class CRemoteXYDebugLog {
       }
     }
 
+    // The writeTime() method writes the current time in milliseconds to the
+    // serial port, prefixed by a timestamp string.
     void writeTime() {
       uint32_t d = millis();
       long ds = d / 1000;
@@ -73,6 +106,8 @@ class CRemoteXYDebugLog {
       }
     }
 
+    // The write() method writes the given string to the serial port,
+    // prefixed by a timestamp string.
     void write(const char *s) {
       if (enabled) {
         writeTime();
@@ -80,36 +115,48 @@ class CRemoteXYDebugLog {
       }
     }
 
+    // The writeAdd() method writes the given value to the serial port,
+    // appending it to the current output buffer.
     void writeAdd(const char *s) {
       if (enabled) {
         serial->print(s);
       }
     }
 
+    // The writeAdd() method writes the given integer value to the serial
+    // port, appending it to the current output buffer.
     void writeAdd(uint16_t i) {
       if (enabled) {
         serial->print(i);
       }
     }
 
+    // The writeAdd() method writes the given integer value to the serial
+    // port, appending it to the current output buffer.
     void writeAdd(uint32_t i) {
       if (enabled) {
         serial->print(i);
       }
     }
 
+    // The writeAdd() method writes the given integer value to the serial
+    // port, appending it to the current output buffer.
     void writeAdd(int i) {
       if (enabled) {
         serial->print(i);
       }
     }
 
+    // The writeAdd() method writes the given integer value to the serial
+    // port, appending it to the current output buffer.
     void writeAdd(long i) {
       if (enabled) {
         serial->print(i);
       }
     }
 
+    // The writeLine() method writes the given string to the serial port,
+    // prefixed by a timestamp string and followed by a newline character.
     void writeLine(const char *s) {
       if (enabled) {
         writeTime();
@@ -117,6 +164,8 @@ class CRemoteXYDebugLog {
       }
     }
 
+    // The writeInput() method writes the given string to the serial port,
+    // prefixed by a timestamp string, a left arrow, and a space.
     void writeInput(const char *s) {
       if ((debug_flags & 0x01) == 0 && enabled) {
         writeTime();
@@ -126,6 +175,8 @@ class CRemoteXYDebugLog {
       serial->print(s);
     }
 
+    // The writeOutput() method writes the given string to the serial port,
+    // prefixed by a timestamp string, a right arrow, and a space.
     void writeOutput(const char *s) {
       if ((debug_flags & 0x02) == 0 && enabled) {
         writeTime();
@@ -135,6 +186,9 @@ class CRemoteXYDebugLog {
       serial->print(s);
     }
 
+    // The writeInputHex() method writes the given byte value to the serial
+    // port in hexadecimal format, prefixed by a timestamp string, a left
+    // arrow, and a space.
     void writeInputHex(uint8_t b) {
       if ((debug_flags & 0x01) == 0 && enabled) {
         writeTime();
@@ -145,6 +199,9 @@ class CRemoteXYDebugLog {
       writeHex(b);
     }
 
+    // The writeOutputHex() method writes the given byte value to the serial
+    // port in hexadecimal format, prefixed by a timestamp string, a right
+    // arrow, and a space.
     void writeOutputHex(uint8_t b) {
       if ((debug_flags & 0x02) == 0 && enabled) {
         writeTime();
@@ -155,6 +212,8 @@ class CRemoteXYDebugLog {
       writeHex(b);
     }
 
+    // The writeInputChar() method writes the given character to the serial
+    // port, prefixed by a timestamp string, a left arrow, and a space.
     void writeInputChar(char s) {
       if ((debug_flags & 0x01) == 0 && enabled) {
         writeTime();
@@ -164,10 +223,15 @@ class CRemoteXYDebugLog {
       serial->print(s);
     }
 
+    // The writeInputNewString() method resets the debug_flags variable to
+    // 0, indicating that the current input message has ended.
     void writeInputNewString() {
       debug_flags = 0;
     }
 
+    // The writeHex() method writes the given byte value to the serial port in
+    // hexadecimal format, with a space prefix and a space separator every 16
+    // bytes.
     void writeHex(uint8_t b) {
       debug_hexcounter++;
       if (debug_hexcounter > 16) {
@@ -180,6 +244,8 @@ class CRemoteXYDebugLog {
       serial->print(b & 0x0f, HEX);
     }
 
+    // The writeDec() method writes the given byte value to the serial port in
+    // decimal format.
     void writeDec(uint8_t b) {
       if (enabled) {
         writeTime();
@@ -187,6 +253,8 @@ class CRemoteXYDebugLog {
       }
     }
 
+    // The writeBinary() method writes the given byte value to the serial
+    // port in binary format.
     void writeBinary(uint8_t b) {
       if (enabled) {
         writeTime();
@@ -194,6 +262,8 @@ class CRemoteXYDebugLog {
       }
     }
 
+    // The writeFloat() method writes the given floating-point value to the
+    // serial port.
     void writeFloat(float f) {
       if (enabled) {
         writeTime();
@@ -201,6 +271,8 @@ class CRemoteXYDebugLog {
       }
     }
 
+    // The writeDouble() method writes the given double-precision floating-
+    // point value to the serial port.
     void writeDouble(double d) {
       if (enabled) {
         writeTime();
@@ -208,6 +280,8 @@ class CRemoteXYDebugLog {
       }
     }
 
+    // The writeBool() method writes the given boolean value to the serial
+    // port as either "true" or "false".
     void writeBool(bool b) {
       if (enabled) {
         writeTime();
@@ -215,6 +289,7 @@ class CRemoteXYDebugLog {
       }
     }
 
+    // The writeChar() method writes the given character to the serial port.
     void writeChar(char c) {
       if (enabled) {
         writeTime();
@@ -222,24 +297,29 @@ class CRemoteXYDebugLog {
       }
     }
 
+    // The writeNewline() method writes a newline character to the serial
+    // port.
     void writeNewline() {
       if (enabled) {
         serial->println();
       }
     }
 
+    // The writeSpace() method writes a space character to the serial port.
     void writeSpace() {
       if (enabled) {
         serial->print(' ');
       }
     }
 
+    // The writeTab() method writes a tab character to the serial port.
     void writeTab() {
       if (enabled) {
         serial->print('\t');
       }
     }
 
+    // The flush() method flushes the serial port buffer.
     void flush() {
       if (enabled) {
         serial->flush();
@@ -247,27 +327,8 @@ class CRemoteXYDebugLog {
     }
 
   private:
+    // The debug_flags variable is used to keep track of the current input
+    // or output message being written to the serial port.
     uint8_t debug_flags;
-    uint8_t debug_hexcounter;
 
-    uint32_t availableMemory() {
-#if defined(ESP8266) || defined(ESP32)
-      return ESP.getFreeHeap();
-#elif defined(__AVR__)
-      uint16_t size = RAMEND;
-      uint8_t *buf;
-      while ((buf = (uint8_t *)malloc(size)) == NULL) size--;
-      free(buf);
-      return size;
-#else
-      return 0;
-#endif
-    }
 
-};
-
-CRemoteXYDebugLog RemoteXYDebugLog;
-
-#endif  //REMOTEXY__DEBUGLOG
-
-#endif //_REMOTEXY_DEBUGLOG_H_
