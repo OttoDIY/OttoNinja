@@ -22,6 +22,9 @@ class CRemoteXYConnectionStream : public CRemoteXYConnection {
    * @brief Constructor with a CRemoteXYStream object as parameter.
    *
    * @param stream A pointer to the stream object.
+   *
+   * The constructor initializes the stream pointer with the given stream object.
+   * If the stream pointer is null, an error message is logged.
    */
   CRemoteXYConnectionStream(CRemoteXYStream *stream) : stream(stream) {
     // Check if the stream pointer is not null
@@ -35,6 +38,10 @@ class CRemoteXYConnectionStream : public CRemoteXYConnection {
    * @brief Override the init method from CRemoteXYConnection.
    *
    * @param data A pointer to the data object.
+   *
+   * The init method creates a new CRemoteXYWireStream object with data as parameter,
+   * initializes the wire object with the stream object, and starts a new thread
+   * with data, this (CRemoteXYConnectionStream object), wireStream, and 0 as parameters.
    */
   void init(CRemoteXYData *data) override {
     // Create a new CRemoteXYWireStream object with data as parameter
@@ -49,6 +56,8 @@ class CRemoteXYConnectionStream : public CRemoteXYConnection {
    * @brief Override the handleWire method from CRemoteXYConnection.
    *
    * @param wire A pointer to the wire object.
+   *
+   * The handleWire method calls the handler method of the wire object.
    */
   void handleWire(CRemoteXYWire *wire) override {
     // Call the handler method of the wire object
@@ -57,3 +66,4 @@ class CRemoteXYConnectionStream : public CRemoteXYConnection {
 };
 
 #endif // REMOTEXY_CONNECTION_STREAM_H
+
