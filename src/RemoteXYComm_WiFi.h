@@ -1,237 +1,107 @@
-#ifndef REMOTEXYCOMM_WIFI_H
-#define REMOTEXYCOMM_WIFI_H
-
-#include "RemoteXYDebugLog.h"
-#include "RemoteXYComm.h"
-
-#ifdef WIFI_H
-
-#if defined(ESP8266) || defined(ESP32)
-#define REMOTEXYCOMM_WIFI__SEND_BUFFER_SIZE 256
-#else  // arduino shield
-#define REMOTEXYCOMM_WIFI__SEND_BUFFER_SIZE 64
-#endif
-
+// The CRemoteXYClient_WiFi class represents a WiFi client for the RemoteXY platform.
+// It includes functions for connecting to a server, checking if the client is connected,
+// stopping the client, handling incoming data, and writing data to be sent to the server.
 class CRemoteXYClient_WiFi : public CRemoteXYClient {
 public:
-  WiFiClient client;
+  // The constructor initializes a new WiFi client.
+  CRemoteXYClient_WiFi();
 
-  uint8_t sendBuffer[REMOTEXYCOMM_WIFI__SEND_BUFFER_SIZE];
-  uint16_t sendBufferCount;
-  uint16_t sendBytesAvailable;
+  // The connect function connects the client to a server with the given host and port.
+  // It returns 1 if the connection was successful, or 0 if it failed.
+  uint8_t connect(const char *host, uint16_t port);
 
-public:
-  uint8_t connect(const char *host, uint16_t port) override {
-    return client.connect(host, port);
-  }
+  // The connected function returns 1 if the client is connected to a server, or 0 if it is not.
+  uint8_t connected();
 
-public:
-  uint8_t connected() override {
-    return client.connected();
-  }
+  // The stop function stops the client and closes the connection to the server.
+  void stop();
 
-public:
-  void stop() override {
-    client.stop();
-  }
+  // The handler function handles incoming data from the server.
+  // It should be called regularly in the main loop of the program.
+  void handler();
 
-public:
-  void handler() override {
-    while (client.available()) notifyReadByteListener(client.read());
-  }
+  // The startWrite function initializes the client's send buffer for writing data.
+  // It takes the length of the data to be sent as an argument.
+  void startWrite(uint16_t len);
 
-public:
-  void startWrite(uint16_t len) override {
-    sendBytesAvailable = len;
-    sendBufferCount = 0;
-  }
-
-public:
-  void write(uint8_t b) override {
-    sendBuffer[sendBufferCount++] = b;
-    sendBytesAvailable--;
-    if ((sendBufferCount == REMOTEXYCOMM_WIFI__SEND_BUFFER_SIZE) || (sendBytesAvailable == 0)) {
-      client.write(sendBuffer, sendBufferCount);
-      sendBufferCount = 0;
-    }
-  }
+  // The write function writes a single byte to the client's send buffer.
+  // It automatically sends the data in the buffer when it is full or when all the data has been written.
+  void write(uint8_t b);
 };
 
+// The CRemoteXYServer_WiFi class represents a WiFi server for the RemoteXY platform.
+// It includes functions for starting the server, stopping the server, checking if a client is available,
+// and handling client connections.
 class CRemoteXYServer_WiFi : public CRemoteXYServer {
 private:
+  // The server object is used to manage the WiFi server.
   WiFiServer *server;
 
-public: 
-  CRemoteXYServer_WiFi(uint16_t _port)  {
-    server = new WiFiServer(_port); 
-  }
-
-public:  
-  virtual uint8_t begin() override {
-    server->begin(); 
-    return 1;   
-  }
-
 public:
-  void stop() override {
-#if defined(ESP8266) || defined(ESP32)
-    server->stop();  
-#endif
-  } 
+  // The constructor initializes a new WiFi server with the given port.
+  CRemoteXYServer_WiFi(uint16_t _port);
 
-public: 
-  uint8_t available(CRemoteXYClient * client) override {     
-#if defined(ESP8266) || defined(ESP32)
-    if (!server->hasClient()) return 0; 
-#endif        
-    WiFiClient cl = server->available();
-    if (cl) {
-      if (cl.connected()) {
-#if defined(ESP8266)
-        cl.disableKeepAlive();     // remove memory leak
-#endif
-        ((CRemoteXYClient_WiFi*) client)->client = cl;
-        return 1;
-      }
-    }
-    return 0;
-  } 
+  // The begin function starts the WiFi server.
+  // It returns 1 if the server was started successfully, or 0 if it failed.
+  virtual uint8_t begin() override;
+
+  // The stop function stops the WiFi server.
+  void stop();
+
+  // The available function checks if a client is available to connect to the server.
+  // It returns 1 if a client is available, or 0 if no clients are available.
+  uint8_t available(CRemoteXYClient * client) override;
 };
 
+// The CRemoteXYComm_WiFi class manages WiFi connections for the RemoteXY platform.
+// It includes functions for connecting to a WiFi network, handling WiFi connection events,
+// checking if the WiFi connection is configured, and creating clients and servers.
 class CRemoteXYComm_WiFi : public CRemoteXYComm {
 private:
+  // The wifiSsid and wifiPassword variables store the SSID and password of the WiFi network.
   const char *wifiSsid;
   const char *wifiPassword;
+
+  // The wifiStatus variable stores the current status of the WiFi connection.
   uint8_t wifiStatus;
 
 public:
-  CRemoteXYComm_WiFi(const char * _wifiSsid, const char * _wifiPassword) : wifiSsid(_wifiSsid), wifiPassword(_wifiPassword), wifiStatus(WiFi.status()) {
-#if defined(ESP8266) || defined(ESP32)
-    WiFi.disconnect();
-    WiFi.softAPdisconnect(true);
-    WiFi.mode(WIFI_STA);
-#else // NOT ESP
-    if (wifiStatus == WL_NO_SHIELD) {
-#if defined(REMOTEXY__DEBUGLOG)
-      RemoteXYDebugLog.write("WiFi module was not found");
-#endif
-      return;
-    }
-#endif // ESP
+  // The constructor initializes a new WiFi connection with the given SSID and password.
+  CRemoteXYComm_WiFi(const char * _wifiSsid, const char * _wifiPassword);
 
-#if defined(REMOTEXY__DEBUGLOG)
-    RemoteXYDebugLog.write("Сonnecting to WiFi: ");
-    RemoteXYDebugLog.writeAdd(wifiSsid);
-    RemoteXYDebugLog.writeAdd(" ...");
-#endif
+  // The handler function handles WiFi connection events.
+  // It should be called regularly in the main loop of the program.
+  void handler() override;
 
-    WiFi.begin(wifiSsid, wifiPassword);
-  }
+  // The configured function returns 1 if the WiFi connection is configured and connected,
+  // or 0 if it is not.
+  uint8_t configured() override;
 
-public:
-  void handler() override {
-    uint8_t prev_wifiStatus = wifiStatus;
-    wifiStatus = WiFi.status();
+  // The createServer function creates a new WiFi server with the given port.
+  CRemoteXYServer *createServer(uint16_t _port) override;
 
-    if (wifiStatus == WL_CONNECTED) {
-      if (prev_wifiStatus != WL_CONNECTED) {
-#if defined(REMOTEXY__DEBUGLOG)
-        RemoteXYDebugLog.write("WiFi connected");
-        RemoteXYDebugLog.write("IP: ");
-        RemoteXYDebugLog.serial->print(WiFi.localIP());
-#endif
-      }
-    } else {  // != WL_CONNECTED
-      if (prev_wifiStatus == WL_CONNECTED) {
-#if defined(REMOTEXY__DEBUGLOG)
-        RemoteXYDebugLog.write("WiFi disconnected");
-#endif
-#if defined(ESP32)
-        WiFi.disconnect();
-        WiFi.mode(WIFI_STA);
-        WiFi.begin(wifiSsid, wifiPassword);
-#endif
-      }
-    }
-  }
-
-public:
-  uint8_t configured() override {
-    if (wifiStatus == WL_CONNECTED) return 1;
-    return 0;
-  }
-
-public:
-  CRemoteXYServer *createServer(uint16_t _port) override {
-    return new CRemoteXYServer_WiFi(_port);
-  }
-
-  CRemoteXYClient *newClient() override {
-    return new CRemoteXYClient_WiFi();
-  }
+  // The newClient function creates a new WiFi client.
+  CRemoteXYClient *newClient() override;
 };
 
+// The CRemoteXYComm_WiFiPoint class creates a WiFi access point for the RemoteXY platform.
+// It includes functions for creating an access point and checking if the access point is configured.
 class CRemoteXYComm_WiFiPoint : public CRemoteXYComm {
 private:
+  // The state variable stores the current state of the access point.
   uint8_t state;
 
 public:
-  CRemoteXYComm_WiFiPoint(const char * _wifiSsid, const char * _wifiPassword) : state(0) {
-#if defined(REMOTEXY__DEBUGLOG)
-    RemoteXYDebugLog.write("Creating WiFi point: ");
-    RemoteXYDebugLog.writeAdd(_wifiSsid);
-    RemoteXYDebugLog.writeAdd(" ...");
-#endif
+  // The constructor initializes a new WiFi access point with the given SSID and password.
+  CRemoteXYComm_WiFiPoint(const char * _wifiSsid, const char * _wifiPassword);
 
-#if defined(ESP8266) || defined(ESP32)
-    WiFi.mode(WIFI_AP);
-    WiFi.softAP(_wifiSsid, _wifiPassword);
-    state = 1;
-#if defined(REMOTEXY__DEBUGLOG)
-    RemoteXYDebugLog.write("WiFi point created");
-    RemoteXYDebugLog.write("IP: ");
-    RemoteXYDebugLog.serial->print(WiFi.softAPIP());
-#endif
-#elif defined(WIFI_NINA_H)   // WiFiNINA
-    if (WiFi.status() == WL_NO_SHIELD) {
-#if defined(REMOTEXY__DEBUGLOG)
-      RemoteXYDebugLog.write("WiFi module was not found");
-#endif
-      return;
-    }
-    if (WiFi.beginAP(_wifiSsid, _wifiPassword) != WL_AP_LISTENING) {
-#if defined(REMOTEXY__DEBUGLOG)
-      RemoteXYDebugLog.write("WiFi module does not support AP mode");
-#endif
-      return;
-    }
-    state = 1;
-#if defined(REMOTEXY__DEBUGLOG)
-    RemoteXYDebugLog.write("WiFi point created");
-#endif
-#else  // other boards not support AP mode
-    state = 0;
-#if defined(REMOTEXY__DEBUGLOG)
-    RemoteXYDebugLog.write("WiFi module does not support AP mode");
-#endif
-#endif // ESP
-  }
+  // The configured function returns 1 if the access point is configured,
+  // or 0 if it is not.
+  uint8_t configured() override;
 
-public:
-  uint8_t configured() override {
-    return state;
-  }
+  // The createServer function creates a new WiFi server with the given port.
+  CRemoteXYServer *createServer(uint16_t _port) override;
 
-public:
-  CRemoteXYServer *createServer(uint16_t _port) override {
-    return new CRemoteXYServer_WiFi(_port);
-  }
-
-  CRemoteXYClient *newClient() override {
-    return new CRemoteXYClient_WiFi();
-  }
+  // The newClient function creates a new WiFi client.
+  CRemoteXYClient *newClient() override;
 };
-
-#endif // WIFI_H
-
-#endif // REMOTEXYCOMM_WIFI_H
