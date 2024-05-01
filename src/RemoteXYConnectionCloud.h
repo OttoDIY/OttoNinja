@@ -1,6 +1,3 @@
-#ifndef RemoteXYConnectionCloud_h
-#define RemoteXYConnectionCloud_h
-
 // Include necessary header files
 #include "RemoteXYDebugLog.h"
 #include "RemoteXYConnection.h"
@@ -30,6 +27,7 @@ public:
     // Constructor for the class
     CRemoteXYConnectionCloud(CRemoteXYComm* _comm, const char* _cloudHost, uint16_t _port, const char* _cloudToken)
         : CRemoteXYConnectionComm(_comm) {
+        // Initialize the port, cloudHost, cloudToken, and communication object
         port = _port;
         cloudHost = _cloudHost;
         cloudToken = _cloudToken;
@@ -37,6 +35,7 @@ public:
 
     // Destructor for the class
     ~CRemoteXYConnectionCloud() {
+        // Delete the cloudServer object
         delete cloudServer;
     }
 
@@ -46,6 +45,8 @@ public:
         cloudServer = new CRemoteXYCloudServer(data, cloudToken, this);
         client = comm->newClient();
         timeOut = -REMOTEXY_CLOUDCLIENT_RETRY_TIMEOUT;
+        // Initialize the cloud server with the data, token, and listener
+        // Set the communication object and start the cloud server
     }
 
     // Handle the connection
@@ -60,6 +61,7 @@ public:
         if (cloudServer->running()) {
             cloudServer->handler();
             timeOut = millis();
+            // Handle the cloud server and update the timeout
         }
         // If the cloud server is not running
         else {
@@ -87,6 +89,7 @@ public:
         // If the number of running clients is less than the maximum limit
         if (CRemoteXYThread::runningCount(data) < REMOTEXY_MAX_CLIENTS) {
             CRemoteXYThread::startThread(data, this, cloudWire, 1);
+            // Start a new thread with the data, listener, cloud wire, and priority
         }
         // If the number of running clients is greater than or equal to the maximum limit
         else {
@@ -94,6 +97,7 @@ public:
 #if defined(REMOTEXY__DEBUGLOG)
             RemoteXYDebugLog.write("Client reject");
 #endif
+            // Reject the client if the maximum limit is reached
         }
     }
 
@@ -105,6 +109,7 @@ public:
                 CRemoteXYWireCloud* cloudWire = dynamic_cast<CRemoteXYWireCloud*>(wire);
                 if (cloudWire != nullptr) {
                     cloudWire->handler();
+                    // Handle the cloud wire if it is not null
                 }
             }
         }
@@ -120,6 +125,7 @@ public:
     void stopThreadListener(CRemoteXYWire* wire) override {
         if (wire != nullptr) {
             wire->stop();
+            // Stop the wire if it is not null
         }
     }
 };
