@@ -7,22 +7,34 @@
 
 /**
  * Listener interface for client availability events.
+ * Users of this class can implement this interface to be notified when a client becomes available.
  */
 class CRemoteXYClientAvailableListener {
   public:
+    /**
+     * Method to be implemented by the user of this class to be notified when a client becomes available.
+     */
     virtual void clientAvailable () = 0;
 };
 
 /**
  * Base class for remote clients.
+ * This class provides the basic functionality for remote clients.
  */
 class CRemoteXYClient: public CRemoteXYStream {
   public:
+    /**
+     * Pointer to the next client in a linked list of clients.
+     * This is used for internal bookkeeping and is not intended to be used by users of this class.
+     */
     CRemoteXYClient * next;
 
   public:
+    /**
+     * Default constructor for CRemoteXYClient.
+     */
     CRemoteXYClient (): CRemoteXYStream() {
-      next = nullptr;
+      next = nullptr; // Initialize the next pointer to nullptr
     }
 
   public:
@@ -53,28 +65,44 @@ class CRemoteXYClient: public CRemoteXYStream {
     virtual uint8_t equal (CRemoteXYClient * cl);
 
   private:
-    SOCKET socket_;
+    SOCKET socket_; // Socket used for communication with the remote host
 };
 
 /**
  * Base class for remote servers.
+ * This class provides the basic functionality for remote servers.
  */
 class CRemoteXYServer {
 
   private:
-    CRemoteXYClientAvailableListener * clientAvailableListener;
+    CRemoteXYClientAvailableListener * clientAvailableListener; // Listener for client availability events
 
   public:
+    /**
+     * Sets the listener for client availability events.
+     * @param listener The listener to set.
+     */
     void setClientAvailabListener (CRemoteXYClientAvailableListener * listener) {
       clientAvailableListener = listener;
     }    
 
+    /**
+     * Notifies the client availability listener that a client is available.
+     */
     void notifyClientAvailableListener () {
       if (clientAvailableListener) clientAvailableListener->clientAvailable ();
     }     
 
   public:     
+    /**
+     * Initializes the server.
+     * @return 0 on success, or an error code on failure.
+     */
     virtual uint8_t begin () {return 0;} 
+
+    /**
+     * Stops the server.
+     */
     virtual void stop () {}; 
 
     /**
@@ -94,22 +122,30 @@ class CRemoteXYServer {
     virtual CRemoteXYClient * getClient ();
 
   private:
-    CRemoteXYClient * client_list_;
+    CRemoteXYClient * client_list_; // Linked list of clients connected to the server
 };
 
 /**
  * Base class for remote communication.
+ * This class provides the basic functionality for remote communication.
  */
 class CRemoteXYComm  {
   public:
+    /**
+     * Pointer to the next communication object in a linked list of communications.
+     * This is used for internal bookkeeping and is not intended to be used by users of this class.
+     */
     CRemoteXYComm * next;
 
   public:
+    /**
+     * Default constructor for CRemoteXYComm.
+     */
     CRemoteXYComm () {
 #if defined(REMOTEXY__DEBUGLOG)
-      RemoteXYDebugLog.init ();
+      RemoteXYDebugLog.init (); // Initialize the debug log
 #endif
-      next = nullptr;
+      next = nullptr; // Initialize the next pointer to nullptr
       server_ = nullptr;
       client_list_ = nullptr;
     }
@@ -151,8 +187,8 @@ class CRemoteXYComm  {
     virtual uint8_t getClientCount ();
 
   private:
-    CRemoteXYServer * server_;
-    CRemoteXYClient * client_list_;
+    CRemoteXYServer * server_; // Pointer to the server object
+    CRemoteXYClient * client_list_; // Linked list of client objects
 };
 
 #endif //RemoteXYComm_h
