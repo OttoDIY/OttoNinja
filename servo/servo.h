@@ -15,8 +15,13 @@ typedef struct {
   uint32_t timer_freq;  // PWM timer frequency (in Hz)
 } servo_t;
 
+// Default angle to duty ratio function
+float default_angle_to_duty_ratio(int angle);
+
 servo_t* servo_create(ledc_channel_t channel, ledc_mode_t mode, int min_angle, int max_angle, 
-                       float (*angle_to_duty_ratio)(int angle), uint32_t timer_freq = 50);
+                       float (*angle_to_duty_ratio)(int angle), uint32_t timer_freq);
+servo_t* servo_create_default(ledc_channel_t channel, ledc_mode_t mode, int min_angle, int max_angle, uint32_t timer_freq);
+
 void servo_attach(servo_t* servo);
 void servo_detach(servo_t* servo);
 void servo_write(servo_t* servo, int angle);
